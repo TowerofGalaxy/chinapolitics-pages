@@ -56,6 +56,10 @@ choices:
 - id: c
   label: 直接宣布加快对接关贸总协定法规，邀外媒旁听涉外庭审
   outcome: s05-c.md
+  outcomeVariants:
+  - when:
+      tag: 中宣部挂号
+    body: s05-c-interrupted.md
   effects:
   - type: change
     stat: reform_acumen
@@ -86,3 +90,8 @@ additions:
 - when:
     tag: 老辈训诫
   body: s05-note3.md
+- when:
+    any:
+    - tag: 铁腕履历
+    - tag: 边缘平调序列
+  body: s05-secondment.md

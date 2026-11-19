@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import scenes from '../generated/story.json'
 import { sceneSchema } from '../story/schema'
-import { applyAction, available, createStory, currentScene, startGame, type GameState } from './engine'
+import { applyAction, available, createStory, currentScene, meetsCondition, startGame, type GameState } from './engine'
 import { newSave, replay, storyForSave } from './save'
 
 const story = createStory(sceneSchema.array().parse(scenes))
@@ -228,5 +228,48 @@ describe('前三卷与阶段转换', () => {
     const result = applyAction(story, state, { type: 'choose', choices: ['a'] })
     expect(result.result?.texts[0]).toContain('业余讨论班的事')
     expect(result.result?.texts[0]).not.toContain('若持有')
+  })
+
+  it('中宣部挂号时，旁听承诺被打断并额外扣除组织信任', () => {
+    const state = startGame(story, 'v03-s05')
+    const unrestricted = applyAction(story, state, { type: 'choose', choices: ['c'] })
+    expect(unrestricted.result?.texts[0]).toContain('旁听涉外知识产权公开庭审')
+    expect(unrestricted.result?.changes.cadre_trust).toBe(-6)
+
+    state.tags.push('中宣部挂号')
+    const restricted = applyAction(story, state, { type: 'choose', choices: ['c'] })
+    expect(restricted.result?.texts[0]).toContain('联络员当场抬手打断')
+    expect(restricted.result?.texts[0]).not.toContain('旁听涉外知识产权公开庭审')
+    expect(restricted.result?.changes.cadre_trust).toBe(-10)
+  })
+
+  it('组织信任仍高于警戒线时，按实际数值开放后续选择', () => {
+    let state = startGame(story)
+    for (const choice of ['c', 'b', 'a']) state = chooseAndContinue(state, choice)
+    state = applyAction(story, state, { type: 'continue' })
+    for (const choice of ['b', 'a', 'a2', 'b2', 'a', 'b']) state = chooseAndContinue(state, choice)
+    expect(state.tags).toContain('中宣部挂号')
+    expect(state.stats.cadre_trust).toBe(46)
+    state = applyAction(story, state, { type: 'continue' })
+    state = chooseAndContinue(state, 'a')
+    expect(available(state, currentScene(story, state).choices.find((choice) => choice.id === 'c')!)).toBe(true)
+  })
+
+  it.each(['铁腕履历', '边缘平调序列'])('前卷 %s 路线交代借调缘由', (tag) => {
+    const state = startGame(story, 'v03-s05')
+    state.tags.push(tag)
+    const additions = currentScene(story, state).additions
+      .filter((item) => meetsCondition(state, item.when))
+      .map((item) => item.body)
+    expect(additions.some((body) => body.includes('抽调借调进驻国新办'))).toBe(true)
+  })
+
+  it.each([false, true])('记者会两种回答都保留会后报道：矩阵标记 %s', (withMatrix) => {
+    const state = startGame(story, 'v05-s17')
+    state.stats.reform_drive = 60
+    if (withMatrix) state.tags.push('加权考核矩阵')
+    const result = applyAction(story, state, { type: 'choose', choices: ['b'] })
+    expect(result.result?.texts[0]).toContain('次日境外电讯发出报道')
+    expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权系数' : '过去两年')
   })
 })
