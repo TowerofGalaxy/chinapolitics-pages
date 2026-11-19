@@ -59,7 +59,7 @@ async function main() {
     try {
       const source = (await readFile(path.join(root, filename), 'utf8')).replace(/\r\n/g, '\n')
       const actual = createHash('sha256').update(source).digest('hex')
-      if (actual !== expected) console.warn(`剧本已更新，请核对网页内容：${filename}`)
+      if (actual !== expected) console.warn(`分卷剧本与网页接入快照不同，请核对：${filename}`)
     } catch {
       console.warn(`找不到分卷剧本，请核对网页内容：${filename}`)
     }
