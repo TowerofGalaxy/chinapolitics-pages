@@ -36,6 +36,7 @@ h1 { margin-block: 4px 15px; font: 700 clamp(24px, 4vw, 31px)/1.4 var(--serif); 
 .addition { margin-top: 1em; }
 .prose ul, .prose ol { padding-inline-start: 1.5em; }
 .prose blockquote { margin-inline: 1em 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--rule); }
+.prose h2, .prose h3 { margin-block: 1.5em .5em; font-size: 1.05em; font-weight: 600; }
 .decision { border-top: 1px solid var(--rule); padding-top: 12px; }
 .decision-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; margin-bottom: 5px; }
 h2 { font-size: 15px; font-weight: 600; }
@@ -50,6 +51,7 @@ button:disabled { border-color: var(--rule); background: var(--status); color: v
 .decision button { margin-top: 11px; }
 .changes { margin-top: 15px; color: var(--action); font-size: 14px; font-variant-numeric: tabular-nums; }
 .notice { margin-top: 18px; color: var(--action); font-size: 14px; }
+.ending-label { margin-top: 24px; color: var(--secondary); font-size: 14px; }
 footer { margin-top: 50px; border-top: 1px solid var(--rule); }
 .restart { padding-inline: 0; background: transparent; border: 0; color: var(--secondary); }
 :focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }

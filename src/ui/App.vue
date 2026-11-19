@@ -13,7 +13,7 @@ renderer.html = () => ''
 
 function markdown(text: string): string {
   return DOMPurify.sanitize(marked.parse(text, { async: false, renderer }), {
-    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'blockquote', 'ul', 'ol', 'li'],
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'blockquote', 'ul', 'ol', 'li', 'h2', 'h3'],
     ALLOWED_ATTR: [],
   })
 }
@@ -21,8 +21,10 @@ function markdown(text: string): string {
 let initialSave: Save = newSave()
 let initialState = startGame(story)
 let initialNotice = ''
+let lastStoredValue: string | null = null
 try {
   const existing = window.localStorage.getItem(SAVE_KEY)
+  lastStoredValue = existing
   if (existing) {
     const restored = replay(story, JSON.parse(existing))
     initialSave = restored.save
@@ -69,12 +71,24 @@ function changesText(changes: Record<string, number>): string {
 
 function persist() {
   try {
-    window.localStorage.setItem(SAVE_KEY, JSON.stringify(save.value))
+    if (window.localStorage.getItem(SAVE_KEY) !== lastStoredValue) {
+      notice.value = '另一个页面更新了存档，请刷新页面继续。'
+      return
+    }
+    const serialized = JSON.stringify(save.value)
+    window.localStorage.setItem(SAVE_KEY, serialized)
+    lastStoredValue = serialized
     notice.value = ''
   } catch {
     notice.value = '无法自动保存，刷新页面后进度可能丢失。'
   }
 }
+
+window.addEventListener('storage', (event) => {
+  if ((event.key === SAVE_KEY || event.key === null) && event.newValue !== lastStoredValue) {
+    notice.value = '另一个页面更新了存档，请刷新页面继续。'
+  }
+})
 
 function setDraft(id: string, checked: boolean) {
   const choice = scene.value.choices.find((item) => item.id === id)
@@ -145,6 +159,7 @@ function restart() {
           <div v-for="(text, index) in state.result?.texts" :key="index" class="prose outcome" v-html="markdown(text)"></div>
           <p v-if="state.result && Object.keys(state.result.changes).length" class="changes">{{ changesText(state.result.changes) }}</p>
         </div>
+        <p v-if="state.phase === 'ending'" class="ending-label">故事结束</p>
       </article>
 
       <section v-if="state.phase === 'scene' && scene.type === 'choice'" class="decision" aria-labelledby="choice-title">

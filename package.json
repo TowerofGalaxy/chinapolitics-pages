@@ -16,6 +16,7 @@
     "pretest": "pnpm check:story",
     "test": "vitest run",
     "test:routes": "pnpm check:story && tsx scripts/find-routes.ts",
+    "test:paths": "pnpm check:story && tsx scripts/check-paths.ts",
     "prebuild": "pnpm check:story",
     "build": "vue-tsc --noEmit && vite build"
   },

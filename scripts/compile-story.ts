@@ -1,8 +1,10 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
 import path from 'node:path'
 import { parse } from 'yaml'
 import { sceneSchema, type Condition, type Effect, type Scene } from '../src/story/schema'
 import dictionary from '../variables.json'
+import sourceRevisions from '../content/source-revisions.json'
 
 const root = process.cwd()
 const contentRoot = path.join(root, 'content')
@@ -53,6 +55,15 @@ async function readMarkdown(directory: string, reference: string): Promise<strin
 }
 
 async function main() {
+  for (const [filename, expected] of Object.entries(sourceRevisions)) {
+    try {
+      const source = (await readFile(path.join(root, filename), 'utf8')).replace(/\r\n/g, '\n')
+      const actual = createHash('sha256').update(source).digest('hex')
+      if (actual !== expected) console.warn(`剧本已更新，请核对网页内容：${filename}`)
+    } catch {
+      console.warn(`找不到分卷剧本，请核对网页内容：${filename}`)
+    }
+  }
   const files = await findYaml(contentRoot)
   if (!files.length) throw Error('没有找到场景配置')
   const scenes: Scene[] = []
