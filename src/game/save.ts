@@ -8,8 +8,8 @@ const actionSchema = z.discriminatedUnion('type', [
 
 const saveSchema = z.object({
   format: z.literal(1),
-  rules: z.literal('slice-1'),
-  start: z.literal('v04-s07'),
+  rules: z.enum(['slice-1', 'full-1']),
+  start: z.enum(['v04-s07', 'v01-s00a']),
   actions: z.array(actionSchema).max(1000),
   draft: z.array(z.string()).max(20),
 }).strict()
@@ -18,7 +18,7 @@ export type Save = z.infer<typeof saveSchema>
 export const SAVE_KEY = 'langchao-yu-xingcheng.save'
 
 export function newSave(): Save {
-  return { format: 1, rules: 'slice-1', start: 'v04-s07', actions: [], draft: [] }
+  return { format: 1, rules: 'full-1', start: 'v01-s00a', actions: [], draft: [] }
 }
 
 export function replay(story: Story, raw: unknown): { save: Save; state: GameState } {

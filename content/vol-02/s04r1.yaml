@@ -1,0 +1,49 @@
+id: v02-s04r1
+volume: 2
+source: 场景 04 第一轮
+title: 海运仓总编室
+body: s04r1.md
+type: choice
+time: 1989 年 5 月 22 日，下午三点半
+location: 北京 · 中国青年报社排字房
+prompt: 先定现场控局口径
+next: v02-s04r2
+enter:
+- type: change
+  stat: cadre_trust
+  amount: -2
+  when:
+    tag: 滑头风评
+- type: change
+  stat: reform_acumen
+  amount: -2
+  when:
+    tag: 筹会透支
+choices:
+- id: a
+  label: 当众宣布红机纪律命令，命保卫科十分钟内清场
+  outcome: s04r1-a.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 3
+  - type: change
+    stat: reform_acumen
+    amount: -4
+- id: b
+  label: 先关紧铁门隔离外围人员，直接向编委会摊明后果
+  outcome: s04r1-b.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 2
+  - type: change
+    stat: cadre_trust
+    amount: -2
+  - type: change
+    stat: cadre_trust
+    amount: 2
+    when:
+      any:
+      - tag: 预审口径单
+      - tag: 退稿油印刊物

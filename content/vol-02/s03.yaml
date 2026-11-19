@@ -1,0 +1,73 @@
+id: v02-s03
+volume: 2
+source: 场景 03
+title: 包子铺里的谈话
+body: s03.md
+type: choice
+time: 1985 年秋，中午十二点
+location: 北京 · 前门东大街
+prompt: 你如何决定？
+next: v02-s03b1
+choices:
+- id: a
+  label: 直接签批回函扛下责任，下周续发补充调研
+  outcome: s03-a.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 7
+  - type: change
+    stat: cadre_trust
+    amount: -8
+  - type: change
+    stat: cadre_trust
+    amount: -2
+    when:
+      tag: 书生执拗
+  - type: add-tag
+    tag: 风骨编辑部
+  - type: add-tag
+    tag: 中宣部挂号
+- id: b
+  label: 报纸版面暂停两期，原稿转写绝密内参直呈书记处
+  outcome: s03-b.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 4
+  - type: change
+    stat: cadre_trust
+    amount: 2
+    when:
+      tag: 温州调研原件
+  - type: change
+    stat: reform_acumen
+    amount: -4
+  - type: change
+    stat: reform_acumen
+    amount: -2
+    when:
+      tag: 考察保留
+  - type: add-tag
+    tag: 滑头风评
+- id: c
+  label: 由全国青联出面办闭门学术会，用“劳动力要素配置”置换“雇工”
+  outcome: s03-c.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 6
+  - type: change
+    stat: reform_acumen
+    amount: 2
+    when:
+      any:
+      - tag: 温州调研原件
+      - tag: 第三梯队座谈纪要
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: add-tag
+    tag: 商品经济探索先声
+  - type: add-tag
+    tag: 筹会透支

@@ -1,0 +1,59 @@
+id: v01-s02
+volume: 1
+source: 场景 02
+title: 淮海中路的茶盘与火柴
+body: s02.md
+type: choice
+time: 同日晚八点
+location: 上海 · 淮海中路
+prompt: 你如何决定？
+next: v01-close
+choices:
+- id: a
+  label: 明确按组织口径办，明天去系里销掉考研号
+  outcome: s02-a.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 6
+  - type: change
+    stat: cadre_trust
+    amount: 1
+    when:
+      tag: 第三梯队座谈纪要
+  - type: change
+    stat: reform_acumen
+    amount: -3
+  - type: add-tag
+    tag: 大院子弟标签
+  outcomeVariants:
+  - when:
+      tag: 双轨探索者
+    body: s02-a-dual.md
+  - when:
+      tag: 第三梯队座谈纪要
+    body: s02-a-notes.md
+- id: b
+  label: 直接点出运动教训与程序缺失的隐患
+  outcome: s02-b.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 7
+  - type: change
+    stat: cadre_trust
+    amount: -4
+  - type: add-tag
+    tag: 法治骨气
+- id: c
+  label: 向父亲打听机关底线与老同事联络方式
+  outcome: s02-c.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 3
+  - type: change
+    stat: reform_acumen
+    amount: -5
+  - type: add-tag
+    tag: 老辈训诫

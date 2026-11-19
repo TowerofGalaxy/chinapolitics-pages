@@ -1,0 +1,59 @@
+id: v01-s01
+volume: 1
+source: 场景 01
+title: 邯郸路教研室
+body: s01.md
+type: choice
+time: 同日下午两点半
+location: 上海 · 复旦大学数学系
+prompt: 你如何决定？
+next: v01-s02
+choices:
+- id: a
+  label: 按手头公式直陈意愿，坚持报考基础数学
+  outcome: s01-a.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 5
+  - type: change
+    stat: cadre_trust
+    amount: -4
+  - type: add-tag
+    tag: 书生执拗
+- id: b
+  label: 先接任务，把谈话重点落回组织用人标准
+  outcome: s01-b.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 4
+  - type: change
+    stat: reform_acumen
+    amount: -3
+  - type: add-tag
+    tag: 考察保留
+- id: c
+  label: 出示推导与兼职设想，请求在职双轨试行
+  outcome: s01-c.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 4
+  - type: change
+    stat: reform_acumen
+    amount: 1
+    when:
+      tag: 导师推荐信底稿
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: add-tag
+    tag: 双轨探索者
+- id: d
+  label: 当场在报考研究生登记表签名落款
+  outcome: s01-d.md
+  effects:
+  - type: add-tag
+    tag: 象牙塔学者
+  next: v01-ending-b

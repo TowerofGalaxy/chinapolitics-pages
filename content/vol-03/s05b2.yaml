@@ -1,0 +1,40 @@
+id: v03-s05b2
+volume: 3
+source: 批件 04
+title: 直属单位改革试点请示
+body: s05b2.md
+type: choice
+prompt: 你如何决定？
+next: v03-s06
+choices:
+- id: d1
+  label: 单列试点特聘机制与效益挂钩，老同志待遇从专项结余单列统筹
+  outcome: s05b2-d1.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 2
+  - type: change
+    stat: cadre_trust
+    amount: -2
+  - type: add-tag
+    tag: 不务正业非议
+- id: d2
+  label: 维持全额拨款保障，仅对重大涉外/一线任务发放专项津贴
+  outcome: s05b2-d2.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 2
+  - type: change
+    stat: reform_acumen
+    amount: -2
+  - type: add-tag
+    tag: 守旧平庸标签
+bodyVariants:
+- when:
+    tag: 铁腕履历
+  body: s05b2-trade.md
+- when:
+    tag: 边缘平调序列
+  body: s05b2-union.md

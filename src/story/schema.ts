@@ -25,6 +25,7 @@ const effectSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('change'), stat: z.string(), amount: z.number().int(), when: conditionSchema.optional() }).strict(),
   z.object({ type: z.literal('add-tag'), tag: z.string(), when: conditionSchema.optional() }).strict(),
   z.object({ type: z.literal('remove-tag'), tag: z.string(), when: conditionSchema.optional() }).strict(),
+  z.object({ type: z.literal('stage-two') }).strict(),
 ])
 
 const choiceSchema = z.object({
@@ -34,6 +35,7 @@ const choiceSchema = z.object({
   unavailable: z.enum(['hidden', 'locked']).default('hidden'),
   reason: z.string().optional(),
   outcome: z.string().min(1),
+  outcomeVariants: z.array(z.object({ when: conditionSchema, body: z.string().min(1) }).strict()).default([]),
   effects: z.array(effectSchema).default([]),
   next: z.string().optional(),
 }).strict()
@@ -46,6 +48,8 @@ export const sceneSchema = z.object({
   time: z.string().optional(),
   location: z.string().optional(),
   body: z.string().min(1),
+  bodyVariants: z.array(z.object({ when: conditionSchema, body: z.string().min(1) }).strict()).default([]),
+  additions: z.array(z.object({ when: conditionSchema, body: z.string().min(1) }).strict()).default([]),
   type: z.enum(['choice', 'passage', 'ending']),
   prompt: z.string().optional(),
   select: z.number().int().min(1).default(1),

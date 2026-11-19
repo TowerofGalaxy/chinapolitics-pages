@@ -11,7 +11,7 @@ export interface GameState {
   stats: Record<string, number>
   actionPoints: Record<string, number>
   tags: string[]
-  result?: { choices: string[]; changes: Record<string, number>; next: string }
+  result?: { choices: string[]; texts: string[]; changes: Record<string, number>; next: string }
   entryChanges: Record<string, number>
 }
 
@@ -53,6 +53,7 @@ function copyState(state: GameState): GameState {
     result: state.result && {
       ...state.result,
       choices: [...state.result.choices],
+      texts: [...state.result.texts],
       changes: { ...state.result.changes },
     },
     entryChanges: { ...state.entryChanges },
@@ -63,6 +64,14 @@ function applyEffects(state: GameState, effects: Effect[]): Record<string, numbe
   const before = copyState(state)
   const deltas: Record<string, { positive: number; negative: number }> = {}
   for (const effect of effects) {
+    if (effect.type === 'stage-two') {
+      const centralInjection = Math.max(-4, Math.min(4, Math.floor((before.stats.cadre_trust - 50) / 4)))
+      const reformInjection = Math.max(-4, Math.min(4, Math.floor((before.stats.reform_acumen - 50) / 4)))
+      const centralPenalty = (before.tags.includes('边缘平调序列') ? 3 : 0) + (before.tags.includes('报批越界通报') ? 2 : 0)
+      state.stats.central_trust = Math.max(0, Math.min(100, 55 + centralInjection - centralPenalty))
+      state.stats.reform_drive = Math.max(0, Math.min(100, 50 + reformInjection))
+      continue
+    }
     if (!meetsCondition(before, effect.when)) continue
     if (effect.type === 'change') {
       const total = deltas[effect.stat] ?? { positive: 0, negative: 0 }
@@ -85,6 +94,9 @@ function applyEffects(state: GameState, effects: Effect[]): Record<string, numbe
     state.stats[stat] = value
     if (value !== before.stats[stat]) changes[stat] = value - before.stats[stat]
   }
+  for (const [stat, value] of Object.entries(state.stats)) {
+    if (value !== before.stats[stat]) changes[stat] = value - before.stats[stat]
+  }
   return changes
 }
 
@@ -98,7 +110,7 @@ function enterScene(story: Story, state: GameState, sceneId: string): GameState 
   return next
 }
 
-export function startGame(story: Story, sceneId = 'v04-s07'): GameState {
+export function startGame(story: Story, sceneId = 'v01-s00a'): GameState {
   const stage1 = Object.fromEntries(Object.entries(dictionary.stage_1_variables).map(([key, value]) => [key, value.baseline]))
   const stage2 = Object.fromEntries(Object.entries(dictionary.stage_2_variables).map(([key, value]) => [key, value.baseline]))
   const actionPoints = Object.fromEntries(Object.entries(dictionary.action_points).map(([key, value]) => [key, value.initial]))
@@ -107,7 +119,7 @@ export function startGame(story: Story, sceneId = 'v04-s07'): GameState {
     phase: 'scene',
     stats: { ...stage1, ...stage2 },
     actionPoints,
-    tags: [],
+    tags: sceneId.startsWith('v01-') ? ['纯粹知识分子底色'] : [],
     entryChanges: {},
   }, sceneId)
 }
@@ -136,6 +148,7 @@ export function applyAction(story: Story, previous: GameState, action: GameActio
   if (!nextId || !story.has(nextId)) throw new Error('缺少后续场景')
   const next = copyState(previous)
   const initialStats = { ...next.stats }
+  const texts = selected.map((choice) => choice.outcomeVariants.find((variant) => meetsCondition(previous, variant.when))?.body ?? choice.outcome)
   for (const choice of selected) {
     applyEffects(next, choice.effects)
     if (scene.ap) next.actionPoints[scene.ap]--
@@ -145,7 +158,7 @@ export function applyAction(story: Story, previous: GameState, action: GameActio
     if (value !== initialStats[name]) changes[name] = value - initialStats[name]
   }
   next.phase = 'result'
-  next.result = { choices: selected.map((choice) => choice.id), changes, next: nextId }
+  next.result = { choices: selected.map((choice) => choice.id), texts, changes, next: nextId }
   next.entryChanges = {}
   return next
 }

@@ -4,7 +4,7 @@ import DOMPurify from 'dompurify'
 import { marked, Renderer } from 'marked'
 import compiled from '../generated/story.json'
 import { sceneSchema } from '../story/schema'
-import { applyAction, available, createStory, currentScene, startGame, type GameAction } from '../game/engine'
+import { applyAction, available, createStory, currentScene, meetsCondition, startGame, type GameAction } from '../game/engine'
 import { newSave, replay, SAVE_KEY, type Save } from '../game/save'
 
 const story = createStory(sceneSchema.array().parse(compiled))
@@ -37,21 +37,27 @@ const state = ref(initialState)
 const draft = ref([...initialSave.draft])
 const notice = ref(initialNotice)
 const scene = computed(() => currentScene(story, state.value))
+const sceneBody = computed(() => scene.value.bodyVariants.find((variant) => meetsCondition(state.value, variant.when))?.body ?? scene.value.body)
 const visibleChoices = computed(() => scene.value.choices.filter((choice) =>
   available(state.value, choice) || choice.unavailable === 'locked',
 ))
-const results = computed(() => scene.value.choices.filter((choice) => state.value.result?.choices.includes(choice.id)))
-const clueNames = ['公交录像带', '城投挪用线索', '老同志口风']
+const volumeTitles = ['书斋与激流', '前门东大街的风', '东华门沉潜与外宣破冰', '主政江淮与两会大考', '大木仓胡同的算局', '晚晴长风与历史行程']
+const volumeNumbers = ['一', '二', '三', '四', '五', '六']
+const clueNames = ['退稿油印刊物', '导师推荐信底稿', '第三梯队座谈纪要', '温州调研原件', '预审口径单', '文官制度底稿', '外宣案例剪报', '公交录像带', '城投挪用线索', '老同志口风', '监督局带病档案', '基层测评原始样表', '使节团提问清单', '群团基层调研底表', '外事礼宾密电']
 const clues = computed(() => state.value.tags.filter((tag) => clueNames.includes(tag)))
 const statLabels: Record<string, string> = {
+  cadre_trust: '组织信任度',
+  reform_acumen: '改革锐度值',
   central_trust: '中央信任度',
   local_cohesion: '省内向心力',
   fiscal_stability: '财政稳态值',
   reform_drive: '改革开拓度',
 }
-const stats = computed(() => Object.entries(statLabels).map(([id, label]) => ({
+const stats = computed(() => Object.entries(statLabels).filter(([id]) =>
+  scene.value.volume < 4 ? ['cadre_trust', 'reform_acumen'].includes(id) : !['cadre_trust', 'reform_acumen'].includes(id),
+).map(([id, label]) => ({
   id,
-  label,
+  label: id === 'local_cohesion' && scene.value.volume >= 5 ? '系统协同度' : label,
   value: state.value.stats[id],
 })))
 
@@ -107,7 +113,7 @@ function restart() {
     <header class="running-head">
       <div class="book">
         <strong>浪潮与行程</strong>
-        <span>第四卷 · 主政江淮与两会大考</span>
+        <span>第{{ volumeNumbers[scene.volume - 1] }}卷 · {{ volumeTitles[scene.volume - 1] }}</span>
       </div>
       <details class="dossier">
         <summary>局势<span v-if="clues.length"> · {{ clues.length }} 条线索</span></summary>
@@ -130,10 +136,13 @@ function restart() {
           {{ [scene.time, scene.location].filter(Boolean).join(' · ') }}
         </p>
         <h1 id="scene-title">{{ scene.title }}</h1>
-        <div v-if="state.phase !== 'result'" class="prose" v-html="markdown(scene.body)"></div>
+        <div v-if="state.phase !== 'result'" class="prose" v-html="markdown(sceneBody)"></div>
+        <template v-if="state.phase !== 'result'">
+          <div v-for="addition in scene.additions.filter((item) => meetsCondition(state, item.when))" :key="addition.body" class="prose addition" v-html="markdown(addition.body)"></div>
+        </template>
         <p v-if="Object.keys(state.entryChanges).length" class="changes">{{ changesText(state.entryChanges) }}</p>
         <div v-if="state.phase === 'result'" class="outcomes" aria-live="polite">
-          <div v-for="choice in results" :key="choice.id" class="prose outcome" v-html="markdown(choice.outcome)"></div>
+          <div v-for="(text, index) in state.result?.texts" :key="index" class="prose outcome" v-html="markdown(text)"></div>
           <p v-if="state.result && Object.keys(state.result.changes).length" class="changes">{{ changesText(state.result.changes) }}</p>
         </div>
       </article>

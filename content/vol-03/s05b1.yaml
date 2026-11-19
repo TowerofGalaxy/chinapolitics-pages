@@ -1,0 +1,31 @@
+id: v03-s05b1
+volume: 3
+source: 批件 03
+title: 金融数据终端准入
+body: s05b1.md
+type: choice
+prompt: 你如何决定？
+next: v03-s05b2
+choices:
+- id: c1
+  label: 联合央行设定分类技术合规标准，有限放行终端
+  outcome: s05b1-c1.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 2
+  - type: change
+    stat: cadre_trust
+    amount: -2
+  - type: add-tag
+    tag: 涉外口径微瑕
+- id: c2
+  label: 遵照传统保密规程暂缓批准，继续安全评估
+  outcome: s05b1-c2.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 2
+  - type: change
+    stat: reform_acumen
+    amount: -2

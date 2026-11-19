@@ -1,0 +1,33 @@
+id: v02-s03b2
+volume: 2
+source: 批件 02
+title: 青联换届名额表
+body: s03b2.md
+type: choice
+prompt: 你如何决定？
+next: v02-s04r1
+choices:
+- id: b1
+  label: 退回重拟，规定海归学者与青年律师代表不低于两成
+  outcome: s03b2-b1.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 3
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: add-tag
+    tag: 脱离工农议论
+- id: b2
+  label: 仅在特邀名额补进两名海归骨干，其余维持原比例
+  outcome: s03b2-b2.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 3
+  - type: change
+    stat: reform_acumen
+    amount: -3
+  - type: add-tag
+    tag: 青年统战滞后

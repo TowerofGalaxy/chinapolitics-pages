@@ -33,6 +33,7 @@ summary { min-height: 44px; align-content: center; text-align: end; cursor: poin
 h1 { margin-block: 4px 15px; font: 700 clamp(24px, 4vw, 31px)/1.4 var(--serif); }
 .prose { font: 400 18px/1.95 var(--serif); overflow-wrap: anywhere; }
 .prose p + p, .prose p + blockquote, .prose blockquote + p, .outcome + .outcome { margin-top: 1em; }
+.addition { margin-top: 1em; }
 .prose ul, .prose ol { padding-inline-start: 1.5em; }
 .prose blockquote { margin-inline: 1em 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--rule); }
 .decision { border-top: 1px solid var(--rule); padding-top: 12px; }

@@ -34,6 +34,7 @@ function validateCondition(condition: Condition | undefined, source: string): vo
 
 function validateEffects(effects: Effect[], source: string): void {
   for (const effect of effects) {
+    if (effect.type === 'stage-two') continue
     validateCondition(effect.when, source)
     if (effect.type === 'change' && !knownStats.has(effect.stat)) throw Error(`${source}: 未定义属性 ${effect.stat}`)
     if (effect.type !== 'change' && !knownTags.has(effect.tag)) throw Error(`${source}: 未定义标记 ${effect.tag}`)
@@ -60,12 +61,24 @@ async function main() {
     const source = path.relative(root, file)
     if (scene.ap && !knownActionPoints.has(scene.ap)) throw Error(`${source}: 未定义行动点 ${scene.ap}`)
     validateEffects(scene.enter, source)
+    for (const variant of scene.bodyVariants) {
+      validateCondition(variant.when, source)
+      variant.body = await readMarkdown(path.dirname(file), variant.body)
+    }
+    for (const addition of scene.additions) {
+      validateCondition(addition.when, source)
+      addition.body = await readMarkdown(path.dirname(file), addition.body)
+    }
     const choiceIds = new Set<string>()
     for (const choice of scene.choices) {
       if (choiceIds.has(choice.id)) throw Error(`${source}: 选项 ID 重复 ${choice.id}`)
       choiceIds.add(choice.id)
       validateCondition(choice.condition, source)
       validateEffects(choice.effects, source)
+      for (const variant of choice.outcomeVariants) {
+        validateCondition(variant.when, source)
+        variant.body = await readMarkdown(path.dirname(file), variant.body)
+      }
       choice.outcome = await readMarkdown(path.dirname(file), choice.outcome)
     }
     scene.body = await readMarkdown(path.dirname(file), scene.body)
@@ -83,7 +96,7 @@ async function main() {
     }
   }
 
-  const first = 'v04-s07'
+  const first = 'v01-s00a'
   const reachable = new Set<string>()
   function visit(id: string) {
     if (reachable.has(id)) return

@@ -1,0 +1,55 @@
+id: v02-s04r2
+volume: 2
+source: 场景 04 第二轮
+title: 铅字版面最终处置
+body: s04r2.md
+type: choice
+prompt: 你如何决定？
+next: v02-close
+choices:
+- id: a
+  label: 当场用红蓝铅笔划叉拆版，连夜封停车间（经贸部委分支）
+  outcome: s04r2-a.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 10
+  - type: change
+    stat: reform_acumen
+    amount: -15
+  - type: add-tag
+    tag: 铁腕履历
+  - type: add-tag
+    tag: 破格外放序列
+  - type: add-tag
+    tag: 冷酷官僚风评
+  - type: add-tag
+    tag: 经贸法治底盘
+- id: b
+  label: 揽下延误出报检讨，按出差程序疏散骨干去外地（正史核心主线）
+  outcome: s04r2-b.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 10
+  - type: change
+    stat: cadre_trust
+    amount: -15
+  - type: add-tag
+    tag: 庇护者的契约
+  - type: add-tag
+    tag: 十年冷板凳
+- id: c
+  label: 以“铸字机主电机短路”拉闸，造成技术性脱期一天（边缘分支）
+  outcome: s04r2-c.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: change
+    stat: reform_acumen
+    amount: -3
+  - type: add-tag
+    tag: 边缘平调序列
+  - type: add-tag
+    tag: 滑头避险定性

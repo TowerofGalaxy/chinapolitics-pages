@@ -1,0 +1,78 @@
+id: v03-s05
+volume: 3
+source: 场景 05
+title: 新闻发布后台
+body: s05.md
+type: choice
+time: 1992 年春
+location: 北京 · 国务院新闻办公室
+prompt: 你如何决定？
+next: v03-s05b1
+enter:
+- type: change
+  stat: cadre_trust
+  amount: -2
+  when:
+    tag: 书生执拗
+- type: change
+  stat: cadre_trust
+  amount: 2
+  when:
+    tag: 老辈训诫
+choices:
+- id: a
+  label: 按统发通稿第三条逐字念完，不展开自由辩论
+  outcome: s05-a.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 3
+  - type: change
+    stat: reform_acumen
+    amount: -3
+  - type: add-tag
+    tag: 外宣僵化印象
+- id: b
+  label: 停掉通稿，报出法院设庭、海关查扣与《专利法》修法三组实数反问
+  outcome: s05-b.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 5
+  - type: change
+    stat: reform_acumen
+    amount: 2
+    when:
+      tag: 外宣案例剪报
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: add-tag
+    tag: 精准反制经验
+  - type: add-tag
+    tag: 外宣基本功
+  - type: add-tag
+    tag: 涉外政治风险
+- id: c
+  label: 直接宣布加快对接关贸总协定法规，邀外媒旁听涉外庭审
+  outcome: s05-c.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 8
+  - type: change
+    stat: cadre_trust
+    amount: -6
+  - type: change
+    stat: cadre_trust
+    amount: -4
+    when:
+      tag: 中宣部挂号
+  - type: add-tag
+    tag: 报批越界通报
+  condition:
+    stat: cadre_trust
+    op: gt
+    value: 35
+  unavailable: locked
+  reason: 组织信任度需高于 35

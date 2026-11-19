@@ -1,0 +1,24 @@
+id: v02-s02a
+volume: 2
+source: 场景 02-A
+title: 碰头会前的案头核查
+body: s02a.md
+type: choice
+time: 1985 年秋，上午十点
+location: 北京 · 团中央办公楼
+prompt: 你如何决定？
+ap: vol2_ap
+next: v02-s03
+choices:
+- id: a
+  label: 调取温州工商局与地委报送的内部原始统计表
+  outcome: s02a-a.md
+  effects:
+  - type: add-tag
+    tag: 温州调研原件
+- id: b
+  label: 查阅中宣部与中办近期下发的《新闻阅评预审口径单》
+  outcome: s02a-b.md
+  effects:
+  - type: add-tag
+    tag: 预审口径单

@@ -1,0 +1,77 @@
+id: v03-s06
+volume: 3
+source: 场景 06
+title: 文化部后院的老槐树
+body: s06.md
+type: choice
+time: 1998 年 7 月，午后
+location: 北京
+prompt: 你如何决定？
+next: v03-close
+enter:
+- type: change
+  stat: reform_acumen
+  amount: 2
+  when:
+    tag: 商品经济探索先声
+choices:
+- id: a
+  label: 联络社科院与海归学者闭门起草地方官员量化考评白皮书
+  outcome: s06-a.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 8
+  - type: change
+    stat: reform_acumen
+    amount: 2
+    when:
+      tag: 文官制度底稿
+  - type: change
+    stat: cadre_trust
+    amount: -3
+  - type: add-tag
+    tag: 现代治理工具箱
+  - type: add-tag
+    tag: 不务正业非议
+  condition:
+    stat: cadre_trust
+    op: gt
+    value: 35
+  unavailable: locked
+  reason: 组织信任度需高于 35
+- id: b
+  label: 借主管离退休文化老干部方便，登门解决元老就医住房难事
+  outcome: s06-b.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 8
+  - type: change
+    stat: reform_acumen
+    amount: -5
+  - type: add-tag
+    tag: 老同志的信赖档案
+  - type: add-tag
+    tag: 守旧平庸标签
+- id: c
+  label: 系统梳理苏南乡镇企业改制、分税制税收与土地出让金台账
+  outcome: s06-c.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 5
+  - type: change
+    stat: cadre_trust
+    amount: -2
+  - type: add-tag
+    tag: 苏南经济底稿
+  - type: add-tag
+    tag: 清高孤僻风评
+bodyVariants:
+- when:
+    tag: 铁腕履历
+  body: s06-trade.md
+- when:
+    tag: 边缘平调序列
+  body: s06-union.md

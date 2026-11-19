@@ -1,0 +1,9 @@
+id: v04-transition
+volume: 4
+source: 序幕
+title: 旧笔记本
+body: transition.md
+type: passage
+enter:
+  - { type: stage-two }
+next: v04-s07

@@ -1,0 +1,31 @@
+id: v02-s03b1
+volume: 2
+source: 批件 01
+title: 合资厂报道清样
+body: s03b1.md
+type: choice
+prompt: 你如何决定？
+next: v02-s03b2
+choices:
+- id: a1
+  label: 删去情绪化形容词，附带当地劳动局与总工会联合进驻调查的消息照登
+  outcome: s03b1-a1.md
+  effects:
+  - type: change
+    stat: reform_acumen
+    amount: 2
+  - type: change
+    stat: cadre_trust
+    amount: -2
+  - type: add-tag
+    tag: 地方招商宿怨
+- id: a2
+  label: 撤下公开版面，转为内参抄送全总与当地省委督办
+  outcome: s03b1-a2.md
+  effects:
+  - type: change
+    stat: cadre_trust
+    amount: 2
+  - type: change
+    stat: reform_acumen
+    amount: -2
