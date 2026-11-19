@@ -29,12 +29,13 @@ class GameEngine:
 
         # Stage 1 variables
         self.stage = 1
+        self.current_vol = 1
         self.ct = 50  # 组织信任度
         self.ra = 50  # 改革锐度
         
         # Stage 2 variables
         self.c = 55   # 中央信任度
-        self.l = 60   # 地方向心力
+        self.l = 60   # 地方向心力 / 系统协同度
         self.f = 60   # 财政健康度
         self.r = 50   # 改革开拓度
 
@@ -57,12 +58,15 @@ class GameEngine:
             self.log(f"  组织信任度 (cadre_trust): {self.ct}/100{warn}")
             self.log(f"  改革锐度   (reform_acumen): {self.ra}/100")
         else:
+            local_name = "地方向心力" if self.current_vol <= 4 else "系统协同度"
             warn_c = " [! 预警：中央质询]" if self.c < 45 else ""
-            warn_l = " [! 预警：班子失控]" if self.l <= 35 else ""
+            warn_l = " [! 预警：协同受阻]" if self.l <= 35 else ""
             warn_f = " [! 危机：财政见底]" if self.f < 35 else ""
             self.log(f"【主政与中枢属性 · 阶段二 (2000-2018)】")
+            if self.current_vol == 6:
+                self.log("  [收官脱敏软着陆模式 · 界面数值柱淡出，重点呈示晚晴手记与案头器物]")
             self.log(f"  中央信任度 (central_trust):  {self.c}/100{warn_c}")
-            self.log(f"  地方向心力 (local_cohesion): {self.l}/100{warn_l}")
+            self.log(f"  {local_name} (local_cohesion): {self.l}/100{warn_l}")
             self.log(f"  财政健康度 (fiscal_stability): {self.f}/100{warn_f}")
             self.log(f"  改革开拓度 (reform_drive):     {self.r}/100")
         
@@ -108,29 +112,38 @@ class GameEngine:
         self.log("3. 严格去程式化：一切博弈停留在公文、编制、会议记录与制度推演上。")
         
         # Vol 1
+        self.current_vol = 1
         self.vol1_run()
         if "象牙塔学者" in self.tags:
             return
 
         # Vol 2
+        self.current_vol = 2
         self.vol2_run()
 
         # Vol 3
+        self.current_vol = 3
         self.vol3_run()
 
         # Transition to Stage 2
         self.transition_to_stage2()
 
         # Vol 4
+        self.current_vol = 4
         e17 = self.vol4_run()
-        if e17 != "Ending A (稳健执印 / 正史巅峰)":
+        if e17 != "PROCEED_TO_VOL5":
             self.render_grand_ending(e17)
             return
 
         # Vol 5
-        self.vol5_run()
+        self.current_vol = 5
+        e18 = self.vol5_run()
+        if e18 in ("Ending A1 (巅峰折冲 · 核心统筹)", "Ending A3 (提前淡出 · 倚楼晚照)"):
+            self.render_grand_ending(e18)
+            return
 
         # Vol 6
+        self.current_vol = 6
         final_ending = self.vol6_run()
         self.render_grand_ending(final_ending)
 
@@ -464,6 +477,14 @@ class GameEngine:
         self.log("  - 改革开拓度 (reform_drive): 基础值 50")
         self.log("#" * 68)
 
+        # Stage 1 to Stage 2 Value Injection (clamp to [-4, +4])
+        c_inj = max(-4, min(4, (self.ct - 50) // 4))
+        r_inj = max(-4, min(4, (self.ra - 50) // 4))
+        self.c += c_inj
+        self.r += r_inj
+        self.log(f">>> [前期沉淀折算] 组织信任度({self.ct})换算中央信任开局修正: {c_inj:+d} 点")
+        self.log(f">>> [前期沉淀折算] 改革锐度值({self.ra})换算改革开拓开局修正: {r_inj:+d} 点")
+
         # Baseline adjustments from Stage 1 flags
         if "边缘平调序列" in self.tags:
             self.c -= 3
@@ -765,36 +786,37 @@ class GameEngine:
             self.tags.update(["无暇履历", "程序本位掣肘"])
             self.log("\n>>> 你谨守组织程序底线，不谈宏观人事，展现了无可挑剔的党性定力。")
         def s14_c():
-            self.f += 2; self.r -= 1; self.c -= 1
+            self.c += 1; self.r -= 1
             self.tags.update(["宏观定力", "锋芒收敛过甚"])
-            self.log("\n>>> 你以江浙沿海承接国际产业转移切题，深谈东部反哺西部。")
+            self.log("\n>>> 你以江浙沿海产业承接与宏观调控切题，深谈东部反哺西部大局。")
 
         self.choose("【场景 14 抉择】", [
             ("6-A", "与其深谈干部人事制度深水区改革，达成体制内少壮派共识", s14_a),
             ("6-B", "谨守组织纪律，仅交流两地产业协作，对中枢人事变动绝口不提", s14_b),
-            ("6-C", "纵论东部沿海反哺西部开发大局，探讨长三角资本西进战略", s14_c)
+            ("6-C", "纵论东部沿海反哺西部开发大局，探讨长三角资本西进与跨周期宏观调控", s14_c)
         ])
 
         self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
         self.print_status()
 
         # 17th Congress Settlement
-        self.print_header("【十七大前夕 · 中枢组织考察节点瀑布流结算】")
+        self.print_header("【十七大前夕 · 中枢组织考察节点独立网关结算】")
         e17 = self.evaluate_17th_congress()
         self.log(f"\n>>> 考察综合评定结果：{e17}")
         return e17
 
     def evaluate_17th_congress(self):
         if self.c < 45 or self.f < 35:
-            return "Ending C (改革折翼 / 全国人大)"
+            return "Ending C (改革折翼 · 全国人大)"
         if "激进政改旗手" in self.tags and self.c >= 50 and self.r >= 60:
-            return "Ending D (顺水推舟 / 政研社科)"
+            return "Ending D (顺水推舟 · 政研社科)"
         if self.c >= 65 and self.l >= 38 and self.r >= 50:
-            return "Ending A (稳健执印 / 正史巅峰)"
-        return "Ending E (留任守成 / 异地平调)"
+            return "PROCEED_TO_VOL5"
+        return "Ending E (留任守成 · 异地平调)"
 
     # ------------------ VOLUME 5 ------------------
     def vol5_run(self):
+        self.current_vol = 5
         self.print_header("第五卷：大木仓胡同的算局 (2007-2012)")
         self.log("十七届一中全会，李源潮当选中央政治局委员、中央书记处书记，兼任中央组织部部长。")
         self.log("西单大木仓胡同的中组部大楼内，一幅涉及数万名副厅级以上文官的考核算局铺展开来。")
@@ -814,103 +836,128 @@ class GameEngine:
                 opts.append(("C", "审定境外主流媒体对‘党内民主’的焦点提问单 (获取：[使节团提问清单])", lambda: self.tags.add("使节团提问清单")))
             self.choose(f"【调查阶段 · 第 {i+1} 点精力 (剩余 {2-i} AP)】", opts)
 
-        if "大院子弟标签" in self.tags: self.c -= 2
-
-        # Scene 15 Choice
-        self.log("\n【场景 15 · 2007年12月 中组部对外媒体吹风会】")
-        def s15_a():
-            self.c += 3; self.r -= 4
-            self.tags.add("密闭保稳惯性")
-            self.log("\n>>> 闭门吹风，严控口径，保稳过关。")
-        def s15_b():
-            bonus = 2 if "使节团提问清单" in self.tags else 0
-            self.r += 7 + bonus; self.c += 2; self.l -= 2
-            self.tags.add("系统内保守派侧目")
-            self.log("\n>>> 公开宣布全面推行竞争性选拔干部，外媒高度好评，系统内保守派侧目。")
-        def s15_c():
-            self.r += 5; self.c -= 4
-            self.tags.add("自揭家丑非议")
-            self.log("\n>>> 公布带病提拔数据，立下军令状，引发党内自揭家丑非议。")
-
-        s15_opts = [
-            ("15-A", "坚持密闭运作原则，通报仅限于常规组织工作成就，不开放自由提问", s15_a),
-            ("15-C", "直面痼疾：公布近年查处买官卖官真实数据，立下三年专项整治军令状", s15_c)
-        ]
-        if "外宣高手" in self.tags or self.r >= 60:
-            s15_opts.insert(1, ("15-B", "主动破冰：公布‘竞争性选拔’比例硬指标，借老干部教诲展示执政党阳光化自信", s15_b))
-        self.choose("【场景 15 决策】", s15_opts)
-
+        # Scene 15 Choice: 2009年 地方党政干部考核“民主测评”权重改革
+        self.log("\n【场景 15 · 2009年春 地方党政干部考核‘民主测评’权重改革】")
         if "形式主义诟病" in self.tags or "滑头风评" in self.tags: self.r -= 2
-        self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
-        self.print_status()
 
-        # Scene 16
-        self.log("\n【场景 16 · 2009年春 地方党政干部考核‘民主测评’权重改革】")
-        def s16_a():
+        def s15_a():
             self.r += 6; self.c -= 8; self.l -= 5
             self.log("\n>>> 强推民意打分一票否决，遭到地方省市委书记联名反弹。")
-        def s16_b():
+        def s15_b():
             bonus = 2 if any(k in self.tags for k in ("基层测评原始样表", "无暇履历", "宏观定力")) else 0
-            self.c += 5 + bonus; self.r += 5; self.l += 2; self.f -= 2
+            self.c += 5 + bonus; self.r += 5; self.l -= 2
+            self.tags.update(["加权考核矩阵", "加权考核执行损耗"])
             self.log("\n>>> 推出综合加权考核矩阵，兼顾中央考核、地方实绩与民调。")
-        def s16_c():
+        def s15_c():
             self.c += 4; self.l += 4; self.r -= 8
             self.tags.add("测评退回旧轨失望")
-            self.log("\n>>> 民主测评结果仅作参考，退回传统体制旧轨。")
+            self.log("\n>>> 维持传统考选体制，民主测评结果退回内部参考。")
 
-        self.choose("【场景 16 决策】", [
-            ("16-A", "大幅提高民意测评与社会满意度权重，不合格者实行一票否决", s16_a),
-            ("16-B", "建立综合加权矩阵：兼顾发展实绩、中央调控遵从度与党风廉政综合打分", s16_b),
-            ("16-C", "维持传统推荐考核体制，民主测评结果仅作内部参考、不作硬性挂钩", s16_c)
+        self.choose("【场景 15 决策】", [
+            ("15-A", "大幅提高民意测评与社会满意度权重，不合格者实行一票否决", s15_a),
+            ("15-B", "建立综合加权矩阵：兼顾发展实绩、中央调控遵从度与党风廉政综合打分", s15_b),
+            ("15-C", "维持传统推荐考核体制，民主测评结果仅作内部参考、不作硬性挂钩", s15_c)
         ])
         self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
         self.print_status()
 
-        # Scene 17
-        self.log("\n【场景 17 · 2010年秋 深圳等特区新一轮深化改革主官选任】")
-        def s17_a():
+        # Scene 16: 2010年秋 深圳等特区新一轮深化改革主官选任
+        self.log("\n【场景 16 · 2010年秋 深圳等特区新一轮深化改革主官选任】")
+        if "监督局带病档案" in self.tags:
+            self.c += 2
+            self.log(">>> [监督局带病档案] 规避潜在政治风险，中央信任度 +2")
+
+        def s16_a():
             self.c += 3; self.l += 4; self.r -= 4
             self.tags.add("粤系地方阻力")
             self.log("\n>>> 本地干部就地顺位升任，平稳但改革动力不足。")
-        def s17_b():
+        def s16_b():
             pen = 1 if any(k in self.tags for k in ("派系结盟猜忌", "地方招商宿怨")) else 0
             self.r += 7; self.c += 2; self.l -= (2 + pen)
-            self.tags.add("跨省空降派系芥蒂")
+            self.tags.update(["特区新局", "跨省空降派系芥蒂"])
             self.log("\n>>> 从江浙调派懂产业、懂高科技的少壮派跨省空降，特区新局开启。")
-        def s17_c():
+        def s16_c():
             self.c += 4; self.r += 2; self.l -= 3
             self.log("\n>>> 由发改、商务部委选派综合司长空降主政。")
 
-        s17_opts = [
-            ("17-A", "尊重地方推荐序列，选任深耕特区多年的本土实干型干部", s17_a),
-            ("17-C", "从中枢宏观经济部委选派精通现代法治与国际贸易的骨干空降任职", s17_c)
+        s16_opts = [
+            ("16-A", "尊重地方推荐序列，选任深耕特区多年的本土实干型干部", s16_a),
+            ("16-C", "从中枢宏观经济部委选派精通现代法治与国际贸易的骨干空降任职", s16_c)
         ]
         if "改革盟约" in self.tags and self.c > 40:
-            s17_opts.insert(1, ("17-B", "打破地域界限：从长三角跨省选拔锐意改革的少壮派技术官僚破格主政", s17_b))
+            s16_opts.insert(1, ("16-B", "打破地域界限：从长三角跨省选拔锐意改革的少壮派技术官僚破格主政", s16_b))
+
+        self.choose("【场景 16 决策】", s16_opts)
+        self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
+        self.print_status()
+
+        # Scene 17: 2010年6月30日 西单大木仓胡同吹风会
+        self.log("\n【场景 17 · 2010年6月30日 中组部对外媒体吹风会（压轴吹风会）】")
+        if "大院子弟标签" in self.tags:
+            self.c -= 2
+            self.log(">>> [大院子弟标签] 引发外媒追问高干后代晋升顺位，中央信任度 -2")
+
+        def s17_a():
+            self.c += 3; self.r -= 4
+            self.tags.add("密闭保稳惯性")
+            self.log("\n>>> 严词照念保密与民主集中制原则，保稳过关。")
+        def s17_b():
+            bonus = 2 if "使节团提问清单" in self.tags else 0
+            self.r += 7 + bonus; self.c += 2; self.l -= 2
+            self.tags.update(["执政党阳光化象征", "系统内保守派侧目"])
+            if "加权考核矩阵" in self.tags:
+                self.log("\n>>> 援引公推差选与双轨加权矩阵做程序拆解：分毫不差，外媒高度好评！")
+            else:
+                self.log("\n>>> 援引公推差选做程序拆解，执政党阳光化获外媒肯定，系统内保守派侧目。")
+        def s17_c():
+            self.r += 5; self.c -= 4
+            self.tags.add("自揭家丑非议")
+            self.log("\n>>> 直陈带病提拔倒查追责机制，引发党内自揭家丑非议。")
+
+        s17_opts = [
+            ("17-A", "严词照念保密与民主集中制原则，拒绝展开数字", s17_a),
+            ("17-C", "不避短板：直陈‘带病提拔’倒查与实绩考核改革", s17_c)
+        ]
+        if "外宣高手" in self.tags or self.r >= 60:
+            s17_opts.insert(1, ("17-B", "援引公推差选、测评加权与特区点将做程序拆解", s17_b))
 
         self.choose("【场景 17 决策】", s17_opts)
         self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
         self.print_status()
 
+        # Scene 17-结: 2012年十八大换届总结算节点
+        self.print_header("【2012年十八大换届总结算节点 · 中枢考察独立网关核验】")
+        e18 = self.evaluate_18th_congress()
+        self.log(f"\n>>> 十八大换届总核验评定结果：{e18}")
+        return e18
+
+    def evaluate_18th_congress(self):
+        if self.c >= 85 and self.r >= 75 and "自揭家丑非议" not in self.tags and "连带问责留档" not in self.tags:
+            return "Ending A1 (巅峰折冲 · 核心统筹)"
+        if self.c < 50 or self.l < 35:
+            return "Ending A3 (提前淡出 · 倚楼晚照)"
+        return "PROCEED_TO_VOL6"
+
     # ------------------ VOLUME 6 ------------------
     def vol6_run(self):
-        self.print_header("第六卷：晚晴长风与历史行程 (2013-2018)")
-        self.log("十八大后，李源潮当选中华人民共和国副主席。")
-        self.log("协助主管多边外事礼宾、港澳工作与群团改革。")
+        self.current_vol = 6
+        self.print_header("第六卷：晚晴长风与历史行程 (2013-2018+)")
+        self.log("十二届全国人大一次会议上当选国家副主席。")
+        self.log("四维属性进入脱敏软着陆模式，界面警戒条淡出，转入【晚晴手记与案头器物】收集模式。")
         self.print_status()
 
-        # Scene 18 AP
-        self.log("\n【场景 18 前置 · 2013年春 人民大会堂中区副主席办公室】")
+        # Scene 17-A AP
+        self.log("\n【场景 17-A 前置 · 2013年12月 中南海办公区外事值班室】")
         def ap6_a():
             self.tags.add("群团基层调研底表")
-            self.log("\n>>> 调阅全国青联、侨联基层编制空心化数据底表。")
+            self.log("\n>>> 细读《社会组织与群团基层调研底表》，圈出虚报项目。")
         def ap6_b():
             self.tags.add("外事礼宾密电")
-            self.log("\n>>> 翻阅联合国与新兴经济体多边外事交锋记录密电。")
+            self.log("\n>>> 审阅《约翰内斯堡多边会见密电汇编》，掌握涉华敏感点预设口径。")
 
-        self.choose("【前期信息搜集 (AP=1)】", [
-            ("A", "调阅全国青联、侨联基层去行政化暗访底表 (获取：[群团基层调研底表])", ap6_a),
-            ("B", "翻阅国际多边峰会礼宾穿梭密电 (获取：[外事礼宾密电])", ap6_b)
+        self.choose("【出访前案卷核查 (AP=1)】", [
+            ("A", "细读工青妇联合递交的《社会组织与群团基层调研底表》 (获取：[群团基层调研底表])", ap6_a),
+            ("B", "审阅外交部与礼宾司汇总的《约翰内斯堡多边会见密电汇编》 (获取：[外事礼宾密电])", ap6_b)
         ])
 
         # Passive checks
@@ -919,56 +966,66 @@ class GameEngine:
         if "测评退回旧轨失望" in self.tags or "青年统战滞后" in self.tags or "粤系地方阻力" in self.tags: self.r -= 2
 
         # Desk track 1: 外事
-        self.log("\n【场景 18-1 · 2014年 多边首脑峰会礼宾与战略传达】")
+        self.log("\n【场景 18 第 1 轮 · 冷雨中的多边外事备忘录】")
         def s18_1a():
             bonus = 2 if "外事礼宾密电" in self.tags else 0
             self.c += 4 + bonus; self.r -= 3
-            self.log("\n>>> 严格执行礼宾标准，从容传达中央大政方针，获高层认可。")
+            self.tags.add("端方国士")
+            self.log("\n>>> 严守外交礼宾口径，做稳妥克制的大国代表。获得标记：[端方国士]。")
         def s18_1b():
             self.r += 4; self.c -= 3
-            self.log("\n>>> 广泛开展穿梭外交，以学者风度积极拓展民间外交渠道。")
+            self.log("\n>>> 在达沃斯与双边简报中主动阐释中国市场准入与环保硬考核。")
         self.choose("【场景 18-1 外事抉择】", [
-            ("18-1A", "谨守大国外交礼宾规范，严格按中央定稿传递宏观战略善意", s18_1a),
-            ("18-1B", "利用国际人脉展开温和穿梭，重点向西方智库阐明和平发展逻辑", s18_1b)
+            ("18-1A", "严守外交礼宾口径，做稳妥克制的大国代表", s18_1a),
+            ("18-1B", "在达沃斯与双边简报中主动阐释中国市场准入与环保硬考核", s18_1b)
         ])
 
         # Desk track 2: 群团
-        self.log("\n【场景 18-2 · 2015年 全国群团组织去‘机关化、行政化’改革】")
+        self.log("\n【场景 18 第 2 轮 · 回国批复群团改革与个人权力边界】")
         def s18_2a():
             bonus = 2 if "群团基层调研底表" in self.tags else 0
             self.r += 5 + bonus; self.l -= 2; self.c -= 2
-            self.log("\n>>> 大幅核减编制，将挂职干部比例提高到50%，群团机关为之震动。")
+            self.tags.add("未竞的改革之弦")
+            self.log("\n>>> 试行取消机关化会议，项目化社会评估买单。获得标记：[未竞的改革之弦]。")
         def s18_2b():
             self.c += 4; self.r -= 3
-            self.log("\n>>> 稳步推进职能微调，确保群团机关大局稳定。")
-        self.choose("【场景 18-2 群团抉择】", [
-            ("18-2A", "动真碰硬：大刀阔斧裁撤机关冗余专职编制，大幅增加基层一线代表比例", s18_2a),
-            ("18-2B", "稳妥推进：以项目制代替编制缩减，重点加强青年思想引领与社会组织统战", s18_2b)
+            self.tags.add("云淡风轻")
+            self.log("\n>>> 划死个人权力退场边界，谢绝制度外过问与人事推荐。获得标记：[云淡风轻]。")
+        self.choose("【场景 18-2 群团与退场抉择】", [
+            ("18-2A", "借群团改革推‘非政府组织社会评估’与项目化买单", s18_2a),
+            ("18-2B", "划死个人权力退场边界，谢绝制度外过问与人事推荐", s18_2b)
         ])
 
         self.c, self.l, self.f, self.r = clamp(self.c), clamp(self.l), clamp(self.f), clamp(self.r)
         self.print_status()
 
-        # Final Ending Evaluation
-        return self.evaluate_grand_ending()
+        # 终章回响：海淀旧院
+        self.log("\n【终章回响 · 2018年深秋 海淀旧院】")
+        self.log("黄昏时分，斜阳挂在老槐树梢。六十八岁的他坐在书桌前，按灭了电视遥控器。")
+        self.log("书桌左侧放着《偏微分方程进展》，右侧是伴随三十余年的旧牛皮笔记本。")
+        if "端方国士" in self.tags:
+            self.log("  [案头器物] 书柜第二格整齐码着多边外事照会册，烫金国徽封皮纤尘不染。")
+        if "未竞的改革之弦" in self.tags:
+            self.log("  [案头器物] 笔筒旁压着未曾最终印发的《群团社团社会化评估试行稿》清样，留着红铅笔修改痕迹。")
+        if "云淡风轻" in self.tags:
+            self.log("  [案头器物] 靠墙的铁皮文件柜全部腾空，柜门钥匙放在笔洗旁，只留下一叠私人读书札记。")
+        self.log("翻开笔记本最后一页空白处，拧开钢笔帽，落下一行小字：")
+        self.log("  ‘胜地不常，盛筵难再。’")
+        self.log("合上钢笔帽，窗外秋风扫过干槐叶，发出沙沙轻响。")
 
-    def evaluate_grand_ending(self):
-        if "象牙塔学者" in self.tags:
-            return "Ending B (象牙塔的余生 · 纯粹清白)"
-        if self.c < 45 or self.f < 35:
-            return "Ending C (改革折翼 · 全国人大)"
-        if "激进政改旗手" in self.tags and self.c >= 50 and self.r >= 60:
-            return "Ending D (顺水推舟 · 政研社科)"
-        if self.c >= 65 and self.l >= 38 and self.r >= 50:
-            return "Ending A (稳健执印 · 正史巅峰)"
-        return "Ending E (留任守成 · 异地平调)"
+        return "Ending A2 (端方晚晴 · 稳健执印)"
 
     def render_grand_ending(self, ending_key):
         self.print_header("【全剧终局 · 历史行程结算】")
         self.log(f"结算终局归宿：{ending_key}\n")
 
-        if "Ending A" in ending_key:
-            self.log("【终局 A：稳健执印 · 经世济民（正史巅峰）】")
+        if "Ending A1" in ending_key:
+            self.log("【终局 A1：巅峰折冲 · 核心统筹（高难 IF 线）】")
+            self.log("2012年秋，十八届一中全会上当选中央政治局常委，兼任中央书记处常务书记，翌年兼任中央全面深化改革领导小组副组长。")
+            self.log("在京城主持十八届三中全会文件起草与落地督察，在放权清单与跨省督办之间往来协调。")
+            self.log("2018年秋，机要室送来最后一卷改革督查评估报告，他在内参封皮上落下最后一道红笔批示，合上钢笔帽放到笔架上。")
+        elif "Ending A2" in ending_key:
+            self.log("【终局 A2：端方晚晴 · 稳健执印（正史主线）】")
             self.log("2018年3月，十三届全国人大一次会议。")
             self.log("交卸国家副主席职务后，李源潮微笑着与代表们握手告别。")
             self.log("海淀旧院的书房里，砚台尚润，窗外青松挺拔。")
@@ -977,6 +1034,11 @@ class GameEngine:
             self.log("你以学者的缜密与文官的忍耐，在历史的有限空间内，推演出了最周全的行程。")
             self.log("‘胜地不常，盛筵难再；兰亭已矣，梓泽丘墟。’")
             self.log("笔锋停在旧稿纸上，墨迹干透。历史已然注脚。")
+        elif "Ending A3" in ending_key:
+            self.log("【终局 A3：提前淡出 · 倚楼晚照（中组部失分线）】")
+            self.log("2012年秋，因中组部任内测评指标引发基层反弹，或吹风会发言留有口实，未能顺位出任国家副主席，提前转任全国政协副主席兼专门委员会主任。")
+            self.log("此后五年坐镇太平桥大街全国政协礼堂西侧院落，分管侨联与社会福利调研。")
+            self.log("2018年春办理退休手续离开办公室时，他把整理的文官制度旧稿捆上麻绳，放进纸箱封口。")
         elif "Ending B" in ending_key:
             self.log("【终局 B：象牙塔的余生 · 纯粹清白】")
             self.log("你从未跨进前门东大街那座机关大楼的大门。")
@@ -984,22 +1046,22 @@ class GameEngine:
             self.log("没有红头文件，没有常委会的机锋，也没有晚晴长风的叹息。")
             self.log("你在黑板前写下最后一串公式，粉笔灰落满两鬓。清白一身，不负所学。")
         elif "Ending C" in ending_key:
-            self.log("【终局 C：改革折翼 · 倚楼听风】")
+            self.log("【终局 C：改革折翼 · 全国人大】")
             self.log("因关键阶段信任折损或财政债务链断裂，仕途在省部级节点戛然而止。")
-            self.log("退居全国人大专门委员会副主任委员。")
+            self.log("2007年秋，未进中央书记处，调任全国人大专门委员会副主任委员。")
             self.log("每年三月，你坐在代表团后排翻看厚厚的预算报告，圈出当年的老数据。")
-            self.log("‘关山难越，谁悲失路之人？’窗外春雨绵绵，一切皆成定局。")
+            self.log("‘关山难越，谁悲失路之人？’推门时木门合页发出轻响，一切皆成定局。")
         elif "Ending D" in ending_key:
-            self.log("【终局 D：顺水推舟 · 帝王师表】")
-            self.log("因鲜明的党内民主改革旗手标签，未能晋升正史中枢高位，转入最高智库。")
-            self.log("出任中央政策研究室常务副主任或中国社科院院长。")
-            self.log("在中南海的红墙内，你的文笔化作一份份机密策论与文官考核蓝图。")
+            self.log("【终局 D：顺水推舟 · 政研社科】")
+            self.log("因鲜明的党内民主改革旗手标签，未能接任中组部部长，转入最高智库。")
+            self.log("出任中央政策研究室常务副主任兼中国社会科学院党组书记。")
+            self.log("在建国门内大街的社科院大楼主持党内民主与国家治理课题组十年，撰写数十篇未公开内参报告。")
             self.log("虽无生杀予夺之权，却为后来者的行政制度演进留下了最厚重的底稿。")
         else:
             self.log("【终局 E：留任守成 · 异地平调】")
             self.log("在宏观调控与激进改革的撕扯中选择了保守避险。")
-            self.log("先后平调主政中西部大省，平稳任满后到龄退休。")
-            self.log("无惊亦无险，无功亦无大过。留下一任老成持重的官场声名。")
+            self.log("2007年秋平调另一东部沿海大省出任省委书记，主抓港口外贸与省内平衡，再未跻身中央核心部委序列。")
+            self.log("任满一届后按年龄界限退居二线，在海边疗养院整理地方志稿件。合上年鉴，扣回茶杯盖。")
 
         self.log("\n" + "=" * 68)
         self.log("  游戏体验结束。感谢演练《浪潮与行程：李源潮仕途模拟器》。")

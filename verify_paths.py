@@ -27,7 +27,7 @@ def verify_schema_and_banned_words():
     ghost_hits = []
     non_flag_brackets = {
         "直接收益", "立刻代价", "立刻付出的代价", "后续反噬(Flag)", "后续章节的潜在反噬(Flag)",
-        "后续反噬", "后续注脚", "前置加成", "前置修正", "前置门槛", "前置限制", "0, 100"
+        "后续反噬", "后续注脚", "前置加成", "前置修正", "前置门槛", "前置限制", "0, 100", "-4, +4"
     }
 
     for fn in vol_files:
@@ -54,7 +54,7 @@ def verify_schema_and_banned_words():
     print(f"Ghost Var Hits in 00-06: {ghost_hits}")
     return schema, not (undefined_tags or unused_tags or banned_hits or ghost_hits)
 
-def evaluate_ending(c, l, f, r, tags):
+def evaluate_17th_congress(c, l, f, r, tags):
     if "象牙塔学者" in tags:
         return "Ending B (象牙塔的余生)"
     if c < 45 or f < 35:
@@ -62,15 +62,15 @@ def evaluate_ending(c, l, f, r, tags):
     if "激进政改旗手" in tags and c >= 50 and r >= 60:
         return "Ending D (顺水推舟 · 青灯咨政)"
     if c >= 65 and l >= 38 and r >= 50:
-        return "Ending A (稳健执印 / 正史巅峰)"
+        return "PROCEED_TO_VOL5"
     return "Ending E (留任守成 / 异地平调)"
 
-def evaluate_18th_ending(c, l, f, r, tags):
+def evaluate_18th_congress(c, l, f, r, tags):
     if c >= 85 and r >= 75 and "自揭家丑非议" not in tags and "连带问责留档" not in tags:
         return "Ending A1 (巅峰折冲 · 核心统筹)"
     if c < 50 or l < 35:
         return "Ending A3 (提前淡出 · 倚楼晚照)"
-    return "Ending A2 (端方晚晴 · 稳健执印)"
+    return "PROCEED_TO_VOL6"
 
 def run_historical_baseline():
     print("\n=== 验证全六卷正史基准路线 (Historical Baseline Route) ===")
@@ -83,7 +83,7 @@ def run_historical_baseline():
     print(f"卷一结束: 组织信任={ct}, 改革锐度={ra}")
 
     tags.add("温州调研原件")
-    ra += 6 + 2; ct += 1 - 4; tags.update(["商品经济探索先声", "筹会透支"])
+    ra += 6 + 2; ct -= 3; tags.update(["商品经济探索先声", "筹会透支"]) # 3-C net -3
     ct += 2; ra -= 2  # A-2
     ra += 3; ct -= 3; tags.add("脱离工农议论")  # B-1
     ra -= 2  # 筹会透支
@@ -103,6 +103,13 @@ def run_historical_baseline():
 
     # Stage 2: Vol 4 (A+C -> 1-A -> 2-A -> 3-A -> 4-A -> 5-B -> 1-C,2-C,3-C -> 6-A)
     c, l, f, r = 55, 60, 60, 50
+    # Stage 1 -> Stage 2 value injection
+    c += max(-4, min(4, (ct - 50) // 4))
+    r += max(-4, min(4, (ra - 50) // 4))
+    if "边缘平调序列" in tags: c -= 3
+    if "报批越界通报" in tags: c -= 2
+    c, r = clamp(c), clamp(r)
+
     tags.add("公交录像带")
     l += 5 + 3; tags.add("老同志口风")  # has 老同志的信赖档案
     l -= 2  # 脱离工农议论
@@ -120,7 +127,7 @@ def run_historical_baseline():
     # 14: 6-A
     r += 1; c -= 2; tags.update(["改革盟约", "派系结盟猜忌"])
     c, l, f, r = clamp(c), clamp(l), clamp(f), clamp(r)
-    e17 = evaluate_ending(c, l, f, r, tags)
+    e17 = evaluate_17th_congress(c, l, f, r, tags)
     print(f"卷四结束(十七大节点): 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e17}")
 
     # Vol 5: (摸底 B+C -> 15-B 测评 -> 16-B 特区 -> 17-B 吹风会)
@@ -132,7 +139,7 @@ def run_historical_baseline():
     if "大院子弟标签" in tags: c -= 2
     r += 7 + 2; c += 2; l -= 2; tags.update(["执政党阳光化象征", "系统内保守派侧目"])
     c, l, f, r = clamp(c), clamp(l), clamp(f), clamp(r)
-    e18 = evaluate_18th_ending(c, l, f, r, tags)
+    e18 = evaluate_18th_congress(c, l, f, r, tags)
     print(f"卷五结束(十八大节点): 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e18}")
 
     # Vol 6: (A -> 18-1A -> 18-2A)
@@ -141,7 +148,7 @@ def run_historical_baseline():
     c += 4; r -= 3; tags.add("端方国士")
     r += 5 + 2; l -= 2; c -= 2; tags.add("未竞的改革之弦")
     c, l, f, r = clamp(c), clamp(l), clamp(f), clamp(r)
-    print(f"卷六终局: 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e18}")
+    print(f"卷六终局: 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => Ending A2 (端方晚晴 · 稳健执印)")
 
 def simulate_all_paths():
     def proj(flags, keep):
@@ -203,7 +210,7 @@ def simulate_all_paths():
                                     t.add("滑头风评")
                                 else:
                                     ra2 += 6 + (2 if ("温州调研原件" in t or "第三梯队座谈纪要" in t) else 0)
-                                    ct2 += 1 - 4; t.update(["商品经济探索先声", "筹会透支"])
+                                    ct2 -= 3; t.update(["商品经济探索先声", "筹会透支"])
                                 if p_a == "A-1": ra2 += 2; ct2 -= 2; t.add("地方招商宿怨")
                                 else: ct2 += 2; ra2 -= 2
                                 if p_b == "B-1": ra2 += 3; ct2 -= 3; t.add("脱离工农议论")
@@ -489,11 +496,11 @@ def simulate_all_paths():
             t14 = set(tp)
             if c14 == "6-A": r14_v += 1; c14_v -= 2; t14.update(["改革盟约", "派系结盟猜忌"])
             elif c14 == "6-B": c14_v += 2; r14_v -= 2; t14.update(["无暇履历", "程序本位掣肘"])
-            else: f14_v += 2; r14_v -= 1; c14_v -= 1; t14.update(["宏观定力", "锋芒收敛过甚"])
+            else: c14_v += 1; r14_v -= 1; t14.update(["宏观定力", "锋芒收敛过甚"])
             c14_v, l14_v, f14_v, r14_v = clamp(c14_v), clamp(l14_v), clamp(f14_v), clamp(r14_v)
 
-            e17 = evaluate_ending(c14_v, l14_v, f14_v, r14_v, t14)
-            if e17 != "Ending A (稳健执印 / 正史巅峰)":
+            e17 = evaluate_17th_congress(c14_v, l14_v, f14_v, r14_v, t14)
+            if e17 != "PROCEED_TO_VOL5":
                 ending_counts[e17] += w
                 total_weighted += w
             else:
@@ -576,7 +583,7 @@ def simulate_all_paths():
     print(f"dp_v5 size: {len(dp_v5)}", flush=True)
 
     for (c17_v, l17_v, f17_v, r17_v, t17), w5 in dp_v5.items():
-        e18 = evaluate_18th_ending(c17_v, l17_v, f17_v, r17_v, t17)
+        e18 = evaluate_18th_congress(c17_v, l17_v, f17_v, r17_v, t17)
         if e18 == "Ending A1 (巅峰折冲 · 核心统筹)":
             ending_counts[e18] += w5 * 8
             total_weighted += w5 * 8
