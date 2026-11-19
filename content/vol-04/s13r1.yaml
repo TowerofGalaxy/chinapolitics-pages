@@ -1,0 +1,85 @@
+id: v04-s13r1
+volume: 4
+source: 江苏厅开放日 · 第一轮
+title: 江苏厅开放日 · 第一轮
+body: s13r1.md
+type: choice
+time: 2006 年 3 月 9 日，下午
+location: 北京 · 人民大会堂江苏厅
+prompt: 你如何决定？
+next: v04-s13r2
+enter:
+- type: change
+  stat: central_trust
+  amount: -2
+  when:
+    tag: 雨中聚众影像
+choices:
+- id: a
+  label: 回应民营企业确实承受了执行偏差的委屈
+  outcome: s13r1-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 3
+  - type: change
+    stat: central_trust
+    amount: -6
+  - type: add-tag
+    tag: 涉外口径微瑕
+- id: b
+  label: 按统发口径重申个别企业违法，切下一题
+  outcome: s13r1-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 1
+  - type: change
+    stat: reform_drive
+    amount: -2
+  - type: add-tag
+    tag: 外宣僵化印象
+- id: c
+  label: 从不良信贷出清与资产合规处置角度回应
+  outcome: s13r1-c.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 3
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: central_trust
+    amount: 1
+    when:
+      any:
+      - tag: 外宣基本功
+      - tag: 精准反制经验
+  - type: change
+    stat: fiscal_stability
+    amount: -1
+  - type: add-tag
+    tag: 涉外口径微瑕
+  condition:
+    any:
+    - tag: 设备共管方案
+    - tag: 彻底停工
+  unavailable: hidden
+  outcomeVariants:
+  - when:
+      tag: 设备共管方案
+    body: s13r1-c-equipment.md
+additions:
+- when:
+    any:
+    - tag: 外宣僵化印象
+    - tag: 守旧平庸标签
+    - tag: 整顿流于形式
+  body: s13r1-note1.md
+- when:
+    tag: 涉外政治风险
+  body: s13r1-note2.md
+- when:
+    tag: 雨中聚众影像
+  body: s13r1-note3.md

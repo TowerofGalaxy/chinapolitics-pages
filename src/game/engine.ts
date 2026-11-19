@@ -11,6 +11,7 @@ export interface GameState {
   stats: Record<string, number>
   actionPoints: Record<string, number>
   tags: string[]
+  history: Record<string, string[]>
   result?: { choices: string[]; texts: string[]; changes: Record<string, number>; next: string }
   entryChanges: Record<string, number>
 }
@@ -33,6 +34,7 @@ export function meetsCondition(state: GameState, condition?: Condition): boolean
   if ('all' in condition) return condition.all.every((child) => meetsCondition(state, child))
   if ('any' in condition) return condition.any.some((child) => meetsCondition(state, child))
   if ('not' in condition) return !meetsCondition(state, condition.not)
+  if ('choice' in condition) return state.history[condition.choice.scene]?.includes(condition.choice.id) ?? false
   const actual = state.stats[condition.stat]
   if (actual === undefined) throw new Error(`找不到属性 ${condition.stat}`)
   switch (condition.op) {
@@ -50,6 +52,7 @@ function copyState(state: GameState): GameState {
     stats: { ...state.stats },
     actionPoints: { ...state.actionPoints },
     tags: [...state.tags],
+    history: Object.fromEntries(Object.entries(state.history).map(([id, choices]) => [id, [...choices]])),
     result: state.result && {
       ...state.result,
       choices: [...state.result.choices],
@@ -120,6 +123,7 @@ export function startGame(story: Story, sceneId = 'v01-s00a'): GameState {
     stats: { ...stage1, ...stage2 },
     actionPoints,
     tags: sceneId.startsWith('v01-') ? ['纯粹知识分子底色'] : [],
+    history: {},
     entryChanges: {},
   }, sceneId)
 }
@@ -131,7 +135,11 @@ export function available(state: GameState, choice: Choice): boolean {
 export function applyAction(story: Story, previous: GameState, action: GameAction): GameState {
   const scene = currentScene(story, previous)
   if (action.type === 'continue') {
-    const target = previous.phase === 'result' ? previous.result?.next : scene.type === 'passage' ? scene.next : undefined
+    const target = previous.phase === 'result'
+      ? previous.result?.next
+      : scene.type === 'passage'
+        ? scene.routes.find((route) => meetsCondition(previous, route.when))?.next ?? scene.next
+        : undefined
     if (!target) throw new Error('当前无法继续')
     return enterScene(story, previous, target)
   }
@@ -153,6 +161,7 @@ export function applyAction(story: Story, previous: GameState, action: GameActio
     applyEffects(next, choice.effects)
     if (scene.ap) next.actionPoints[scene.ap]--
   }
+  next.history[scene.id] = selected.map((choice) => choice.id)
   const changes: Record<string, number> = {}
   for (const [name, value] of Object.entries(next.stats)) {
     if (value !== initialStats[name]) changes[name] = value - initialStats[name]

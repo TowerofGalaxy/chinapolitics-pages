@@ -1,0 +1,28 @@
+id: v06-s19
+volume: 6
+source: 海淀旧院
+title: 海淀旧院
+body: s19.md
+type: passage
+time: 2018 年深秋，黄昏
+location: 北京 · 海淀区
+next: v06-ending-a2
+additions:
+- when:
+    tag: 端方国士
+  body: s19-item1.md
+- when:
+    tag: 未竞的改革之弦
+  body: s19-item2.md
+- when:
+    tag: 云淡风轻
+  body: s19-item3.md
+- when:
+    tag: 改革盟约
+  body: s19-item4.md
+- when:
+    tag: 无暇履历
+  body: s19-item5.md
+- when:
+    tag: 宏观定力
+  body: s19-item6.md

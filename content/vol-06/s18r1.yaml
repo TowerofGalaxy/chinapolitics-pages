@@ -1,0 +1,64 @@
+id: v06-s18r1
+volume: 6
+source: 多边外事备忘录
+title: 多边外事备忘录
+body: s18r1.md
+type: choice
+time: 2013 年 12 月
+location: 南非 · 约翰内斯堡
+prompt: 你如何决定？
+next: v06-s18r2
+enter:
+- type: change
+  stat: reform_drive
+  amount: -2
+  when:
+    any:
+    - tag: 密闭保稳惯性
+    - tag: 自揭家丑非议
+- type: change
+  stat: local_cohesion
+  amount: -2
+  when:
+    any:
+    - tag: 系统内保守派侧目
+    - tag: 跨省空降派系芥蒂
+choices:
+- id: a
+  label: 严守外交礼宾口径，做稳妥克制的大国代表
+  outcome: s18r1-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 4
+  - type: change
+    stat: central_trust
+    amount: 2
+    when:
+      tag: 外事礼宾密电
+  - type: change
+    stat: reform_drive
+    amount: -3
+  - type: add-tag
+    tag: 端方国士
+- id: b
+  label: 在达沃斯与双边简报中主动阐释中国市场准入与环保硬考核
+  outcome: s18r1-b.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 4
+  - type: change
+    stat: central_trust
+    amount: -3
+additions:
+- when:
+    any:
+    - tag: 密闭保稳惯性
+    - tag: 自揭家丑非议
+  body: s18r1-note1.md
+- when:
+    any:
+    - tag: 系统内保守派侧目
+    - tag: 跨省空降派系芥蒂
+  body: s18r1-note2.md

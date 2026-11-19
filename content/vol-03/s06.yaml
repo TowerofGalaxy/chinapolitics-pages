@@ -75,3 +75,9 @@ bodyVariants:
 - when:
     tag: 边缘平调序列
   body: s06-union.md
+additions:
+- when:
+    all:
+    - tag: 铁腕履历
+    - tag: 冷酷官僚风评
+  body: s06-note1.md

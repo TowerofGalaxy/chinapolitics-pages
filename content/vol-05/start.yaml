@@ -1,0 +1,31 @@
+id: v05-start
+volume: 5
+source: 北楼机要室的三摞卷宗
+title: 北楼机要室的三摞卷宗
+body: start.md
+type: choice
+time: 2008 年冬至 2009 年初，上午九点
+location: 北京 · 中组部北楼办公室
+prompt: 调阅两份卷宗
+ap: vol5_ap
+select: 2
+next: v05-s15
+choices:
+- id: a
+  label: 调阅干部监督局封存的《省管干部“带病提拔”倒查抽检档案》
+  outcome: start-a.md
+  effects:
+  - type: add-tag
+    tag: 监督局带病档案
+- id: b
+  label: 调取十七个工业大市处级干部民主测评原始交叉统计样表
+  outcome: start-b.md
+  effects:
+  - type: add-tag
+    tag: 基层测评原始样表
+- id: c
+  label: 核对国新办与外交部转来的《驻京使节团与外媒拟提问清单》
+  outcome: start-c.md
+  effects:
+  - type: add-tag
+    tag: 使节团提问清单

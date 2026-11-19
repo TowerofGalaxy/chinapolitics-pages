@@ -1,0 +1,53 @@
+id: v04-s14
+volume: 4
+source: 南山夜话
+title: 南山夜话
+body: s14.md
+type: choice
+time: 2006 年 10 月下旬
+location: 重庆 · 南山迎宾馆
+prompt: 你如何决定？
+next: v04-gate17
+choices:
+- id: a
+  label: “路要一步步踩。进去了，不管谁在哪个部委，各守一摊，遇到事互相托个底。”
+  outcome: s14-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 1
+  - type: change
+    stat: central_trust
+    amount: -2
+  - type: add-tag
+    tag: 改革盟约
+  - type: add-tag
+    tag: 派系结盟猜忌
+- id: b
+  label: “大院里没个人英雄。按现行条例卡死程序边界，换谁坐那个位子都能按规矩转。”
+  outcome: s14-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: reform_drive
+    amount: -2
+  - type: add-tag
+    tag: 无暇履历
+  - type: add-tag
+    tag: 程序本位掣肘
+- id: c
+  label: “账不能只算这五年。宏观上守住周期平衡，制度纠偏慢一点，稳住大局再图后效。”
+  outcome: s14-c.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 1
+  - type: change
+    stat: reform_drive
+    amount: -1
+  - type: add-tag
+    tag: 宏观定力
+  - type: add-tag
+    tag: 锋芒收敛过甚

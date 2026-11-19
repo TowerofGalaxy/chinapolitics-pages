@@ -1,0 +1,111 @@
+id: v04-s10
+volume: 4
+source: 金陵饭店 1801 套房
+title: 金陵饭店 1801 套房
+body: s10.md
+type: choice
+time: 2004 年 3 月 27 日，下午三点
+location: 南京 · 金陵饭店
+prompt: 你如何决定？
+next: v04-s11
+enter:
+- type: change
+  stat: fiscal_stability
+  amount: -3
+  when:
+    tag: 土地融资依赖
+- type: change
+  stat: central_trust
+  amount: -2
+  when:
+    any:
+    - tag: 折中敷衍疑虑
+    - tag: 滑头避险定性
+choices:
+- id: a
+  label: 代表省委揽下监管首要责任，当夜召开常委会写检讨
+  outcome: s10-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 15
+  - type: change
+    stat: local_cohesion
+    amount: -10
+  - type: add-tag
+    tag: 连带问责留档
+  outcomeVariants:
+  - when:
+      tag: 法治骨气
+    body: s10-a-law.md
+- id: b
+  label: 摆出地方金融压力测试表，争取二十天债务置换窗口
+  outcome: s10-b.md
+  effects:
+  - type: change
+    stat: local_cohesion
+    amount: 15
+  - type: change
+    stat: fiscal_stability
+    amount: 5
+  - type: change
+    stat: fiscal_stability
+    amount: 2
+    when: &id001
+      any:
+      - tag: 苏南经济底稿
+      - tag: 经贸法治底盘
+  - type: change
+    stat: central_trust
+    amount: -10
+  - type: change
+    stat: central_trust
+    amount: -5
+    when:
+      tag: 地方重组意向
+  - type: add-tag
+    tag: 抗辩部委记名
+  condition:
+    any:
+    - tag: 城投挪用线索
+    - stat: fiscal_stability
+      op: gte
+      value: 60
+  unavailable: locked
+  reason: 需要城投挪用线索或财政稳态值达到 60
+- id: c
+  label: 出示外贸设备共管单，请求沙钢南钢竞价收购以保全银行贷款
+  outcome: s10-c.md
+  effects:
+  - type: change
+    stat: fiscal_stability
+    amount: 10
+  - type: change
+    stat: fiscal_stability
+    amount: 2
+    when: *id001
+  - type: change
+    stat: central_trust
+    amount: -5
+  - type: change
+    stat: central_trust
+    amount: -5
+    when:
+      tag: 地方重组意向
+  - type: change
+    stat: local_cohesion
+    amount: -3
+  - type: add-tag
+    tag: 资产切割审计尾账
+  condition:
+    tag: 设备共管方案
+  unavailable: hidden
+additions:
+- when:
+    tag: 土地融资依赖
+  body: s10-note1.md
+- when:
+    any:
+    - tag: 折中敷衍疑虑
+    - tag: 滑头避险定性
+  body: s10-note2.md

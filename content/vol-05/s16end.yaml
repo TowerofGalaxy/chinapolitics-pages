@@ -1,0 +1,52 @@
+id: v05-s16end
+volume: 5
+source: 老陈的信封
+title: 老陈的信封
+body: s16end.md
+type: choice
+time: 2010 年秋，子夜十一点半
+location: 北京 · 大木仓胡同
+prompt: 你如何决定？
+next: v05-s17
+choices:
+- id: a
+  label: 移交纪检组依纪严办，彻底切割
+  outcome: s16end-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 4
+  - type: change
+    stat: local_cohesion
+    amount: -6
+  - type: change
+    stat: reform_drive
+    amount: -2
+- id: b
+  label: 限期退款补税，平调二线脱敏
+  outcome: s16end-b.md
+  effects:
+  - type: change
+    stat: local_cohesion
+    amount: 3
+  - type: change
+    stat: central_trust
+    amount: -4
+  - type: add-tag
+    tag: 大秘隐雷
+- id: c
+  label: 核查账目虚实，借刀反向清障
+  outcome: s16end-c.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: reform_drive
+    amount: 3
+  - type: change
+    stat: local_cohesion
+    amount: -2
+  condition:
+    tag: 监督局带病档案
+  unavailable: hidden

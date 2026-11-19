@@ -21,11 +21,21 @@ export function newSave(): Save {
   return { format: 1, rules: 'full-1', start: 'v01-s00a', actions: [], draft: [] }
 }
 
+export function storyForSave(story: Story, save: Save): Story {
+  if (save.rules !== 'slice-1') return story
+  const replayStory = new Map(story)
+  const meeting = replayStory.get('v04-s08')
+  if (meeting) replayStory.set(meeting.id, { ...meeting, next: 'v04-slice-end' })
+  return replayStory
+}
+
 export function replay(story: Story, raw: unknown): { save: Save; state: GameState } {
   const save = saveSchema.parse(raw)
-  let state = startGame(story, save.start)
-  for (const action of save.actions) state = applyAction(story, state, action as GameAction)
-  const scene = currentScene(story, state)
+  if ((save.rules === 'slice-1') !== (save.start === 'v04-s07')) throw new Error('存档版本与入口不匹配')
+  const replayStory = storyForSave(story, save)
+  let state = startGame(replayStory, save.start)
+  for (const action of save.actions) state = applyAction(replayStory, state, action as GameAction)
+  const scene = currentScene(replayStory, state)
   if (save.draft.length && (state.phase !== 'scene' || scene.type !== 'choice')) throw new Error('存档中的选择不适用于当前场景')
   const choices = new Map(scene.choices.map((choice) => [choice.id, choice]))
   if (new Set(save.draft).size !== save.draft.length || save.draft.length > scene.select || save.draft.some((id) => {

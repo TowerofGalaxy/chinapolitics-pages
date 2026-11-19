@@ -71,3 +71,9 @@ choices:
     tag: 商品经济探索先声
   - type: add-tag
     tag: 筹会透支
+additions:
+- when:
+    any:
+    - tag: 书生执拗
+    - tag: 大院子弟标签
+  body: s03-note1.md

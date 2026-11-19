@@ -1,0 +1,59 @@
+id: v04-s13r2
+volume: 4
+source: 江苏厅开放日 · 第二轮
+title: 江苏厅开放日 · 第二轮
+body: s13r2.md
+type: choice
+prompt: 你如何决定？
+next: v04-s13r3
+choices:
+- id: a
+  label: 顺势把群众选票与体制突破讲透
+  outcome: s13r2-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 4
+  - type: change
+    stat: central_trust
+    amount: -8
+  - type: add-tag
+    tag: 党管干部质疑
+- id: b
+  label: 全盘否定改革突破，强调纯粹按现行条例执行
+  outcome: s13r2-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: reform_drive
+    amount: -3
+  - type: change
+    stat: local_cohesion
+    amount: -2
+  - type: add-tag
+    tag: 改革保守退缩
+- id: c
+  label: 以组织考核的信息降噪做专业回应
+  outcome: s13r2-c.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 3
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: central_trust
+    amount: 1
+    when:
+      any:
+      - tag: 外宣基本功
+      - tag: 精准反制经验
+  - type: change
+    stat: local_cohesion
+    amount: -1
+  condition:
+    tag: 制度精算样本
+  unavailable: hidden

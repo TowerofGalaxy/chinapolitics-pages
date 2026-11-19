@@ -1,0 +1,91 @@
+id: v05-s15
+volume: 5
+source: “老好人得票高”的测评泥潭
+title: “老好人得票高”的测评泥潭
+body: s15.md
+type: choice
+time: 2009 年春
+location: 北京 · 中组部部长办公室
+prompt: 你如何决定？
+next: v05-s16
+enter:
+- type: change
+  stat: central_trust
+  amount: -3
+  when:
+    tag: 党管干部质疑
+- type: change
+  stat: reform_drive
+  amount: -2
+  when:
+    any:
+    - tag: 形式主义诟病
+    - tag: 滑头风评
+choices:
+- id: a
+  label: 坚持票决过半刚性门槛，严禁行政干预投票结果
+  outcome: s15-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 6
+  - type: change
+    stat: central_trust
+    amount: -8
+  - type: change
+    stat: local_cohesion
+    amount: -5
+  - type: add-tag
+    tag: 民意过半硬杠反弹
+- id: b
+  label: 签发“民意降噪 + 实绩加权”双轨修正案（不唯票取人）
+  outcome: s15-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 5
+  - type: change
+    stat: central_trust
+    amount: 2
+    when:
+      any:
+      - tag: 基层测评原始样表
+      - tag: 无暇履历
+      - tag: 宏观定力
+  - type: change
+    stat: reform_drive
+    amount: 5
+  - type: change
+    stat: local_cohesion
+    amount: -2
+  - type: add-tag
+    tag: 加权考核矩阵
+  - type: add-tag
+    tag: 加权考核执行损耗
+- id: c
+  label: 收缩无记名投票权重，重回传统组织部门谈话查档为主
+  outcome: s15-c.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 4
+  - type: change
+    stat: local_cohesion
+    amount: 4
+  - type: change
+    stat: reform_drive
+    amount: -8
+  - type: add-tag
+    tag: 测评退回旧轨失望
+additions:
+- when:
+    tag: 党管干部质疑
+  body: s15-note1.md
+- when:
+    any:
+    - tag: 形式主义诟病
+    - tag: 滑头风评
+  body: s15-note2.md
+- when:
+    tag: 地方抵制环保考核
+  body: s15-note3.md

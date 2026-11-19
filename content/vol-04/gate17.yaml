@@ -1,0 +1,39 @@
+id: v04-gate17
+volume: 4
+source: 十七大前夕
+title: 十七大前夕
+body: gate17.md
+type: passage
+next: v06-ending-e
+routes:
+- when:
+    any:
+    - stat: central_trust
+      op: lt
+      value: 45
+    - stat: fiscal_stability
+      op: lt
+      value: 35
+  next: v06-ending-c
+- when:
+    all:
+    - tag: 激进政改旗手
+    - stat: central_trust
+      op: gte
+      value: 50
+    - stat: reform_drive
+      op: gte
+      value: 60
+  next: v06-ending-d
+- when:
+    all:
+    - stat: central_trust
+      op: gte
+      value: 65
+    - stat: local_cohesion
+      op: gte
+      value: 38
+    - stat: reform_drive
+      op: gte
+      value: 50
+  next: v05-start

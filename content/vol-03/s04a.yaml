@@ -22,3 +22,13 @@ choices:
   effects:
   - type: add-tag
     tag: 外宣案例剪报
+bodyVariants:
+- when:
+    tag: 庇护者的契约
+  body: s04a-route1.md
+- when:
+    tag: 铁腕履历
+  body: s04a-route2.md
+- when:
+    tag: 边缘平调序列
+  body: s04a-route3.md

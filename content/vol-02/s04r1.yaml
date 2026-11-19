@@ -47,3 +47,13 @@ choices:
       any:
       - tag: 预审口径单
       - tag: 退稿油印刊物
+additions:
+- when:
+    tag: 退稿油印刊物
+  body: s04r1-note1.md
+- when:
+    tag: 滑头风评
+  body: s04r1-note2.md
+- when:
+    tag: 筹会透支
+  body: s04r1-note3.md

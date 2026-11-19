@@ -5,7 +5,7 @@ import { marked, Renderer } from 'marked'
 import compiled from '../generated/story.json'
 import { sceneSchema } from '../story/schema'
 import { applyAction, available, createStory, currentScene, meetsCondition, startGame, type GameAction } from '../game/engine'
-import { newSave, replay, SAVE_KEY, type Save } from '../game/save'
+import { newSave, replay, SAVE_KEY, storyForSave, type Save } from '../game/save'
 
 const story = createStory(sceneSchema.array().parse(compiled))
 const renderer = new Renderer()
@@ -63,7 +63,7 @@ const stats = computed(() => Object.entries(statLabels).filter(([id]) =>
 
 function changesText(changes: Record<string, number>): string {
   return Object.entries(changes)
-    .map(([id, amount]) => `${statLabels[id] ?? id} ${amount > 0 ? '+' : '−'}${Math.abs(amount)}`)
+    .map(([id, amount]) => `${id === 'local_cohesion' && scene.value.volume >= 5 ? '系统协同度' : statLabels[id] ?? id} ${amount > 0 ? '+' : '−'}${Math.abs(amount)}`)
     .join('　')
 }
 
@@ -88,7 +88,7 @@ function setDraft(id: string, checked: boolean) {
 
 function dispatch(action: GameAction) {
   try {
-    state.value = applyAction(story, state.value, action)
+    state.value = applyAction(storyForSave(story, save.value), state.value, action)
     save.value = { ...save.value, actions: [...save.value.actions, action], draft: [] }
     draft.value = []
     persist()

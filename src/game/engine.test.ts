@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import scenes from '../generated/story.json'
 import { sceneSchema } from '../story/schema'
 import { applyAction, available, createStory, currentScene, startGame, type GameState } from './engine'
-import { newSave, replay } from './save'
+import { newSave, replay, storyForSave } from './save'
 
 const story = createStory(sceneSchema.array().parse(scenes))
 const startSlice = () => startGame(story, 'v04-s07')
@@ -103,6 +103,72 @@ describe('存档回放', () => {
     save.draft = []
     save.actions.push({ type: 'choose', choices: ['screening'] })
     expect(() => replay(story, save)).toThrow()
+  })
+
+  it('旧切片存档保留原本的后续场景', () => {
+    const save = newSave()
+    save.start = 'v04-s07'
+    save.rules = 'slice-1'
+    save.actions.push({ type: 'choose', choices: ['bus', 'audit'] }, { type: 'continue' })
+    const restored = replay(story, save).state
+    const result = applyAction(storyForSave(story, save), restored, { type: 'choose', choices: ['private'] })
+    expect(result.result?.next).toBe('v04-slice-end')
+  })
+})
+
+describe('第四卷后续规则', () => {
+  function chooseAndContinue(state: GameState, choice: string): GameState {
+    return applyAction(story, applyAction(story, state, { type: 'choose', choices: [choice] }), { type: 'continue' })
+  }
+
+  it('三轮技术回应全部完成后记录外宣高手', () => {
+    let state = startGame(story, 'v04-s13r1')
+    state.tags.push('设备共管方案', '制度精算样本')
+    state = chooseAndContinue(state, 'c')
+    state = chooseAndContinue(state, 'c')
+    const result = applyAction(story, state, { type: 'choose', choices: ['c'] })
+    expect(result.tags).toContain('外宣高手')
+    expect(result.stats.reform_drive).toBe(62)
+    expect(result.history['v04-s13r1']).toEqual(['c'])
+  })
+
+  it.each([
+    { c: 44, l: 90, f: 60, r: 90, tags: ['激进政改旗手'], target: 'v06-ending-c' },
+    { c: 50, l: 35, f: 35, r: 60, tags: ['激进政改旗手'], target: 'v06-ending-d' },
+    { c: 65, l: 38, f: 35, r: 50, tags: [], target: 'v05-start' },
+    { c: 64, l: 80, f: 60, r: 80, tags: [], target: 'v06-ending-e' },
+  ])('十七大按优先级分流至 $target', ({ c, l, f, r, tags, target }) => {
+    const state = startGame(story, 'v04-gate17')
+    Object.assign(state.stats, { central_trust: c, local_cohesion: l, fiscal_stability: f, reform_drive: r })
+    state.tags.push(...tags)
+    expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe(target)
+  })
+})
+
+describe('十八大换届与第六卷', () => {
+  it('秘书事件在换届时扣分并阻断 A1', () => {
+    const before = startGame(story, 'v05-s17')
+    before.stats.central_trust = 95
+    before.stats.reform_drive = 80
+    before.tags.push('大秘隐雷')
+    const result = applyAction(story, before, { type: 'choose', choices: ['b'] })
+    const gate = applyAction(story, result, { type: 'continue' })
+    expect(gate.stats.central_trust).toBe(89)
+    expect(gate.entryChanges.central_trust).toBe(-8)
+    expect(applyAction(story, gate, { type: 'continue' }).sceneId).toBe('v06-s17a')
+  })
+
+  it.each([
+    { c: 85, l: 35, r: 75, tags: [], target: 'v06-ending-a1' },
+    { c: 85, l: 35, r: 75, tags: ['连带问责留档'], target: 'v06-s17a' },
+    { c: 59, l: 50, r: 75, tags: [], target: 'v06-ending-a3' },
+    { c: 60, l: 35, r: 50, tags: [], target: 'v06-s17a' },
+    { c: 80, l: 34, r: 50, tags: [], target: 'v06-ending-a3' },
+  ])('十八大按边界分流至 $target', ({ c, l, r, tags, target }) => {
+    const state = startGame(story, 'v05-gate18')
+    Object.assign(state.stats, { central_trust: c, local_cohesion: l, reform_drive: r })
+    state.tags.push(...tags)
+    expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe(target)
   })
 })
 

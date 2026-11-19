@@ -1,0 +1,24 @@
+id: v06-s17a
+volume: 6
+source: 出访前的两份案卷
+title: 出访前的两份案卷
+body: s17a.md
+type: choice
+time: 2013 年 12 月
+location: 北京 · 外事值班室
+prompt: 你如何决定？
+ap: vol6_ap
+next: v06-s18r1
+choices:
+- id: a
+  label: 细读工青妇联合递交的《社会组织与群团基层调研底表》
+  outcome: s17a-a.md
+  effects:
+  - type: add-tag
+    tag: 群团基层调研底表
+- id: b
+  label: 审阅外交部与礼宾司汇总的《约翰内斯堡多边会见密电汇编》
+  outcome: s17a-b.md
+  effects:
+  - type: add-tag
+    tag: 外事礼宾密电

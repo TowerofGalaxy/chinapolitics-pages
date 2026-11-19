@@ -1,0 +1,67 @@
+id: v04-s09
+volume: 4
+source: 常州铁本 · 常委会夜谈
+title: 常州铁本 · 常委会夜谈
+body: s09.md
+type: choice
+time: 2004 年 3 月 24 日，深夜
+location: 南京 · 省委常委会
+prompt: 你如何决定？
+next: v04-s10
+choices:
+- id: a
+  label: 回绝重组方案，立刻通知常州断水断电并封存全部账户
+  outcome: s09-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 10
+  - type: change
+    stat: local_cohesion
+    amount: -15
+  - type: change
+    stat: fiscal_stability
+    amount: -10
+  - type: add-tag
+    tag: 彻底停工
+  - type: add-tag
+    tag: 省府裂痕
+- id: b
+  label: 同意由省政府牵头起草换壳重组备忘录，切割违规责任
+  outcome: s09-b.md
+  effects:
+  - type: change
+    stat: local_cohesion
+    amount: 10
+  - type: change
+    stat: fiscal_stability
+    amount: 5
+  - type: change
+    stat: central_trust
+    amount: -10
+  - type: add-tag
+    tag: 地方重组意向
+- id: c
+  label: 主体炼钢项目叫停，准许外贸集团设共管账户接管港口德国设备
+  outcome: s09-c.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 4
+  - type: change
+    stat: fiscal_stability
+    amount: 5
+  - type: change
+    stat: central_trust
+    amount: -5
+  - type: change
+    stat: local_cohesion
+    amount: -5
+  - type: add-tag
+    tag: 设备共管方案
+  - type: add-tag
+    tag: 折中敷衍疑虑
+additions:
+- when:
+    tag: 机关震荡反弹
+  body: s09-note1.md

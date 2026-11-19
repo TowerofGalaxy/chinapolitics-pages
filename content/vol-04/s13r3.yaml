@@ -1,0 +1,67 @@
+id: v04-s13r3
+volume: 4
+source: 江苏厅开放日 · 第三轮
+title: 江苏厅开放日 · 第三轮
+body: s13r3.md
+type: choice
+prompt: 你如何决定？
+next: v04-s14
+choices:
+- id: a
+  label: 拿工业化必经阶段与伦敦雾都作比辩解
+  outcome: s13r3-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: -2
+  - type: change
+    stat: central_trust
+    amount: -2
+  - type: add-tag
+    tag: 外宣僵化印象
+- id: b
+  label: 念完科学发展观标准环保口径
+  outcome: s13r3-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 1
+  - type: change
+    stat: reform_drive
+    amount: -2
+  - type: add-tag
+    tag: 守旧平庸标签
+- id: c
+  label: 亮出太湖断面水质硬约束与财政转移支付挂钩考核方案
+  outcome: s13r3-c.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 4
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: local_cohesion
+    amount: -4
+  - type: change
+    stat: local_cohesion
+    amount: -1
+    when:
+      tag: 预备费见底
+  - type: add-tag
+    tag: 地方抵制环保考核
+  - type: add-tag
+    tag: 外宣高手
+    when: &id001
+      all:
+      - choice:
+          scene: v04-s13r1
+          id: c
+      - choice:
+          scene: v04-s13r2
+          id: c
+  - type: change
+    stat: reform_drive
+    amount: 2
+    when: *id001

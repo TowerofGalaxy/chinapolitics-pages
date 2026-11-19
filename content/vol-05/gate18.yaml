@@ -1,0 +1,40 @@
+id: v05-gate18
+volume: 5
+source: 十八大换届
+title: 十八大换届
+body: gate18.md
+type: passage
+time: 2012 年秋
+location: 北京 · 中组部办公室
+next: v06-s17a
+routes:
+- when:
+    all:
+    - stat: central_trust
+      op: gte
+      value: 85
+    - stat: reform_drive
+      op: gte
+      value: 75
+    - not:
+        tag: 自揭家丑非议
+    - not:
+        tag: 连带问责留档
+    - not:
+        tag: 大秘隐雷
+  next: v06-ending-a1
+- when:
+    any:
+    - stat: central_trust
+      op: lt
+      value: 60
+    - stat: local_cohesion
+      op: lt
+      value: 35
+  next: v06-ending-a3
+enter:
+- type: change
+  stat: central_trust
+  amount: -8
+  when:
+    tag: 大秘隐雷

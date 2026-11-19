@@ -76,3 +76,13 @@ choices:
     value: 35
   unavailable: locked
   reason: 组织信任度需高于 35
+additions:
+- when:
+    tag: 中宣部挂号
+  body: s05-note1.md
+- when:
+    tag: 书生执拗
+  body: s05-note2.md
+- when:
+    tag: 老辈训诫
+  body: s05-note3.md

@@ -1,0 +1,91 @@
+id: v05-s17
+volume: 5
+source: 外国记者席
+title: 外国记者席
+body: s17.md
+type: choice
+time: 2010 年 6 月 30 日
+location: 北京 · 中组部北楼多功能厅
+prompt: 你如何决定？
+next: v05-gate18
+enter:
+- type: change
+  stat: central_trust
+  amount: -2
+  when:
+    tag: 大院子弟标签
+choices:
+- id: a
+  label: 严词照念保密与民主集中制原则，拒绝展开数字
+  outcome: s17-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 3
+  - type: change
+    stat: reform_drive
+    amount: -4
+  - type: add-tag
+    tag: 密闭保稳惯性
+- id: b
+  label: 援引公推差选、测评加权与特区点将做程序拆解
+  outcome: s17-b.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 7
+  - type: change
+    stat: reform_drive
+    amount: 2
+    when:
+      tag: 使节团提问清单
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: central_trust
+    amount: -2
+    when:
+      all:
+      - tag: 改革保守退缩
+      - not:
+          tag: 外宣高手
+  - type: change
+    stat: local_cohesion
+    amount: -2
+  - type: add-tag
+    tag: 执政党阳光化象征
+  - type: add-tag
+    tag: 系统内保守派侧目
+  condition:
+    any:
+    - tag: 外宣高手
+    - stat: reform_drive
+      op: gte
+      value: 60
+  unavailable: hidden
+  outcomeVariants:
+  - when:
+      tag: 加权考核矩阵
+    body: s17-b-matrix.md
+- id: c
+  label: 不避短板，直陈“带病提拔”倒查与实绩考核改革
+  outcome: s17-c.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 5
+  - type: change
+    stat: central_trust
+    amount: -4
+  - type: add-tag
+    tag: 自揭家丑非议
+additions:
+- when:
+    tag: 大院子弟标签
+  body: s17-note1.md
+- when:
+    any:
+    - tag: 连带问责留档
+    - tag: 锋芒收敛过甚
+  body: s17-note2.md

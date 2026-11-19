@@ -1,0 +1,90 @@
+id: v05-s16
+volume: 5
+source: 特区主官补缺
+title: 特区主官补缺
+body: s16.md
+type: choice
+time: 2009 年 6 月
+location: 北京 · 中组部保密室
+prompt: 你如何决定？
+next: v05-s16end
+enter:
+- type: change
+  stat: central_trust
+  amount: 2
+  when:
+    tag: 监督局带病档案
+choices:
+- id: a
+  label: 按资历序列，从广东省内资深副省长中顺位递补
+  outcome: s16-a.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 3
+  - type: change
+    stat: local_cohesion
+    amount: 4
+  - type: change
+    stat: reform_drive
+    amount: -4
+  - type: add-tag
+    tag: 粤系地方阻力
+- id: b
+  label: 跨省点将，选调苏州市委书记王荣南下深圳
+  outcome: s16-b.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 7
+  - type: change
+    stat: central_trust
+    amount: 2
+  - type: change
+    stat: local_cohesion
+    amount: -2
+  - type: change
+    stat: local_cohesion
+    amount: -1
+    when:
+      any:
+      - tag: 派系结盟猜忌
+      - tag: 地方招商宿怨
+  - type: add-tag
+    tag: 特区新局
+  - type: add-tag
+    tag: 跨省空降派系芥蒂
+  condition:
+    all:
+    - tag: 改革盟约
+    - stat: central_trust
+      op: gt
+      value: 40
+  unavailable: hidden
+- id: c
+  label: 折中平衡，从国家发改委或商务部抽调副部长空降特区
+  outcome: s16-c.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 4
+  - type: change
+    stat: reform_drive
+    amount: 2
+  - type: change
+    stat: local_cohesion
+    amount: -3
+  - type: add-tag
+    tag: 部委空降磨合成本
+additions:
+- when:
+    tag: 监督局带病档案
+  body: s16-note1.md
+- when:
+    any:
+    - tag: 派系结盟猜忌
+    - tag: 地方招商宿怨
+  body: s16-note2.md
+- when:
+    tag: 程序本位掣肘
+  body: s16-note3.md

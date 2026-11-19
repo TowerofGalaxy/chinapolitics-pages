@@ -6,6 +6,7 @@ export type Condition =
   | { all: Condition[] }
   | { any: Condition[] }
   | { not: Condition }
+  | { choice: { scene: string; id: string } }
 
 export const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.union([
@@ -18,6 +19,7 @@ export const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ all: z.array(conditionSchema).min(1) }).strict(),
     z.object({ any: z.array(conditionSchema).min(1) }).strict(),
     z.object({ not: conditionSchema }).strict(),
+    z.object({ choice: z.object({ scene: z.string(), id: z.string() }).strict() }).strict(),
   ]),
 )
 
@@ -56,6 +58,7 @@ export const sceneSchema = z.object({
   ap: z.string().optional(),
   enter: z.array(effectSchema).default([]),
   choices: z.array(choiceSchema).default([]),
+  routes: z.array(z.object({ when: conditionSchema, next: z.string() }).strict()).default([]),
   next: z.string().optional(),
 }).strict().superRefine((scene, context) => {
   if (scene.type === 'choice' && (scene.choices.length < scene.select || !scene.prompt)) {
@@ -69,6 +72,9 @@ export const sceneSchema = z.object({
   }
   if (scene.type === 'ending' && scene.next) {
     context.addIssue({ code: 'custom', message: '结尾不能设置后续场景' })
+  }
+  if (scene.type !== 'passage' && scene.routes.length) {
+    context.addIssue({ code: 'custom', message: '条件分流只能用于阅读场景' })
   }
   if (scene.type === 'choice' && !scene.next && scene.choices.some((choice) => !choice.next)) {
     context.addIssue({ code: 'custom', message: '每个选项都需要后续场景' })

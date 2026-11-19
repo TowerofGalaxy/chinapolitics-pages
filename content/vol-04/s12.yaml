@@ -1,0 +1,108 @@
+id: v04-s12
+volume: 4
+source: 宿迁公推公选与联名信
+title: 宿迁公推公选与联名信
+body: s12.md
+type: choice
+time: 2005 年 9 月
+location: 南京 · 省委常委会
+prompt: 你如何决定？
+next: v04-s13r1
+enter:
+- type: change
+  stat: central_trust
+  amount: -2
+  when:
+    tag: 抗辩部委记名
+- type: change
+  stat: reform_drive
+  amount: -2
+  when:
+    tag: 官场寒蝉效应
+choices:
+- id: a
+  label: 宣布在全省十三个地级市全面推开局长差额公推公选
+  outcome: s12-a.md
+  effects:
+  - type: change
+    stat: reform_drive
+    amount: 15
+  - type: change
+    stat: central_trust
+    amount: -15
+  - type: change
+    stat: local_cohesion
+    amount: -10
+  - type: change
+    stat: local_cohesion
+    amount: 5
+    when:
+      tag: 老同志口风
+  - type: add-tag
+    tag: 激进政改旗手
+  - type: add-tag
+    tag: 党管干部质疑
+  condition:
+    stat: central_trust
+    op: gt
+    value: 40
+  unavailable: locked
+  reason: 中央信任度需高于 40
+- id: b
+  label: 设计“两推一述”受控闭环——常委会事前把关，差额比例卡死20%
+  outcome: s12-b.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 5
+  - type: change
+    stat: reform_drive
+    amount: 5
+  - type: change
+    stat: reform_drive
+    amount: 2
+    when:
+      any:
+      - tag: 双轨探索者
+      - tag: 现代治理工具箱
+  - type: change
+    stat: local_cohesion
+    amount: -5
+  - type: change
+    stat: local_cohesion
+    amount: 8
+    when:
+      any:
+      - tag: 老同志口风
+      - tag: 老同志的信赖档案
+  - type: add-tag
+    tag: 制度精算样本
+  - type: add-tag
+    tag: 形式主义诟病
+- id: c
+  label: 见好就收，缩小宿迁试点并报理论总结归档
+  outcome: s12-c.md
+  effects:
+  - type: change
+    stat: central_trust
+    amount: 5
+  - type: change
+    stat: local_cohesion
+    amount: 5
+  - type: change
+    stat: reform_drive
+    amount: -10
+  - type: add-tag
+    tag: 改革保守退缩
+additions:
+- when:
+    tag: 抗辩部委记名
+  body: s12-note1.md
+- when:
+    tag: 官场寒蝉效应
+  body: s12-note2.md
+- when:
+    any:
+    - tag: 老同志的信赖档案
+    - tag: 导师推荐信底稿
+  body: s12-note3.md

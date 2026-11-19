@@ -60,6 +60,9 @@ async function main() {
     const scene = sceneSchema.parse(parse(await readFile(file, 'utf8')))
     const source = path.relative(root, file)
     if (scene.ap && !knownActionPoints.has(scene.ap)) throw Error(`${source}: 未定义行动点 ${scene.ap}`)
+    if (scene.ap && (scene.type !== 'choice' || scene.select > dictionary.action_points[scene.ap as keyof typeof dictionary.action_points].initial)) {
+      throw Error(`${source}: 行动点不足以完成当前选择`)
+    }
     validateEffects(scene.enter, source)
     for (const variant of scene.bodyVariants) {
       validateCondition(variant.when, source)
@@ -69,6 +72,7 @@ async function main() {
       validateCondition(addition.when, source)
       addition.body = await readMarkdown(path.dirname(file), addition.body)
     }
+    for (const route of scene.routes) validateCondition(route.when, source)
     const choiceIds = new Set<string>()
     for (const choice of scene.choices) {
       if (choiceIds.has(choice.id)) throw Error(`${source}: 选项 ID 重复 ${choice.id}`)
@@ -90,10 +94,33 @@ async function main() {
     if (byId.has(scene.id)) throw Error(`场景 ID 重复: ${scene.id}`)
     byId.set(scene.id, scene)
   }
+  function checkChoiceReferences(condition: Condition | undefined, owner: string): void {
+    if (!condition) return
+    if ('choice' in condition) {
+      const target = byId.get(condition.choice.scene)
+      if (!target?.choices.some((choice) => choice.id === condition.choice.id)) {
+        throw Error(`${owner}: 找不到引用的选择 ${condition.choice.scene} / ${condition.choice.id}`)
+      }
+    }
+    if ('all' in condition) condition.all.forEach((child) => checkChoiceReferences(child, owner))
+    if ('any' in condition) condition.any.forEach((child) => checkChoiceReferences(child, owner))
+    if ('not' in condition) checkChoiceReferences(condition.not, owner)
+  }
   for (const scene of scenes) {
-    for (const next of [scene.next, ...scene.choices.map((choice) => choice.next)].filter((id): id is string => Boolean(id))) {
+    for (const next of [scene.next, ...scene.routes.map((route) => route.next), ...scene.choices.map((choice) => choice.next)].filter((id): id is string => Boolean(id))) {
       if (!byId.has(next)) throw Error(`${scene.id}: 找不到后续场景 ${next}`)
     }
+    const conditions: (Condition | undefined)[] = [
+      ...scene.routes.map((route) => route.when),
+      ...scene.bodyVariants.map((variant) => variant.when),
+      ...scene.additions.map((addition) => addition.when),
+      ...scene.enter.map((effect) => effect.type === 'stage-two' ? undefined : effect.when),
+    ]
+    for (const choice of scene.choices) {
+      conditions.push(choice.condition, ...choice.outcomeVariants.map((variant) => variant.when))
+      conditions.push(...choice.effects.map((effect) => effect.type === 'stage-two' ? undefined : effect.when))
+    }
+    conditions.forEach((condition) => checkChoiceReferences(condition, scene.id))
   }
 
   const first = 'v01-s00a'
@@ -104,9 +131,11 @@ async function main() {
     const scene = byId.get(id)
     if (!scene) throw Error(`找不到起点 ${id}`)
     if (scene.next) visit(scene.next)
+    scene.routes.forEach((route) => visit(route.next))
     scene.choices.forEach((choice) => { if (choice.next) visit(choice.next) })
   }
   visit(first)
+  visit('v04-slice-end')
   const orphaned = scenes.filter((scene) => !reachable.has(scene.id))
   if (orphaned.length) throw Error(`场景无法从入口到达: ${orphaned.map((scene) => scene.id).join(', ')}`)
 
