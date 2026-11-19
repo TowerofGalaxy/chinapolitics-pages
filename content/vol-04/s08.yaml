@@ -1,0 +1,63 @@
+id: v04-s08
+volume: 4
+source: 场景 08
+title: 人民大会堂作风整顿大会
+time: 周一上午九点
+location: 南京市人民大会堂主礼堂
+body: s08.md
+type: choice
+prompt: 会上怎么处理
+next: v04-slice-end
+enter:
+  - type: change
+    stat: local_cohesion
+    amount: -2
+    when:
+      any:
+        - { tag: 破格外放序列 }
+        - { tag: 不务正业非议 }
+        - { tag: 脱离工农议论 }
+        - { tag: 清高孤僻风评 }
+choices:
+  - id: screening
+    label: 播放暗访录像，当场宣布停职两人
+    condition: { tag: 公交录像带 }
+    unavailable: locked
+    reason: 需要公交录像带
+    outcome: s08-screening.md
+    effects:
+      - { type: change, stat: central_trust, amount: 5 }
+      - { type: change, stat: reform_drive, amount: 5 }
+      - { type: change, stat: local_cohesion, amount: -10 }
+      - { type: add-tag, tag: 机关震荡反弹 }
+  - id: criticism
+    label: 内部通报，限期整改
+    outcome: s08-criticism.md
+    effects:
+      - { type: change, stat: local_cohesion, amount: 5 }
+      - { type: change, stat: central_trust, amount: 1 }
+      - { type: change, stat: reform_drive, amount: -5 }
+      - { type: add-tag, tag: 整顿流于形式 }
+  - id: taskforce
+    label: 成立市委直管的城投专班
+    outcome: s08-taskforce.md
+    effects:
+      - { type: change, stat: reform_drive, amount: 8 }
+      - { type: change, stat: fiscal_stability, amount: -10 }
+      - { type: change, stat: local_cohesion, amount: -5 }
+      - { type: add-tag, tag: 土地融资依赖 }
+  - id: private
+    label: 会上讲规划，会后出示转账凭证
+    condition: { tag: 城投挪用线索 }
+    unavailable: hidden
+    outcome: s08-private.md
+    effects:
+      - { type: change, stat: reform_drive, amount: 5 }
+      - type: change
+        stat: reform_drive
+        amount: 1
+        when:
+          any: [{ tag: 双轨探索者 }, { tag: 现代治理工具箱 }]
+      - { type: change, stat: fiscal_stability, amount: 6 }
+      - { type: change, stat: local_cohesion, amount: -4 }
+      - { type: add-tag, tag: 建委隐形积怨 }

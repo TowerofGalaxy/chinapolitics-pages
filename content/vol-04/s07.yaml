@@ -1,0 +1,40 @@
+id: v04-s07
+volume: 4
+source: 场景 07
+title: 北京西路一号楼
+time: 2000 年 12 月中旬，深夜十一点
+location: 南京 · 北京西路市委一号楼办公室
+body: s07.md
+type: choice
+prompt: 周日的安排
+select: 2
+ap: vol4_ap
+next: v04-s08
+choices:
+  - id: bus
+    label: 坐 33 路公交，看看断头路
+    outcome: s07-bus.md
+    effects:
+      - { type: add-tag, tag: 公交录像带 }
+  - id: audit
+    label: 请市审计局查城投专款
+    outcome: s07-audit.md
+    effects:
+      - { type: change, stat: fiscal_stability, amount: -5 }
+      - type: change
+        stat: fiscal_stability
+        amount: 2
+        when:
+          any: [{ tag: 苏南经济底稿 }, { tag: 经贸法治底盘 }]
+      - { type: add-tag, tag: 城投挪用线索 }
+  - id: visit
+    label: 去宁海路拜访老省长
+    outcome: s07-visit.md
+    effects:
+      - { type: change, stat: local_cohesion, amount: 5 }
+      - type: change
+        stat: local_cohesion
+        amount: 3
+        when:
+          any: [{ tag: 老辈训诫 }, { tag: 老同志的信赖档案 }]
+      - { type: add-tag, tag: 老同志口风 }
