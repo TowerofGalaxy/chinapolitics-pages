@@ -5,6 +5,10 @@ title: 人民大会堂作风整顿大会
 time: 周一上午九点
 location: 南京市人民大会堂主礼堂
 body: s08.md
+bodyVariants:
+- when:
+    tag: 城投挪用线索
+  body: s08-audit.md
 type: choice
 prompt: 会上怎么处理
 next: v04-brief
@@ -21,6 +25,7 @@ enter:
 choices:
 - id: screening
   label: 播放暗访录像，当场宣布停职两人
+  hint: 掐断顶灯直放暗访录像，雷霆停职两局长立规矩
   condition:
     tag: 公交录像带
   unavailable: locked
@@ -40,6 +45,7 @@ choices:
     tag: 机关震荡反弹
 - id: criticism
   label: 内部通报，限期整改
+  hint: 留足情面下发内部整改通报，限期由单位自查销号
   outcome: s08-criticism.md
   effects:
   - type: change
@@ -55,6 +61,7 @@ choices:
     tag: 整顿流于形式
 - id: taskforce
   label: 成立市委直管的城投专班
+  hint: 组建市委直管平台集中审批与土地收益，强力冲刺城建
   outcome: s08-taskforce.md
   effects:
   - type: change
@@ -70,6 +77,7 @@ choices:
     tag: 土地融资依赖
 - id: private
   label: 会上讲规划，会后出示转账凭证
+  hint: 大会只谈三年规划，闭门向城投及建委出示挪用账目下通牒
   condition:
     tag: 城投挪用线索
   unavailable: hidden

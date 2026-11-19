@@ -6,7 +6,7 @@ body: s11.md
 type: choice
 time: 2004 年 4 月上旬
 location: 南京 · 省委机要值班室
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v04-s12
 enter:
 - type: change
@@ -37,7 +37,7 @@ choices:
     op: gt
     value: 40
   unavailable: locked
-  reason: 财政稳态值需高于 40
+  reason: 省级财政预备金不足以兜底大额应急支出
 - id: b
   label: 严守预算法红线，省财政不垫一分钱，责令常州拍卖资产自筹
   outcome: s11-b.md

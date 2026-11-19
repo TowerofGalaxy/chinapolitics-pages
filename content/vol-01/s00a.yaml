@@ -6,7 +6,7 @@ body: s00a.md
 type: choice
 time: 1981 年 10 月下旬，午后两点
 location: 上海 · 复旦大学数学系
-prompt: 你如何决定？
+prompt: 我该先翻阅哪份材料？
 ap: vol1_ap
 next: v01-s01
 choices:
@@ -24,6 +24,7 @@ choices:
     tag: 导师推荐信底稿
 - id: c
   label: 翻看市高教党委下发的《第三梯队选拔座谈纪要》
+  hint: 划线批注：物色选拔年轻接班骨干
   outcome: s00a-c.md
   effects:
   - type: add-tag

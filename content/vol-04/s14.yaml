@@ -6,7 +6,7 @@ body: s14.md
 type: choice
 time: 2006 年 10 月下旬
 location: 重庆 · 南山迎宾馆
-prompt: 你如何决定？
+prompt: 我该如何回应？
 next: v04-gate17
 choices:
 - id: a

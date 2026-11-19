@@ -6,7 +6,7 @@ body: s06.md
 type: choice
 time: 1998 年 7 月，午后
 location: 北京
-prompt: 你如何决定？
+prompt: 我该如何布局？
 next: v03-close
 enter:
 - type: change

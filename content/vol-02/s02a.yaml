@@ -6,18 +6,20 @@ body: s02a.md
 type: choice
 time: 1985 年秋，上午十点
 location: 北京 · 团中央办公楼
-prompt: 你如何决定？
+prompt: 我该如何调阅？
 ap: vol2_ap
 next: v02-s03
 choices:
 - id: a
   label: 调取温州工商局与地委报送的内部原始统计表
+  hint: 涉及基层民营经济“雇工”争议数据
   outcome: s02a-a.md
   effects:
   - type: add-tag
     tag: 温州调研原件
 - id: b
   label: 查阅中宣部与中办近期下发的《新闻阅评预审口径单》
+  hint: 掌握宣传预审底线与禁区条文
   outcome: s02a-b.md
   effects:
   - type: add-tag

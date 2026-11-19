@@ -6,7 +6,7 @@ body: s18r1.md
 type: choice
 time: 2013 年 12 月
 location: 南非 · 约翰内斯堡
-prompt: 你如何决定？
+prompt: 我该如何抉择？
 next: v06-s18r2
 enter:
 - type: change

@@ -4,7 +4,7 @@ source: 场景 04 第二轮
 title: 铅字版面最终处置
 body: s04r2.md
 type: choice
-prompt: 你如何决定？
+prompt: 我该如何处置？
 next: v02-close
 choices:
 - id: a

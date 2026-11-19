@@ -33,6 +33,7 @@ const effectSchema = z.discriminatedUnion('type', [
 const choiceSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
+  hint: z.string().optional(),
   condition: conditionSchema.optional(),
   unavailable: z.enum(['hidden', 'locked']).default('hidden'),
   reason: z.string().optional(),

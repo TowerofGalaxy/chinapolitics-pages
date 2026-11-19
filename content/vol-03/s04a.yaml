@@ -6,7 +6,7 @@ body: s04a.md
 type: choice
 time: 1992 年春
 location: 北京
-prompt: 你如何决定？
+prompt: 我该如何精读？
 ap: vol3_ap
 next: v03-s05
 choices:
@@ -18,6 +18,7 @@ choices:
     tag: 文官制度底稿
 - id: b
   label: 整理近三年欧美主流媒体涉华专题报道与“301条款”发问口径剪报
+  hint: 中美特别301知识产权谈判资料
   outcome: s04a-b.md
   effects:
   - type: add-tag

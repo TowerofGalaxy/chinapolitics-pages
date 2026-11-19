@@ -6,7 +6,7 @@ body: s12.md
 type: choice
 time: 2005 年 9 月
 location: 南京 · 省委常委会
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v04-s13r1
 enter:
 - type: change
@@ -50,6 +50,7 @@ choices:
   reason: 中央信任度需高于 40
 - id: b
   label: 设计“两推一述”受控闭环——常委会事前把关，差额比例卡死20%
+  hint: 群众推荐、党组织推荐与竞职陈述相结合
   outcome: s12-b.md
   effects:
   - type: change

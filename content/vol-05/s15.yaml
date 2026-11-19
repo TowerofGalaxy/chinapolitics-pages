@@ -6,7 +6,7 @@ body: s15.md
 type: choice
 time: 2009 年春
 location: 北京 · 中组部部长办公室
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v05-s16
 enter:
 - type: change

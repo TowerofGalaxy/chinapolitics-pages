@@ -4,7 +4,7 @@ source: 批件 01
 title: 合资厂报道清样
 body: s03b1.md
 type: choice
-prompt: 你如何决定？
+prompt: 我该如何批示？
 next: v02-s03b2
 choices:
 - id: a1

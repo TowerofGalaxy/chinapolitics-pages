@@ -6,7 +6,7 @@ body: s01.md
 type: choice
 time: 同日下午两点半
 location: 上海 · 复旦大学数学系
-prompt: 你如何决定？
+prompt: 我该如何表态？
 next: v01-s02
 choices:
 - id: a

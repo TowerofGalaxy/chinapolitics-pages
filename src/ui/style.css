@@ -45,7 +45,10 @@ h2 { font-size: 15px; font-weight: 600; }
 .choice input { flex: none; width: 16px; height: 16px; margin: 4px 0 0; align-self: flex-start; accent-color: var(--action); }
 .choice:has(input:checked) { color: var(--action); font-weight: 600; }
 .choice:has(input:disabled) { color: var(--secondary); }
+.choice-content { display: flex; flex-direction: column; gap: 2px; }
 .choice small { display: block; color: var(--secondary); font: 400 13px/1.6 var(--sans); }
+.choice-hint { color: var(--secondary); opacity: 0.9; font-size: 13px; line-height: 1.5; }
+.choice-reason { color: var(--action); font-size: 12px; }
 button { min-height: 44px; border: 1px solid var(--action); padding: 8px 15px; background: var(--action); color: var(--action-ink); font: 500 14px/1.4 var(--sans); cursor: pointer; }
 button:disabled { border-color: var(--rule); background: var(--status); color: var(--secondary); cursor: default; }
 .decision button { margin-top: 11px; }

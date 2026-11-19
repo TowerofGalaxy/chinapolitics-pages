@@ -7,3 +7,10 @@ type: passage
 enter:
   - { type: stage-two }
 next: v04-s07
+bodyVariants:
+  - when:
+      tag: 铁腕履历
+    body: transition-trade.md
+  - when:
+      tag: 边缘平调序列
+    body: transition-union.md

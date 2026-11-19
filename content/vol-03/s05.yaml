@@ -6,7 +6,7 @@ body: s05.md
 type: choice
 time: 1992 年春
 location: 北京 · 国务院新闻办公室
-prompt: 你如何决定？
+prompt: 我该如何调度？
 next: v03-s05b1
 enter:
 - type: change

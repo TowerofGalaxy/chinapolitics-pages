@@ -13,11 +13,13 @@ next: v04-s08
 choices:
   - id: bus
     label: 坐 33 路公交，看看断头路
+    hint: 随车暗访早高峰拥堵与断头路施工进度，掌握一线民情民意
     outcome: s07-bus.md
     effects:
       - { type: add-tag, tag: 公交录像带 }
   - id: audit
     label: 请市审计局查城投专款
+    hint: 突击调阅市政专款拆借账目与城投流水，摸清财政真实资金缺口
     outcome: s07-audit.md
     effects:
       - { type: change, stat: fiscal_stability, amount: -5 }
@@ -29,6 +31,7 @@ choices:
       - { type: add-tag, tag: 城投挪用线索 }
   - id: visit
     label: 去宁海路拜访老省长
+    hint: 登门拜会老一辈省领导探听政治风向，求取平稳主政地方的经验
     outcome: s07-visit.md
     effects:
       - { type: change, stat: local_cohesion, amount: 5 }

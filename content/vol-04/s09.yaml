@@ -6,7 +6,7 @@ body: s09.md
 type: choice
 time: 2004 年 3 月 24 日，深夜
 location: 南京 · 省委常委会
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v04-s10
 choices:
 - id: a

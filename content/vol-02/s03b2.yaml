@@ -4,7 +4,7 @@ source: 批件 02
 title: 青联换届名额表
 body: s03b2.md
 type: choice
-prompt: 你如何决定？
+prompt: 我该如何批复？
 next: v02-s04r1
 choices:
 - id: b1

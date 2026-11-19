@@ -6,7 +6,7 @@ body: s02.md
 type: choice
 time: 同日晚八点
 location: 上海 · 淮海中路
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v01-close
 choices:
 - id: a

@@ -176,7 +176,11 @@ function restart() {
             :disabled="!available(state, choice) || (scene.select > 1 && draft.length >= scene.select && !draft.includes(choice.id))"
             @change="setDraft(choice.id, ($event.target as HTMLInputElement).checked)"
           >
-          <span>{{ choice.label }} <small v-if="!available(state, choice)">{{ choice.reason }}</small></span>
+          <span class="choice-content">
+            <span class="choice-title">{{ choice.label }}</span>
+            <small v-if="choice.hint" class="choice-hint">{{ choice.hint }}</small>
+            <small v-if="!available(state, choice)" class="choice-reason">{{ choice.reason }}</small>
+          </span>
         </label>
         <button type="button" :disabled="draft.length !== scene.select" @click="dispatch({ type: 'choose', choices: draft })">确认决定</button>
       </section>

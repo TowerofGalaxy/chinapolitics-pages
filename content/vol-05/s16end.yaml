@@ -4,9 +4,9 @@ source: 老陈的信封
 title: 老陈的信封
 body: s16end.md
 type: choice
-time: 2010 年秋，子夜十一点半
+time: 2010 年 4 月，子夜十一点半
 location: 北京 · 大木仓胡同
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v05-s17
 choices:
 - id: a

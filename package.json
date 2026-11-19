@@ -9,15 +9,15 @@
   },
   "scripts": {
     "check:story": "tsx scripts/compile-story.ts",
-    "predev": "pnpm check:story",
+    "predev": "tsx scripts/compile-story.ts",
     "dev": "vite --host 127.0.0.1",
-    "pretypecheck": "pnpm check:story",
+    "pretypecheck": "tsx scripts/compile-story.ts",
     "typecheck": "vue-tsc --noEmit",
-    "pretest": "pnpm check:story",
+    "pretest": "tsx scripts/compile-story.ts",
     "test": "vitest run",
-    "test:routes": "pnpm check:story && tsx scripts/find-routes.ts",
-    "test:paths": "pnpm check:story && tsx scripts/check-paths.ts",
-    "prebuild": "pnpm check:story",
+    "test:routes": "tsx scripts/compile-story.ts && tsx scripts/find-routes.ts",
+    "test:paths": "tsx scripts/compile-story.ts && tsx scripts/check-paths.ts",
+    "prebuild": "tsx scripts/compile-story.ts",
     "build": "vue-tsc --noEmit && vite build"
   },
   "dependencies": {

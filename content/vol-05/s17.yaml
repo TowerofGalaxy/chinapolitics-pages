@@ -6,7 +6,7 @@ body: s17.md
 type: choice
 time: 2010 年 6 月 30 日
 location: 北京 · 中组部北楼多功能厅
-prompt: 你如何决定？
+prompt: 我该如何回应？
 next: v05-gate18
 enter:
 - type: change

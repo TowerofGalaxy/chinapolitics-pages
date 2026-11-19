@@ -6,7 +6,7 @@ body: s10.md
 type: choice
 time: 2004 年 3 月 27 日，下午三点
 location: 南京 · 金陵饭店
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v04-s11
 enter:
 - type: change
@@ -72,7 +72,7 @@ choices:
       op: gte
       value: 60
   unavailable: locked
-  reason: 需要城投挪用线索或财政稳态值达到 60
+  reason: 需掌握城投挪用真实账目或具备充足财政抗风险底盘
 - id: c
   label: 出示外贸设备共管单，请求沙钢南钢竞价收购以保全银行贷款
   outcome: s10-c.md

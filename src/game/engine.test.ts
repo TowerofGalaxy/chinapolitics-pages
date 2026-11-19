@@ -272,4 +272,63 @@ describe('前三卷与阶段转换', () => {
     expect(result.result?.texts[0]).toContain('次日境外电讯发出报道')
     expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权系数' : '过去两年')
   })
+
+  describe('多卷衔接与文本分支回归测试', () => {
+    function resolveBody(state: GameState): string {
+      const scene = currentScene(story, state)
+      return scene.bodyVariants.find((variant) => meetsCondition(state, variant.when))?.body ?? scene.body
+    }
+
+    it.each([
+      { tag: undefined, expectedLoc: '沙滩北街的红墙', expectedDoc: '文化交流补贴批件' },
+      { tag: '铁腕履历', expectedLoc: '东长安街的车道', expectedDoc: '涉外土地批租' },
+      { tag: '边缘平调序列', expectedLoc: '复兴门外大街的高楼', expectedDoc: '特困职工帮扶救助台账' },
+    ])('第四卷序幕 transition 根据前卷标记 $tag 呈现对应第一人称正文', ({ tag, expectedLoc, expectedDoc }) => {
+      const state = startGame(story, 'v04-transition')
+      if (tag) state.tags.push(tag)
+      const text = resolveBody(state)
+      expect(text).toContain(expectedLoc)
+      expect(text).toContain(expectedDoc)
+      expect(text).toContain('五十岁的我拉开抽屉')
+      expect(text).toContain('我把本子放进公文包夹层')
+      expect(text).toContain('“东隅已逝，桑榆非晚。”')
+      expect(text).not.toContain('他把本子')
+      expect(text).not.toContain('李源潮拉开抽屉')
+    })
+
+    it.each([
+      { tag: undefined, expectedTitle: '“李部长，通报到了' },
+      { tag: '铁腕履历', expectedTitle: '“李司长，通报到了' },
+      { tag: '边缘平调序列', expectedTitle: '“李秘书长，通报到了' },
+    ])('第三卷场景 06 根据路线标记 $tag 调整秘书称呼', ({ tag, expectedTitle }) => {
+      const state = startGame(story, 'v03-s06')
+      if (tag) state.tags.push(tag)
+      const text = resolveBody(state)
+      expect(text).toContain(expectedTitle)
+      if (tag === '铁腕履历') {
+        expect(text).toContain('小陈在司里跟我几年')
+        expect(text).not.toContain('李部长')
+      } else if (tag === '边缘平调序列') {
+        expect(text).toContain('小陈在机关跟我几年')
+        expect(text).not.toContain('李部长')
+      }
+    })
+
+    it('第五卷 s16end 使用中性信访核查件说法，消灭自相矛盾词', () => {
+      const state = startGame(story, 'v05-s16end')
+      const text = resolveBody(state)
+      expect(text).toContain('中央纪委驻部纪检组转来一封线索具体的信访核查件')
+      expect(text).not.toContain('未署名的实名线索核查件')
+    })
+
+    it('第一卷 s00a 使用独立短引题交代身份，并自然以第一人称展开', () => {
+      const state = startGame(story, 'v01-s00a')
+      const text = resolveBody(state)
+      expect(text).toMatch(/^【主角：李源潮（时名李援朝）】/)
+      expect(text).toContain('在苏北盐城大丰农场度过近七年插队知青岁月后，我考入复旦数学系七七级')
+      expect(text).toContain('“李援朝”三个字墨迹未干')
+      expect(text).not.toContain('李源潮（时名李援朝）坐在')
+      expect(text).not.toContain('李源潮三个字墨迹未干')
+    })
+  })
 })

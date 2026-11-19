@@ -6,7 +6,7 @@ body: s03.md
 type: choice
 time: 1985 年秋，中午十二点
 location: 北京 · 前门东大街
-prompt: 你如何决定？
+prompt: 我该如何决断？
 next: v02-s03b1
 choices:
 - id: a

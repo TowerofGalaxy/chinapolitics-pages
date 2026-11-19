@@ -6,7 +6,7 @@ body: s17a.md
 type: choice
 time: 2013 年 12 月
 location: 北京 · 外事值班室
-prompt: 你如何决定？
+prompt: 我该如何调阅？
 ap: vol6_ap
 next: v06-s18r1
 choices:

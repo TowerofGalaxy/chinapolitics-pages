@@ -4,7 +4,7 @@ source: 批件 03
 title: 金融数据终端准入
 body: s05b1.md
 type: choice
-prompt: 你如何决定？
+prompt: 我该如何批示？
 next: v03-s05b2
 choices:
 - id: c1

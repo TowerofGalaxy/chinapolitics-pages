@@ -6,7 +6,7 @@ body: start.md
 type: choice
 time: 2008 年冬至 2009 年初，上午九点
 location: 北京 · 中组部北楼办公室
-prompt: 调阅两份卷宗
+prompt: 调阅两份卷宗（二选其二）
 ap: vol5_ap
 select: 2
 next: v05-s15

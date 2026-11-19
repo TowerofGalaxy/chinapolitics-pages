@@ -4,7 +4,7 @@ source: 江苏厅开放日 · 第三轮
 title: 江苏厅开放日 · 第三轮
 body: s13r3.md
 type: choice
-prompt: 你如何决定？
+prompt: 我该如何回应？
 next: v04-s14
 choices:
 - id: a
