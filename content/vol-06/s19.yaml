@@ -22,6 +22,9 @@ additions:
     tag: 云淡风轻
   body: s19-item3.md
 - when:
+    tag: 坦陈求是
+  body: s19-item-candid.md
+- when:
     tag: 改革盟约
   body: s19-item4.md
 - when:
@@ -30,3 +33,23 @@ additions:
 - when:
     tag: 宏观定力
   body: s19-item6.md
+- when:
+    all:
+    - tag: 坦陈求是
+    - tag: 未竞的改革之弦
+  body: s19-memoir-reform.md
+- when:
+    all:
+    - tag: 端方国士
+    - tag: 云淡风轻
+  body: s19-memoir-prudent.md
+- when:
+    all:
+    - tag: 端方国士
+    - tag: 未竞的改革之弦
+  body: s19-memoir-mixed-a.md
+- when:
+    all:
+    - tag: 坦陈求是
+    - tag: 云淡风轻
+  body: s19-memoir-mixed-b.md

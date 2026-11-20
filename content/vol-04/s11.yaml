@@ -20,6 +20,10 @@ choices:
 - id: a
   label: 动用省级财政预备费垫付工资与青苗款，劝离清场
   outcome: s11-a.md
+  outcomeVariants:
+  - when:
+      tag: 连带问责留档
+    body: s11-a-rectified.md
   effects:
   - type: change
     stat: central_trust
@@ -32,13 +36,17 @@ choices:
     amount: -12
   - type: add-tag
     tag: 预备费见底
+  - type: add-tag
+    tag: 问责善后落实
+    when:
+      tag: 连带问责留档
   condition:
     stat: fiscal_stability
     op: gt
     value: 40
   unavailable: locked
   reason: 省级财政预备金不足以兜底大额应急支出
-  hint: 财政垫付欠薪，花钱买平安息事。
+  hint: 预备费拿出来容易，可今年后半段省财政就得勒紧裤腰带了。
 - id: b
   label: 严守预算法红线，省财政不垫一分钱，责令常州拍卖资产自筹
   outcome: s11-b.md
@@ -54,7 +62,7 @@ choices:
     amount: -15
   - type: add-tag
     tag: 雨中聚众影像
-  hint: 严守财政纪律不掏钱，逼地方自筹。
+  hint: 预算法红线碰不得，地方捅的篓子必须由地方资产自己去平。
 - id: c
   label: 省纪委进驻督导，涉案审批官员全员包干质押清场
   outcome: s11-c.md
@@ -70,7 +78,7 @@ choices:
     amount: -5
   - type: add-tag
     tag: 官场寒蝉效应
-  hint: 纪委进驻一线，责令涉案干部清欠。
+  hint: 让涉案官员立军令状包干清场，事情是能办下来，可机关人心就全凉了。
 bodyVariants:
 - when:
     tag: 彻底停工

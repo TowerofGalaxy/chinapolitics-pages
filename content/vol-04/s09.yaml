@@ -26,7 +26,7 @@ choices:
     tag: 彻底停工
   - type: add-tag
     tag: 省府裂痕
-  hint: 全面停工服从大局，直面地方震荡。
+  hint: 断水断电封存账户，这一刀切下去，省里地市的怨气全得冲自己来。
 - id: b
   label: 同意由省政府牵头起草换壳重组备忘录，切割违规责任
   outcome: s09-b.md
@@ -42,7 +42,7 @@ choices:
     amount: -10
   - type: add-tag
     tag: 地方重组意向
-  hint: 支持边建边补手续，偏向地方投资。
+  hint: 省政府想搞换壳重组保投资，顺水推舟，但北京那边交代得过去吗？
 - id: c
   label: 主体炼钢项目叫停，准许外贸集团设共管账户接管港口德国设备
   outcome: s09-c.md
@@ -63,7 +63,7 @@ choices:
     tag: 设备共管方案
   - type: add-tag
     tag: 折中敷衍疑虑
-  hint: 停建项目接管设备，在夹缝中减损。
+  hint: 炼钢叫停，设备共管，在宏观调控与几十亿资产打水漂之间踩平衡。
 additions:
 - when:
     choice:

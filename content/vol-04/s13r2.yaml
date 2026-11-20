@@ -19,7 +19,7 @@ choices:
     amount: -8
   - type: add-tag
     tag: 党管干部质疑
-  hint: 顺势亮明民主趋势，向外界展示改革决心。
+  hint: 借外媒的麦克风把宿迁选拔讲透，改革者的姿态做足，但风险也是对等的。
 - id: b
   label: 全盘否定改革突破，强调纯粹按现行条例执行
   outcome: s13r2-b.md
@@ -35,7 +35,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 改革保守退缩
-  hint: 拿现行条例当掩护，坚决撇清越轨。
+  hint: 一口咬定完全依照《干部任用条例》，绝口不提体制创新，四平八稳。
 - id: c
   label: 以组织考核的信息降噪做专业回应
   outcome: s13r2-c.md
@@ -59,4 +59,4 @@ choices:
   condition:
     tag: 制度精算样本
   unavailable: hidden
-  hint: 用考评降噪作答，把争议引向模型。
+  hint: 把所谓的政治试验，拆解成现代组织人事考核里的“信息降噪”技术。

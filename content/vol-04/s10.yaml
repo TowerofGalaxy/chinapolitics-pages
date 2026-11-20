@@ -50,7 +50,7 @@ choices:
   - when:
       tag: 法治骨气
     body: s10-a-law.md
-  hint: 承担监管首责写检讨，换从轻发落。
+  hint: 先承担监管责任，把整改的事办下去；检讨也会留在档案里。
 - id: b
   label: 摆出地方金融压力测试表，争取二十天债务置换窗口
   outcome: s10-b.md
@@ -89,7 +89,7 @@ choices:
         id: credit
   unavailable: locked
   reason: 需掌握城投挪用真实账目、常委会前质询锁定金融坏账或具备充足财政底盘
-  hint: 出示金融坏账底牌，争取置换窗口。
+  hint: 拿出压箱底的金融压力测试表，用系统性风险反向逼部委给喘息时间。
 - id: c
   label: 出示外贸设备共管单，请求沙钢南钢竞价收购以保全银行贷款
   outcome: s10-c.md
@@ -117,7 +117,7 @@ choices:
   condition:
     tag: 设备共管方案
   unavailable: hidden
-  hint: 凭设备共管单竞标，保全银行贷款。
+  hint: 借外贸设备共管的手续引两家大钢厂竞价，把烂摊子做成市场化重组。
 additions:
 - when:
     tag: 土地融资依赖

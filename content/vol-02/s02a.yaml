@@ -12,14 +12,14 @@ next: v02-s03
 choices:
 - id: a
   label: 调取温州工商局与地委报送的内部原始统计表
-  hint: 掌握温州实数，备作反驳依据。
+  hint: 调一调温州家庭作坊的底细，把真实账本翻出来看看。
   outcome: s02a-a.md
   effects:
   - type: add-tag
     tag: 温州调研原件
 - id: b
   label: 查阅中宣部与中办近期下发的《新闻阅评预审口径单》
-  hint: 吃透审查红线，防止报纸触雷。
+  hint: 摸清中宣部和中办的预审禁区，免得报纸撞上枪口。
   outcome: s02a-b.md
   effects:
   - type: add-tag

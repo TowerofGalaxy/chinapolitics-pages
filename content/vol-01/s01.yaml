@@ -21,7 +21,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 书生执拗
-  hint: 直陈搞科研意愿，婉拒组织试探。
+  hint: 真要在老徐面前把窗户纸捅破？手头的算稿才刚接上进度。
 - id: b
   label: 先接任务，把谈话重点落回组织用人标准
   outcome: s01-b.md
@@ -34,7 +34,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 考察保留
-  hint: 顺应组织口径，探明选拔意图。
+  hint: 顺着组织的口径探探底细，先把调令的虚实摸清。
 - id: c
   label: 出示推导与兼职设想，请求在职双轨试行
   outcome: s01-c.md
@@ -52,7 +52,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 双轨探索者
-  hint: 提议兼任团委并在职读研，两边兼顾。
+  hint: 两边都割舍不下，索性把双轨兼顾的方案摆上台面。
 - id: d
   label: 当场在报考研究生登记表签名落款
   outcome: s01-d.md
@@ -60,4 +60,4 @@ choices:
   - type: add-tag
     tag: 象牙塔学者
   next: v01-ending-b
-  hint: 当场签字报考，关上从政大门。
+  hint: 笔尖一旦落在纸上，从政的退路可就彻底断了。

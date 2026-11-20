@@ -18,13 +18,13 @@ choices:
     amount: 4
   - type: change
     stat: local_cohesion
-    amount: -6
+    amount: -4
   - type: change
     stat: reform_drive
     amount: -2
   - type: add-tag
     tag: 大义灭亲
-  hint: 移交纪检依纪严办，与旧部切割。
+  hint: 违纪底线碰不得，既然捅了篓子，就必须公事公办交纪检组查到底。
 - id: b
   label: 限期退款补税，平调二线脱敏
   outcome: s16end-b.md
@@ -37,7 +37,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 大秘隐雷
-  hint: 责令退赃补税并调离要害，内部消化风波。
+  hint: 责令退赃补税并调离要害部门，家丑不可外扬，把风波在内部按下去。
 - id: c
   label: 核查账目虚实，借刀反向清障
   outcome: s16end-c.md
@@ -54,4 +54,4 @@ choices:
   condition:
     tag: 监督局带病档案
   unavailable: hidden
-  hint: 核查账目借刀反查，借力清除暗桩。
+  hint: 顺着线索查到背后递材料的人，用监督局的档案反向敲打，逼对方知难而退。

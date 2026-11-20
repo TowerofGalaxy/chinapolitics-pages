@@ -13,14 +13,14 @@ next: v04-s08
 choices:
 - id: bus
   label: 坐 33 路公交，看看断头路
-  hint: 乘公交暗访断头路，掌握拥堵实情。
+  hint: 坐在机关大楼里听汇报，不如亲自去挤两趟33路。
   outcome: s07-bus.md
   effects:
   - type: add-tag
     tag: 公交录像带
 - id: audit
   label: 请市审计局查城投专款
-  hint: 突查城投拆借流水，查清财政缺口。
+  hint: 摸一摸城投的底细，看看那笔专款到底转了几道弯。
   outcome: s07-audit.md
   effects:
   - type: change
@@ -37,7 +37,7 @@ choices:
     tag: 城投挪用线索
 - id: visit
   label: 去宁海路拜访老省长
-  hint: 登门拜会老省长，摸清老干部态度。
+  hint: 初来乍到，先去宁海路听听老省长的敲打。
   outcome: s07-visit.md
   effects:
   - type: change

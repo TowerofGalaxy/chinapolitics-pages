@@ -4,14 +4,29 @@ source: 两份卷宗
 title: 两份卷宗
 body: brief.md
 type: choice
+time: 2004 年 3 月，常委会前夜
+location: 南京 · 省委一号楼办公室
 prompt: 常委会开场前，我先从哪条线索入手？
 next: v04-s09
 choices:
 - id: land
   label: 先咬死 6541 亩土地红线
-  hint: 咬死违规占用农田事实，定死纪律红线。
+  hint: 耕地红线是国务院三令五申的高压线，先从这六千多亩地上撕开口子。
   outcome: brief-land.md
 - id: credit
   label: 先咬死 43 亿银行坏账穿透
-  hint: 穿透巨额信贷坏账底牌，切断重组退路。
+  hint: 四十多亿的信贷敞口，真要爆了谁也担不起，不如先把它摆上台面。
   outcome: brief-credit.md
+additions:
+- when:
+    tag: 机关震荡反弹
+  body: brief-trans-a.md
+- when:
+    tag: 整顿流于形式
+  body: brief-trans-b.md
+- when:
+    tag: 土地融资依赖
+  body: brief-trans-c.md
+- when:
+    tag: 建委隐形积怨
+  body: brief-trans-d.md

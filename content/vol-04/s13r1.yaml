@@ -27,7 +27,7 @@ choices:
     amount: -6
   - type: add-tag
     tag: 涉外口径微瑕
-  hint: 坦承执行节奏偏急，替民企说句公道话。
+  hint: 记者抓着铁本不放，承认执行有些粗放，可这话说出去会不会被做文章？
 - id: b
   label: 按统发口径重申个别企业违法，切下一题
   outcome: s13r1-b.md
@@ -40,7 +40,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 外宣僵化印象
-  hint: 重申企业违法定性，快速回避追问。
+  hint: 念统发通报最保险，任凭台下记者眼神怎么变，照本宣科总挑不出错。
 - id: c
   label: 从不良信贷出清与资产合规处置角度回应
   outcome: s13r1-c.md
@@ -72,7 +72,7 @@ choices:
   - when:
       tag: 设备共管方案
     body: s13r1-c-equipment.md
-  hint: 从防范信贷坏账切入，用规则解套。
+  hint: 跳出意识形态打法，用金融审慎和出清不良资产的现代监管逻辑来答。
 additions:
 - when:
     any:

@@ -25,7 +25,7 @@ enter:
 choices:
 - id: screening
   label: 播放暗访录像，当场宣布停职两人
-  hint: 直放暗访录像，现场停职两局长。
+  hint: 当着千人会场的面把录像放出来，等于直接掀了桌子。
   condition:
     tag: 公交录像带
   unavailable: locked
@@ -45,7 +45,7 @@ choices:
     tag: 机关震荡反弹
 - id: criticism
   label: 内部通报，限期整改
-  hint: 内部通报留情面，责成单位自查。
+  hint: 刚来不宜大动干戈，留个整改余地，各方脸面上过得去。
   outcome: s08-criticism.md
   effects:
   - type: change
@@ -61,7 +61,7 @@ choices:
     tag: 整顿流于形式
 - id: taskforce
   label: 成立市委直管的城投专班
-  hint: 组建直管专班，收拢审批推进度。
+  hint: 把城投审批权一把抓过来，事情能快，但财政包袱全压在自己身上了。
   outcome: s08-taskforce.md
   effects:
   - type: change
@@ -77,7 +77,7 @@ choices:
     tag: 土地融资依赖
 - id: private
   label: 会上讲规划，会后出示转账凭证
-  hint: 大会留体面，闭门出示账单下通牒。
+  hint: 会上留足台阶，散会后关起门来拿着转账凭证摊牌。
   condition:
     tag: 城投挪用线索
   unavailable: hidden

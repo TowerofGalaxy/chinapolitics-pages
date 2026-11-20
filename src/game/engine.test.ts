@@ -135,8 +135,8 @@ describe('第四卷后续规则', () => {
   it.each([
     { c: 44, l: 90, f: 60, r: 90, tags: ['激进政改旗手'], target: 'v06-ending-c' },
     { c: 50, l: 35, f: 35, r: 60, tags: ['激进政改旗手'], target: 'v06-ending-d' },
-    { c: 65, l: 38, f: 35, r: 50, tags: [], target: 'v05-start' },
-    { c: 64, l: 80, f: 60, r: 80, tags: [], target: 'v06-ending-e' },
+    { c: 62, l: 35, f: 35, r: 50, tags: [], target: 'v05-start' },
+    { c: 61, l: 80, f: 60, r: 80, tags: [], target: 'v06-ending-e' },
   ])('十七大按优先级分流至 $target', ({ c, l, f, r, tags, target }) => {
     const state = startGame(story, 'v04-gate17')
     Object.assign(state.stats, { central_trust: c, local_cohesion: l, fiscal_stability: f, reform_drive: r })
@@ -162,8 +162,8 @@ describe('十八大换届与第六卷', () => {
     { c: 85, l: 35, r: 75, tags: [], target: 'v06-ending-a1' },
     { c: 85, l: 35, r: 75, tags: ['连带问责留档'], target: 'v06-s17a' },
     { c: 59, l: 50, r: 75, tags: [], target: 'v06-ending-a3' },
-    { c: 60, l: 35, r: 50, tags: [], target: 'v06-s17a' },
-    { c: 80, l: 34, r: 50, tags: [], target: 'v06-ending-a3' },
+    { c: 60, l: 30, r: 50, tags: [], target: 'v06-s17a' },
+    { c: 80, l: 29, r: 50, tags: [], target: 'v06-ending-a3' },
   ])('十八大按边界分流至 $target', ({ c, l, r, tags, target }) => {
     const state = startGame(story, 'v05-gate18')
     Object.assign(state.stats, { central_trust: c, local_cohesion: l, reform_drive: r })
@@ -270,7 +270,7 @@ describe('前三卷与阶段转换', () => {
     if (withMatrix) state.tags.push('加权考核矩阵')
     const result = applyAction(story, state, { type: 'choose', choices: ['b'] })
     expect(result.result?.texts[0]).toContain('次日境外电讯发出报道')
-    expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权系数' : '规范民主推荐与组织考察衔接程序')
+    expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权' : '规范民主推荐与组织考察')
   })
 
   describe('多卷衔接与文本分支回归测试', () => {

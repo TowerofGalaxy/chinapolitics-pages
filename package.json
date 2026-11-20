@@ -17,6 +17,7 @@
     "test": "vitest run",
     "test:routes": "tsx scripts/compile-story.ts && tsx scripts/find-routes.ts",
     "test:paths": "tsx scripts/compile-story.ts && tsx scripts/check-paths.ts",
+    "test:balance": "tsx scripts/compile-story.ts && tsx scripts/simulate-balance.ts",
     "prebuild": "tsx scripts/compile-story.ts",
     "build": "vue-tsc --noEmit && vite build"
   },

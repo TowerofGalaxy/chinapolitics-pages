@@ -9,7 +9,7 @@ next: v02-s04r1
 choices:
 - id: b1
   label: 退回重拟，规定海归学者与青年律师代表不低于两成
-  hint: 提高知识界与海归名额，压缩传统比例。
+  hint: 退回方案硬加两成海归和法律人才，打破老资历平衡。
   outcome: s03b2-b1.md
   effects:
   - type: change
@@ -22,7 +22,7 @@ choices:
     tag: 脱离工农议论
 - id: b2
   label: 仅在特邀名额补进两名海归骨干，其余维持原比例
-  hint: 特邀微调安抚，维持既有格局。
+  hint: 顺水推舟只添两名特邀名额，免得惹来老同志联名信。
   outcome: s03b2-b2.md
   effects:
   - type: change

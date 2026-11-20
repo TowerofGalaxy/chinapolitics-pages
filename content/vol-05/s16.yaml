@@ -17,7 +17,7 @@ enter:
 choices:
 - id: a
   label: 按资历序列，从广东省内资深副省长中顺位递补
-  hint: 按资历顺位递补，四平八稳过渡。
+  hint: 顺着广东省内的副省长序列递补，最合乎机关规矩，谁也挑不出毛病。
   outcome: s16-a.md
   effects:
   - type: change
@@ -33,7 +33,7 @@ choices:
     tag: 粤系地方阻力
 - id: b
   label: 跨省点将，选调苏州市委书记王荣南下深圳
-  hint: 破例调旧部南下，承担结党非议。
+  hint: 跨省点调王荣南下深圳，固然能破产业转型的僵局，但派系结盟的非议也免不了。
   outcome: s16-b.md
   effects:
   - type: change
@@ -65,7 +65,7 @@ choices:
   unavailable: hidden
 - id: c
   label: 折中平衡，从国家发改委或商务部抽调副部长空降特区
-  hint: 空降部委副职，在地方中央间折中。
+  hint: 从国家发改委或商务部挑副部长空降，跳出地方人情网，但也得承受水土不服的代价。
   outcome: s16-c.md
   effects:
   - type: change

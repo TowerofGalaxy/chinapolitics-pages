@@ -41,15 +41,174 @@ h1 { margin-block: 4px 15px; font: 700 clamp(24px, 4vw, 31px)/1.4 var(--serif); 
 .decision-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
 h2 { font-size: 15px; font-weight: 600; }
 .decision-head span { color: var(--secondary); white-space: nowrap; font-size: 13px; }
-.choice { display: flex; width: 100%; align-items: flex-start; gap: 12px; min-height: 52px; margin-top: 8px; padding: 12px 14px; border: 1px solid var(--rule); font-size: 15px; cursor: pointer; }
+.choice { position: relative; overflow: hidden; display: flex; width: 100%; align-items: flex-start; gap: 12px; min-height: 52px; margin-top: 8px; padding: 12px 14px; border: 1px solid var(--rule); font-size: 15px; cursor: pointer; }
 .choice input { flex: none; width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--action); }
 .choice:has(input:checked) { border-color: var(--action); background: var(--status); color: var(--action); font-weight: 600; }
 .choice:has(input:focus-visible) { outline: 2px solid var(--action); outline-offset: 2px; }
 .choice:has(input:disabled) { color: var(--secondary); cursor: not-allowed; }
-.choice-content { display: flex; flex-direction: column; gap: 2px; }
+.choice-content { display: flex; flex-direction: column; gap: 2px; z-index: 1; }
 .choice small { display: block; color: var(--secondary); font: 400 13px/1.6 var(--sans); }
 .choice-hint { color: var(--secondary); opacity: 0.9; font-size: 13px; line-height: 1.5; }
 .choice-reason { color: var(--action); font-size: 12px; }
+
+/* 案头公文仪式感与签批印章 */
+.doc-classified-banner { text-align: center; color: light-dark(#b91c1c, #ef4444); font-family: var(--serif); font-size: 13px; font-weight: 700; letter-spacing: 4px; margin-top: 14px; }
+.red-header-rule { width: 100%; height: 4px; border-top: 3px double light-dark(#b91c1c, #ef4444); margin: 6px 0 20px; }
+.stamp-mark {
+  position: absolute;
+  right: 14px;
+  top: 9px;
+  padding: 2px 10px;
+  border: 2px solid light-dark(#b91c1c, #ef4444);
+  color: light-dark(#b91c1c, #ef4444);
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border-radius: 3px;
+  transform: rotate(-6deg);
+  pointer-events: none;
+  animation: stamp-drop 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: light-dark(rgba(254, 242, 242, 0.85), rgba(44, 26, 26, 0.85));
+  box-shadow: 0 0 4px rgba(185, 28, 28, 0.2);
+}
+@keyframes stamp-drop {
+  from { transform: scale(1.6) rotate(6deg); opacity: 0; }
+  to { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+
+/* 历史回响（跨卷 Flag 高感知印章） */
+.echo-banner { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 16px; }
+.echo-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid light-dark(#b91c1c, #e57373);
+  background: light-dark(#fef2f2, #2c1a1a);
+  color: light-dark(#991b1b, #fca5a5);
+  border-radius: 2px;
+  font-size: 13px;
+  font-family: var(--serif);
+  animation: echo-fade-in 0.35s ease-out;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+@keyframes echo-fade-in {
+  from { transform: translateY(-4px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.echo-seal { border: 1px solid currentColor; padding: 0 3px; font-size: 11px; font-weight: 700; line-height: 1.2; }
+.echo-year { font-weight: 700; font-size: 12px; letter-spacing: 0.5px; }
+.echo-name { font-weight: 600; }
+.echo-tag-label { font-size: 12px; opacity: 0.85; }
+
+/* 三轮交锋实机对决模块 */
+.duel-container {
+  margin: 22px 0;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--action);
+  background: light-dark(#fcfbf7, #222521);
+  padding: 18px 20px;
+  border-radius: 2px;
+}
+.duel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px dashed var(--rule);
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+}
+.duel-opponent-box { display: flex; flex-direction: column; gap: 2px; }
+.duel-opponent { font-family: var(--serif); font-size: 16px; font-weight: 700; color: var(--ink); }
+.duel-opponent-title { font-size: 12px; color: var(--secondary); }
+.duel-location { font-size: 12px; color: var(--secondary); }
+.duel-intro { font-size: 15px; line-height: 1.8; color: var(--ink); margin-bottom: 18px; font-style: italic; }
+.duel-round-block {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  background: light-dark(#f4f3ec, #282c26);
+  border-radius: 3px;
+  border: 1px solid var(--rule);
+}
+.duel-round-title { font-size: 13px; font-weight: 700; color: var(--action); margin-bottom: 8px; letter-spacing: 1px; }
+.duel-challenge { margin-bottom: 12px; font-size: 15.5px; line-height: 1.8; font-family: var(--serif); border-left: 2px solid var(--rule); padding-left: 10px; color: var(--ink); }
+.duel-tactics-prompt { font-size: 13px; font-weight: 600; color: var(--secondary); margin-bottom: 8px; }
+.duel-tactics-grid { display: grid; gap: 10px; grid-template-columns: 1fr; margin-bottom: 8px; }
+@media (min-width: 580px) {
+  .duel-tactics-grid { grid-template-columns: 1fr 1fr; }
+}
+.tactic-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px 12px;
+  border: 1px solid var(--rule);
+  background: var(--page);
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 2px;
+}
+.tactic-btn:hover { border-color: var(--action); background: var(--status); }
+.tactic-btn.active { border-color: var(--action); background: var(--status); font-weight: 600; }
+.tactic-btn .tactic-label { font-weight: 700; font-size: 13px; color: var(--action); margin-bottom: 4px; }
+.tactic-btn .tactic-preview { font-size: 12px; color: var(--secondary); line-height: 1.5; }
+.duel-response-block {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: light-dark(#edf4f0, #1c2e26);
+  border-left: 3px solid var(--action);
+  border-radius: 2px;
+}
+.duel-response-speech { font-family: var(--serif); font-size: 15px; line-height: 1.8; color: var(--ink); margin-bottom: 6px; }
+.duel-reaction { font-size: 13px; color: var(--secondary); font-style: italic; }
+.duel-delta-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  font-size: 11px;
+  border-radius: 2px;
+  background: var(--action);
+  color: var(--action-ink);
+  font-weight: 600;
+}
+.duel-next-btn {
+  margin-top: 12px;
+  width: 100%;
+  border: 1px solid var(--action);
+  background: var(--action);
+  color: var(--action-ink);
+  font-weight: 600;
+  font-size: 13.5px;
+  cursor: pointer;
+  padding: 9px 16px;
+}
+.duel-climax-block {
+  margin-top: 14px;
+  padding: 12px 16px;
+  background: light-dark(#fefefe, #242722);
+  border-left: 3px solid var(--secondary);
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink);
+}
+.duel-toggle-link {
+  margin-top: 12px;
+  display: inline-block;
+  font-size: 12px;
+  color: var(--secondary);
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  min-height: unset;
+}
 button { min-height: 44px; border: 1px solid var(--action); padding: 8px 15px; background: var(--action); color: var(--action-ink); font: 500 14px/1.4 var(--sans); cursor: pointer; }
 button:disabled { border-color: var(--rule); background: var(--status); color: var(--secondary); cursor: default; }
 .decision button { margin-top: 11px; }
@@ -58,6 +217,11 @@ button:disabled { border-color: var(--rule); background: var(--status); color: v
 .ending-label { margin-top: 24px; color: var(--secondary); font-size: 14px; }
 footer { margin-top: 50px; border-top: 1px solid var(--rule); }
 .restart { padding-inline: 0; background: transparent; border: 0; color: var(--secondary); }
+.skip-read { margin-left: 10px; background: transparent; color: var(--secondary); border: 1px solid var(--rule); }
+.chapter-menu { padding-top: 16px; color: var(--secondary); font-size: 14px; }
+.chapter-menu summary { cursor: pointer; }
+.chapter-menu p { margin: 10px 0; }
+.chapter-menu button { display: block; padding: 7px 0; background: transparent; color: var(--ink); border: 0; text-align: left; }
 :focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
 
 @media (max-width: 480px) {

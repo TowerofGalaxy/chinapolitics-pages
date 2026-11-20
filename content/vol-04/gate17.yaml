@@ -13,7 +13,7 @@ routes:
       value: 45
     - stat: fiscal_stability
       op: lt
-      value: 35
+      value: 30
   next: v06-ending-c
 - when:
     all:
@@ -29,11 +29,11 @@ routes:
     all:
     - stat: central_trust
       op: gte
-      value: 65
+      value: 62
     - stat: local_cohesion
       op: gte
-      value: 38
+      value: 35
     - stat: reform_drive
       op: gte
-      value: 50
+      value: 45
   next: v05-start

@@ -1,9 +1,16 @@
 import dictionary from '../../variables.json'
+import { DUELS } from '../ui/duels'
 import type { Choice, Condition, Effect, Scene } from '../story/schema'
 
 export type GameAction =
   | { type: 'choose'; choices: string[] }
   | { type: 'continue' }
+  | { type: 'duel'; round: number; tactic: string }
+
+export interface DuelPick {
+  id: string
+  changes: Record<string, number>
+}
 
 export interface GameState {
   sceneId: string
@@ -12,6 +19,7 @@ export interface GameState {
   actionPoints: Record<string, number>
   tags: string[]
   history: Record<string, string[]>
+  duelPicks: Record<string, DuelPick[]>
   result?: { choices: string[]; texts: string[]; changes: Record<string, number>; next: string }
   entryChanges: Record<string, number>
 }
@@ -53,6 +61,7 @@ function copyState(state: GameState): GameState {
     actionPoints: { ...state.actionPoints },
     tags: [...state.tags],
     history: Object.fromEntries(Object.entries(state.history).map(([id, choices]) => [id, [...choices]])),
+    duelPicks: Object.fromEntries(Object.entries(state.duelPicks).map(([id, picks]) => [id, picks.map((pick) => ({ ...pick, changes: { ...pick.changes } }))])),
     result: state.result && {
       ...state.result,
       choices: [...state.result.choices],
@@ -67,9 +76,10 @@ function applyEffects(state: GameState, effects: Effect[]): Record<string, numbe
   const before = copyState(state)
   const deltas: Record<string, { positive: number; negative: number }> = {}
   for (const effect of effects) {
-    if (effect.type === 'stage-two') {
-      const centralInjection = Math.max(-4, Math.min(4, Math.floor((before.stats.cadre_trust - 50) / 4)))
-      const reformInjection = Math.max(-4, Math.min(4, Math.floor((before.stats.reform_acumen - 50) / 4)))
+    if (effect.type === 'stage-two' || effect.type === 'stage-two-legacy') {
+      const limit = effect.type === 'stage-two' ? 6 : 4
+      const centralInjection = Math.max(-limit, Math.min(limit, Math.floor((before.stats.cadre_trust - 50) / 4)))
+      const reformInjection = Math.max(-limit, Math.min(limit, Math.floor((before.stats.reform_acumen - 50) / 4)))
       const centralPenalty = (before.tags.includes('边缘平调序列') ? 3 : 0) + (before.tags.includes('报批越界通报') ? 2 : 0)
       state.stats.central_trust = Math.max(0, Math.min(100, 55 + centralInjection - centralPenalty))
       state.stats.reform_drive = Math.max(0, Math.min(100, 50 + reformInjection))
@@ -124,6 +134,7 @@ export function startGame(story: Story, sceneId = 'v01-s00a'): GameState {
     actionPoints,
     tags: sceneId.startsWith('v01-') ? ['纯粹知识分子底色'] : [],
     history: {},
+    duelPicks: {},
     entryChanges: {},
   }, sceneId)
 }
@@ -134,6 +145,20 @@ export function available(state: GameState, choice: Choice): boolean {
 
 export function applyAction(story: Story, previous: GameState, action: GameAction): GameState {
   const scene = currentScene(story, previous)
+  if (action.type === 'duel') {
+    if (previous.phase !== 'scene') throw new Error('当前无法交锋')
+    const duel = DUELS[scene.id]
+    const picks = previous.duelPicks[scene.id] ?? []
+    const round = duel?.rounds[action.round]
+    const tactic = round?.tactics?.find((item) => item.id === action.tactic)
+    if (!Number.isInteger(action.round) || action.round !== picks.length || !tactic) throw new Error('交锋选择无效')
+    const next = copyState(previous)
+    const changes = tactic.statDelta
+      ? applyEffects(next, [{ type: 'change', stat: tactic.statDelta.stat, amount: tactic.statDelta.amount }])
+      : {}
+    next.duelPicks[scene.id] = [...picks, { id: tactic.id, changes }]
+    return next
+  }
   if (action.type === 'continue') {
     const target = previous.phase === 'result'
       ? previous.result?.next

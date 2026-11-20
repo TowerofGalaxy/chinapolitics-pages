@@ -10,9 +10,9 @@ const routes: Record<string, string> = {
   'v06-ending-a1': 'b b c b a a1 b2 b a b a c1 d1 a audit+visit private land a b c b c c c b a+c b c c b',
   'v06-ending-a2': 'a b b b b a1 b2 a c a a c1 d1 a bus+visit screening land b a a b b a c b c+a a a a b a a a',
   'v06-ending-a3': 'a c b a b a2 b2 a a b b c1 d2 a visit+bus screening land b a b b b a b b b+c a a b c',
-  'v06-ending-c': 'c c a a c a2 b1 a c a b c2 d1 b bus+audit screening land a a a c c a a b',
+  'v06-ending-c': 'c c a a c a2 b1 a c a b c2 d1 b bus+audit screening credit b b c c a b b c',
   'v06-ending-d': 'a b b b c a1 b1 a a a c c2 d1 b visit+bus screening land a a a a a a b b',
-  'v06-ending-e': 'c a b b b a1 b2 b b b a c1 d1 b audit+visit private credit c a a c c a a b',
+  'v06-ending-e': 'c a b b b a1 b2 b b b a c1 d1 b audit+visit private credit c a a c c a a a',
 }
 
 describe('结局可达性', () => {

@@ -1,4 +1,4 @@
-# verify_paths.py - Full 6-Volume Schema & Exhaustive Path Verification
+# 旧版手写模型：规则可能与网页引擎不同，数值分布请使用 pnpm test:balance。
 import json
 import glob
 import re
@@ -61,17 +61,18 @@ def evaluate_17th_congress(c, l, f, r, tags):
         return "Ending C (改革折翼 · 倚楼听风)"
     if "激进政改旗手" in tags and c >= 50 and r >= 60:
         return "Ending D (顺水推舟 · 青灯咨政)"
-    if c >= 65 and l >= 38 and r >= 50:
+    if c >= 62 and l >= 35 and r >= 50:
         return "PROCEED_TO_VOL5"
     return "Ending E (留任守成 · 异地平调)"
 
 def evaluate_18th_congress(c, l, f, r, tags):
-    if (c >= 85 and r >= 75
+    eff_c = c - (8 if "大秘隐雷" in tags else 0)
+    if (eff_c >= 85 and r >= 75
             and "自揭家丑非议" not in tags
             and "连带问责留档" not in tags
             and "大秘隐雷" not in tags):
         return "Ending A1 (巅峰折冲 · 核心统筹)"
-    if c < 60 or l < 35:
+    if eff_c < 60 or l < 30:
         return "Ending A3 (提前淡出 · 倚楼晚照)"
     return "PROCEED_TO_VOL6"
 
@@ -134,6 +135,7 @@ def run_historical_baseline():
     print(f"卷四结束(十七大节点): 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e17}")
 
     # Vol 5: (摸底 A+C -> 15-B 测评 -> 16-B 特区 -> Black Swan C 借刀 -> 17-B 吹风会)
+    if l < 50: l += 8
     tags.update(["监督局带病档案", "使节团提问清单"])
     if "形式主义诟病" in tags or "滑头风评" in tags: r -= 2
     if "党管干部质疑" in tags: c -= 3
@@ -520,10 +522,14 @@ def simulate_all_paths():
         if "改革保守退缩" in t: out.add("改革保守退缩")
         return frozenset(out)
 
-    ending_counts = defaultdict(int)
-    total_weighted = 0
+    e17_counts = defaultdict(int)
     dp_s5 = defaultdict(int)
-
+    c_lt_45 = 0
+    f_lt_35 = 0
+    f_lt_30 = 0
+    c_ge_62 = 0
+    l_ge_35 = 0
+    r_ge_50 = 0
     for (cp, lp, fp, rp, tp), w in dp.items():
         for c14 in ["6-A", "6-B", "6-C"]:
             c14_v, l14_v, f14_v, r14_v = cp, lp, fp, rp
@@ -533,12 +539,32 @@ def simulate_all_paths():
             else: c14_v += 1; r14_v -= 1; t14.add("宏观定力")
             c14_v, l14_v, f14_v, r14_v = clamp(c14_v), clamp(l14_v), clamp(f14_v), clamp(r14_v)
 
+            if c14_v < 45: c_lt_45 += w
+            if f14_v < 35: f_lt_35 += w
+            if f14_v < 30: f_lt_30 += w
+            if c14_v >= 62: c_ge_62 += w
+            if l14_v >= 35: l_ge_35 += w
+            if r14_v >= 50: r_ge_50 += w
+
             e17 = evaluate_17th_congress(c14_v, l14_v, f14_v, r14_v, t14)
             if e17 != "PROCEED_TO_VOL5":
-                ending_counts[e17] += w
-                total_weighted += w
+                e17_counts[e17] += w
             else:
                 dp_s5[(c14_v, l14_v, r14_v, canon_s5(t14))] += w
+
+    w_v5_start = sum(dp_s5.values())
+    w_17_total = sum(e17_counts.values()) + w_v5_start
+    print(f"\n=== 十七大节点分流统计 (17th Congress Gate Distribution) ===", flush=True)
+    print(f"到达十七大路径权重总计: {w_17_total:,}", flush=True)
+    print(f"  c < 45: {c_lt_45:,} ({c_lt_45/w_17_total*100:.2f}%)")
+    print(f"  f < 35: {f_lt_35:,} ({f_lt_35/w_17_total*100:.2f}%)")
+    print(f"  f < 30: {f_lt_30:,} ({f_lt_30/w_17_total*100:.2f}%)")
+    print(f"  c >= 62: {c_ge_62:,} ({c_ge_62/w_17_total*100:.2f}%)")
+    print(f"  l >= 35: {l_ge_35:,} ({l_ge_35/w_17_total*100:.2f}%)")
+    print(f"  r >= 50: {r_ge_50:,} ({r_ge_50/w_17_total*100:.2f}%)")
+    for k, v in sorted(e17_counts.items()):
+        print(f"  {k}: {v:,} ({v / w_17_total * 100:.2f}%)", flush=True)
+    print(f"  PROCEED_TO_VOL5: {w_v5_start:,} ({w_v5_start / w_17_total * 100:.2f}%)", flush=True)
     print(f"dp_s5 size: {len(dp_s5)}", flush=True)
 
     # Vol 5 Layered DP
@@ -556,6 +582,7 @@ def simulate_all_paths():
     }
     def fn_14a_15(c, l, r, s5_rel):
         out = []
+        l_enter = clamp(l + 8) if l < 50 else l
         for inv5 in [("A", "B"), ("A", "C"), ("B", "C")]:
             t5 = set(s5_rel)
             for a5 in inv5:
@@ -565,7 +592,7 @@ def simulate_all_paths():
             r_base = r - (2 if "FORM_OR_SLICK" in t5 else 0)
             c_base = c - (3 if "党管干部质疑" in t5 else 0)
             for c15 in ["15-A", "15-B", "15-C"]:
-                c15_v, l15_v, r15_v = c_base, l, r_base
+                c15_v, l15_v, r15_v = c_base, l_enter, r_base
                 t15 = set(t5)
                 if c15 == "15-A":
                     r15_v += 6; c15_v -= 8; l15_v -= 5
@@ -613,7 +640,7 @@ def simulate_all_paths():
         out = []
         # Option A: 大义灭亲
         t_a = set(t16)
-        out.append((c + 4, l - 6, r - 2, t_a))
+        out.append((c + 4, l - 4, r - 2, t_a))
         # Option B: 私心护短
         t_b = set(t16)
         t_b.add("大秘隐雷")
@@ -632,7 +659,8 @@ def simulate_all_paths():
         r1 = ("密闭保稳惯性" in t or "自揭家丑非议" in t)
         l = ("系统内保守派侧目" in t or "跨省空降派系芥蒂" in t)
         r2 = ("V6_R2_PEN" in t)
-        return (disq, r1, l, r2)
+        has_lei = ("大秘隐雷" in t)
+        return (disq, r1, l, r2, has_lei)
 
     dp_v5 = defaultdict(int)
     for (c, l, r, t_bs), w in dp_bs.items():
@@ -652,15 +680,17 @@ def simulate_all_paths():
             dp_v5[(clamp(c17_v), clamp(l17_v), clamp(r17_v), canon_v6(t17))] += w
     print(f"dp_v5 size: {len(dp_v5)}", flush=True)
 
+    v5_counts = defaultdict(int)
     # 18th Congress Settlement
-    for (c17_v, l17_v, r17_v, (disq, r1, l_pen, r2)), w5 in dp_v5.items():
-        e18 = evaluate_18th_congress(c17_v, l17_v, 0, r17_v, {"自揭家丑非议"} if disq else set())
+    for (c17_v, l17_v, r17_v, (disq, r1, l_pen, r2, has_lei)), w5 in dp_v5.items():
+        eval_tags = set()
+        if disq: eval_tags.add("自揭家丑非议")
+        if has_lei: eval_tags.add("大秘隐雷")
+        e18 = evaluate_18th_congress(c17_v, l17_v, 0, r17_v, eval_tags)
         if e18 == "Ending A1 (巅峰折冲 · 核心统筹)":
-            ending_counts[e18] += w5 * 8
-            total_weighted += w5 * 8
+            v5_counts[e18] += w5 * 8
         elif e18 == "Ending A3 (提前淡出 · 倚楼晚照)":
-            ending_counts[e18] += w5 * 8
-            total_weighted += w5 * 8
+            v5_counts[e18] += w5 * 8
         else:
             # Enters Vol 6 (正史主线 Ending A2)
             for m6 in ["A", "B"]:
@@ -675,14 +705,28 @@ def simulate_all_paths():
                         if c18_2 == "18-2A": r18_v += 5 + (2 if m6 == "A" else 0); l18_v -= 2; c18_v -= 2
                         else: c18_v += 4; r18_v -= 3
                         c18_v, l18_v, r18_v = clamp(c18_v), clamp(l18_v), clamp(r18_v)
-                        ending_counts["Ending A2 (端方晚晴 · 稳健执印)"] += w5
-                        total_weighted += w5
+                        v5_counts["Ending A2 (端方晚晴 · 稳健执印)"] += w5
 
-    print(f"主线加权有效模拟路径总数 (Stage1 x Stage2): {total_weighted:,}")
-    for k, v in sorted(ending_counts.items()):
-        print(f"  {k}: {v:,} ({v/total_weighted*100:.2f}%)")
+    w_v5_leaves = sum(v5_counts.values())
+    p_v5_enter = w_v5_start / w_17_total
+
+    print(f"\n=== 十八大换届分流统计 (18th Congress Gate Distribution within Vol 5) ===", flush=True)
+    print(f"卷五末梢加权权重总计: {w_v5_leaves:,}", flush=True)
+    for k, v in sorted(v5_counts.items()):
+        print(f"  {k}: {v:,} ({v / w_v5_leaves * 100:.2f}%)", flush=True)
+
+    print(f"\n=== 全局结局归一化分布 (Normalized Playthrough Distribution across all 7 Endings) ===", flush=True)
+    norm_dist = {}
+    for k, v in sorted(e17_counts.items()):
+        norm_dist[k] = (v / w_17_total) * 100
+    for k, v in sorted(v5_counts.items()):
+        norm_dist[k] = p_v5_enter * (v / w_v5_leaves) * 100
+
+    for k, p in sorted(norm_dist.items()):
+        print(f"  {k}: {p:.2f}%", flush=True)
 
 if __name__ == "__main__":
+    print("注意：以下历史手写模拟与当前网页规则不完全一致；新版结局分布请运行 pnpm test:balance。", flush=True)
     _, ok = verify_schema_and_banned_words()
     run_historical_baseline()
     simulate_all_paths()

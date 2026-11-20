@@ -36,7 +36,7 @@ function validateCondition(condition: Condition | undefined, source: string): vo
 
 function validateEffects(effects: Effect[], source: string): void {
   for (const effect of effects) {
-    if (effect.type === 'stage-two') continue
+    if (effect.type === 'stage-two' || effect.type === 'stage-two-legacy') continue
     validateCondition(effect.when, source)
     if (effect.type === 'change' && !knownStats.has(effect.stat)) throw Error(`${source}: 未定义属性 ${effect.stat}`)
     if (effect.type !== 'change' && !knownTags.has(effect.tag)) throw Error(`${source}: 未定义标记 ${effect.tag}`)
@@ -125,11 +125,11 @@ async function main() {
       ...scene.routes.map((route) => route.when),
       ...scene.bodyVariants.map((variant) => variant.when),
       ...scene.additions.map((addition) => addition.when),
-      ...scene.enter.map((effect) => effect.type === 'stage-two' ? undefined : effect.when),
+      ...scene.enter.map((effect) => 'when' in effect ? effect.when : undefined),
     ]
     for (const choice of scene.choices) {
       conditions.push(choice.condition, ...choice.outcomeVariants.map((variant) => variant.when))
-      conditions.push(...choice.effects.map((effect) => effect.type === 'stage-two' ? undefined : effect.when))
+      conditions.push(...choice.effects.map((effect) => 'when' in effect ? effect.when : undefined))
     }
     conditions.forEach((condition) => checkChoiceReferences(condition, scene.id))
   }

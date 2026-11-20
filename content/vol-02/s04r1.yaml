@@ -30,7 +30,7 @@ choices:
   - type: change
     stat: reform_acumen
     amount: -4
-  hint: 宣布纪律清场，避免现场失控。
+  hint: 红机指令压顶，当众亮明政治纪律封控现场。
 - id: b
   label: 先关紧铁门隔离外围人员，直接向编委会摊明后果
   outcome: s04r1-b.md
@@ -48,7 +48,7 @@ choices:
       any:
       - tag: 预审口径单
       - tag: 退稿油印刊物
-  hint: 隔离外围召集编委，摆明利害稳住骨干。
+  hint: 隔开外围嘈杂人声，先把核心编委拉进屋摊开讲透利害。
 additions:
 - when:
     tag: 退稿油印刊物

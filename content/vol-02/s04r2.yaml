@@ -9,7 +9,7 @@ next: v02-close
 choices:
 - id: a
   label: 当场用红蓝铅笔划叉拆版，连夜封停车间
-  hint: 严格纪律撤版，与青年骨干决裂。
+  hint: 红蓝铅笔当场划叉撤版，政治纪律容不得半点犹豫。
   outcome: s04r2-a.md
   effects:
   - type: change
@@ -28,7 +28,7 @@ choices:
     tag: 经贸法治底盘
 - id: b
   label: 揽下延误出报检讨，按出差程序疏散骨干去外地
-  hint: 担责出差保人，准备承受审查。
+  hint: 延误发报的检讨我一人担了，连夜开介绍信把骨干疏散出去。
   outcome: s04r2-b.md
   effects:
   - type: change
@@ -43,7 +43,7 @@ choices:
     tag: 十年冷板凳
 - id: c
   label: 以“铸字机主电机短路”拉闸，造成技术性脱期一天
-  hint: 借设备故障拖延，在两难中避险。
+  hint: 拉下电机总闸谎报机械故障，在两难刀尖上拖延一天。
   outcome: s04r2-c.md
   effects:
   - type: change

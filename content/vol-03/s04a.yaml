@@ -12,14 +12,14 @@ next: v03-s05
 choices:
 - id: a
   label: 精细拆解《新加坡公务员绩效量化与英国文官考核白皮书》
-  hint: 研读境外文官制，为人事改革存底。
+  hint: 研读境外文官考绩底稿，给日后人事体制改革先摸摸路数。
   outcome: s04a-a.md
   effects:
   - type: add-tag
     tag: 文官制度底稿
 - id: b
   label: 整理近三年欧美主流媒体涉华专题报道与“301条款”发问口径剪报
-  hint: 摸清外媒发难口径，备足交锋底牌。
+  hint: 梳理近三年外媒发难口径，把可能交锋的底牌先备齐。
   outcome: s04a-b.md
   effects:
   - type: add-tag

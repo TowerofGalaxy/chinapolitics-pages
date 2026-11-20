@@ -12,21 +12,21 @@ next: v01-s01
 choices:
 - id: a
   label: 翻阅团委转来的学生油印刊物退稿底本
-  hint: 摸清校园思潮，掌握学生动向。
+  hint: 翻一翻退稿原件，看看学生们到底在争论什么。
   outcome: s00a-a.md
   effects:
   - type: add-tag
     tag: 退稿油印刊物
 - id: b
   label: 核对谷超豪与苏步青签署的导师推荐信底稿
-  hint: 确认保研底稿，保留留校退路。
+  hint: 核对苏老和谷先生签的推荐信，学术退路总要先看一眼。
   outcome: s00a-b.md
   effects:
   - type: add-tag
     tag: 导师推荐信底稿
 - id: c
   label: 翻看市高教党委下发的《第三梯队选拔座谈纪要》
-  hint: 摸清市里提拔年轻干部的条件。
+  hint: 摸清市高教党委选拔年轻干部的真实杠杠。
   outcome: s00a-c.md
   effects:
   - type: add-tag

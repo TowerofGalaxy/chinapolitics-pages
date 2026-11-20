@@ -9,25 +9,33 @@ location: 北京 · 中组部北楼办公室
 prompt: 调阅两份卷宗（二选其二）
 ap: vol5_ap
 select: 2
+enter:
+- type: change
+  stat: local_cohesion
+  amount: 8
+  when:
+    stat: local_cohesion
+    op: lt
+    value: 50
 next: v05-s15
 choices:
 - id: a
   label: 调阅干部监督局封存的《省管干部“带病提拔”倒查抽检档案》
-  hint: 核查带病提拔卷宗，查清监督漏洞。
+  hint: 调阅干部监督局封存的档案，看看那些带病提拔的干部到底是怎么一路过关的。
   outcome: start-a.md
   effects:
   - type: add-tag
     tag: 监督局带病档案
 - id: b
   label: 调取十七个工业大市处级干部民主测评原始交叉统计样表
-  hint: 调阅测评样表，查清老好人病灶。
+  hint: 拿原始样表做比对，查清楚那些肯干硬仗的干部得票为什么反而垫底。
   outcome: start-b.md
   effects:
   - type: add-tag
     tag: 基层测评原始样表
 - id: c
   label: 核对国新办与外交部转来的《驻京使节团与外媒拟提问清单》
-  hint: 梳理使节提问清单，摸清境外焦点。
+  hint: 摸一摸外媒的底牌，看看他们究竟想在大木仓胡同挑出什么刺来。
   outcome: start-c.md
   effects:
   - type: add-tag

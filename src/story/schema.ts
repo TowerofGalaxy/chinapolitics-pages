@@ -28,6 +28,7 @@ const effectSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('add-tag'), tag: z.string(), when: conditionSchema.optional() }).strict(),
   z.object({ type: z.literal('remove-tag'), tag: z.string(), when: conditionSchema.optional() }).strict(),
   z.object({ type: z.literal('stage-two') }).strict(),
+  z.object({ type: z.literal('stage-two-legacy') }).strict(),
 ])
 
 const choiceSchema = z.object({

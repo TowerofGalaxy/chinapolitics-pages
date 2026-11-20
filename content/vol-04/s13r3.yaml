@@ -19,7 +19,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 外宣僵化印象
-  hint: 援引工业化发展阶段，回应外界苛责。
+  hint: 拿当年的雾都伦敦做挡箭牌，虽然是实情，但难免让人觉得在推卸责任。
 - id: b
   label: 念完科学发展观标准环保口径
   outcome: s13r3-b.md
@@ -32,7 +32,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 守旧平庸标签
-  hint: 按标准环保口径回应，稳妥不留话柄。
+  hint: 科学发展观的成套表述念一遍，挑不出毛病，但也留不下任何印象。
 - id: c
   label: 亮出太湖断面水质硬约束与财政转移支付挂钩考核方案
   outcome: s13r3-c.md
@@ -67,4 +67,4 @@ choices:
     stat: reform_drive
     amount: 2
     when: *id001
-  hint: 亮出水质硬约束，把治污挂钩财政。
+  hint: 断面水质直接扣转移支付，方案够硬够专业，只是台下苏南各市书记脸色要变了。

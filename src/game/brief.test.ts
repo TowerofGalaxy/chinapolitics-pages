@@ -50,4 +50,43 @@ describe('第四卷案头质询', () => {
     save.actions.push({ type: 'choose', choices: ['a'] }, { type: 'continue' })
     expect(replay(story, save).state.sceneId).toBe('v04-s10')
   })
+
+  it('选择质询点 land：免疫土地融资依赖扣分，且选项 3-A 额外获得中央信任度 +2', () => {
+    let state = startGame(story, 'v04-brief')
+    state.tags.push('土地融资依赖')
+    const initialFiscal = state.stats.fiscal_stability
+    const initialCentral = state.stats.central_trust
+
+    // 选 land
+    state = applyAction(story, state, { type: 'choose', choices: ['land'] })
+    state = applyAction(story, state, { type: 'continue' }) // 进入 v04-s09
+    state = applyAction(story, state, { type: 'choose', choices: ['a'] }) // s09 选 a
+    state = applyAction(story, state, { type: 'continue' }) // 进入 v04-s10
+
+    // 检查进入 s10 时，财政稳态值并未扣除 -3（免疫了土地融资依赖扣分）
+    // （注意：s09 选 a 本身扣了 fiscal_stability -10，初始 60 - 10 = 50）
+    expect(state.stats.fiscal_stability).toBe(initialFiscal - 10)
+
+    // 选 3-A
+    const preCentral = state.stats.central_trust
+    state = applyAction(story, state, { type: 'choose', choices: ['a'] })
+    // central_trust 应增加 15 + 2 = 17
+    expect(state.result?.changes.central_trust).toBe(17)
+  })
+
+  it('选择质询点 credit：即使无城投挪用线索且财政不达标，亦直接解锁选项 3-B', () => {
+    let state = startGame(story, 'v04-brief')
+    state.stats.fiscal_stability = 40 // 低于 60
+    state.tags = state.tags.filter((t) => t !== '城投挪用线索')
+
+    // 选 credit
+    state = applyAction(story, state, { type: 'choose', choices: ['credit'] })
+    state = applyAction(story, state, { type: 'continue' }) // 进入 v04-s09
+    state = applyAction(story, state, { type: 'choose', choices: ['a'] }) // s09 选 a
+    state = applyAction(story, state, { type: 'continue' }) // 进入 v04-s10
+
+    const scene10 = currentScene(story, state)
+    const choiceB = scene10.choices.find((c) => c.id === 'b')!
+    expect(meetsCondition(state, choiceB.condition)).toBe(true)
+  })
 })

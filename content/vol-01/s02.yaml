@@ -33,7 +33,7 @@ choices:
   - when:
       tag: 第三梯队座谈纪要
     body: s02-a-notes.md
-  hint: 服从大局撤考研，进机关走台阶。
+  hint: 父亲的话切中要害，位置空着，不去就会被跑门路的占满。
 - id: b
   label: 直接点出运动教训与程序缺失的隐患
   outcome: s02-b.md
@@ -46,7 +46,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 法治骨气
-  hint: 直陈体制旧疾，不愿盲从跟风。
+  hint: 心里清楚这张嘴一开，就是把体制旧弊挑明了。
 - id: c
   label: 向父亲打听机关底线与老同事联络方式
   outcome: s02-c.md
@@ -59,4 +59,4 @@ choices:
     amount: -5
   - type: add-tag
     tag: 老辈训诫
-  hint: 借重父辈人脉，探听高层选拔。
+  hint: 向老一辈打听门道深浅，多摸几块石头总不算错。

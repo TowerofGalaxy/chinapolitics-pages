@@ -9,7 +9,7 @@ next: v02-s03b2
 choices:
 - id: a1
   label: 删去情绪化形容词，附带当地劳动局与总工会联合进驻调查的消息照登
-  hint: 删改措辞照登，守住用工底线。
+  hint: 删掉过头情绪化字眼，核实劳动部门调查结论照登。
   outcome: s03b1-a1.md
   effects:
   - type: change
@@ -22,7 +22,7 @@ choices:
     tag: 地方招商宿怨
 - id: a2
   label: 撤下公开版面，转为内参抄送全总与当地省委督办
-  hint: 撤版转送内参，先稳招商大局。
+  hint: 版面上先压一压，转成内参送工会与省委督办解决。
   outcome: s03b1-a2.md
   effects:
   - type: change

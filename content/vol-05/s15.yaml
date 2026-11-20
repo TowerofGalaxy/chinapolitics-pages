@@ -37,7 +37,7 @@ choices:
     amount: -5
   - type: add-tag
     tag: 民意过半硬杠反弹
-  hint: 严守票决过半硬杠杠，不搞干预。
+  hint: 票决过半就是铁律，绝不开行政干预的口子，哪怕引发地方震荡也在所不惜。
 - id: b
   label: 签发“民意降噪 + 实绩加权”双轨修正案（不唯票取人）
   outcome: s15-b.md
@@ -63,7 +63,7 @@ choices:
     tag: 加权考核矩阵
   - type: add-tag
     tag: 加权考核执行损耗
-  hint: 推行实绩加权，纠正老好人偏差。
+  hint: 不能唯票取人，把实绩考核加权进去，替那些敢干事、得罪人的干部卸下包袱。
 - id: c
   label: 收缩无记名投票权重，重回传统组织部门谈话查档为主
   outcome: s15-c.md
@@ -79,7 +79,7 @@ choices:
     amount: -8
   - type: add-tag
     tag: 测评退回旧轨失望
-  hint: 压缩投票权重，退回谈话查档旧制。
+  hint: 既然民意测评被钻了空子，不如退一步，重回组织部门深入谈话的传统路子。
 additions:
 - when:
     tag: 党管干部质疑

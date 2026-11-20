@@ -27,7 +27,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 密闭保稳惯性
-  hint: 按保密规矩拒报数字，守住不出错。
+  hint: 严守保密纪律与民主集中制口径，不向外媒展开任何内部具体数字。
 - id: b
   label: 援引公推差选、测评加权与特区点将做程序拆解
   outcome: s17-b.md
@@ -69,7 +69,7 @@ choices:
   - when:
       tag: 加权考核矩阵
     body: s17-b-matrix.md
-  hint: 引差选特区实据，以透明化解质疑。
+  hint: 拿公推差选和深圳点将的具体程序说话，用阳光化的制度逻辑打破“黑箱”揣测。
 - id: c
   label: 不避短板，直陈“带病提拔”倒查与实绩考核改革
   outcome: s17-c.md
@@ -82,7 +82,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 自揭家丑非议
-  hint: 坦承带病提拔短板，直面问题求信。
+  hint: 主动挑明“带病提拔”与倒查追责机制，直面短板反而能展现改革底气。
 additions:
 - when:
     tag: 大院子弟标签
