@@ -1,0 +1,105 @@
+{
+  "v04-s11": {
+    "choiceAEffects": [
+      {
+        "type": "change",
+        "stat": "central_trust",
+        "amount": 5
+      },
+      {
+        "type": "change",
+        "stat": "local_cohesion",
+        "amount": 20
+      },
+      {
+        "type": "change",
+        "stat": "fiscal_stability",
+        "amount": -12
+      },
+      {
+        "type": "add-tag",
+        "tag": "预备费见底"
+      },
+      {
+        "type": "add-tag",
+        "tag": "问责善后落实",
+        "when": {
+          "tag": "连带问责留档"
+        }
+      }
+    ]
+  },
+  "v05-gate18": {
+    "routes": [
+      {
+        "when": {
+          "all": [
+            {
+              "stat": "central_trust",
+              "op": "gte",
+              "value": 85
+            },
+            {
+              "stat": "reform_drive",
+              "op": "gte",
+              "value": 75
+            },
+            {
+              "stat": "local_cohesion",
+              "op": "gte",
+              "value": 30
+            },
+            {
+              "not": {
+                "tag": "自揭家丑非议"
+              }
+            },
+            {
+              "any": [
+                {
+                  "not": {
+                    "tag": "连带问责留档"
+                  }
+                },
+                {
+                  "tag": "问责善后落实"
+                }
+              ]
+            },
+            {
+              "not": {
+                "tag": "大秘隐雷"
+              }
+            }
+          ]
+        },
+        "next": "v06-ending-a1"
+      },
+      {
+        "when": {
+          "any": [
+            {
+              "stat": "central_trust",
+              "op": "lt",
+              "value": 60
+            },
+            {
+              "stat": "local_cohesion",
+              "op": "lt",
+              "value": 30
+            }
+          ]
+        },
+        "next": "v06-ending-a3"
+      }
+    ],
+    "additions": [
+      {
+        "when": {
+          "tag": "问责善后落实"
+        },
+        "body": "考察组调阅了当年的责任检讨，后面附着预备费拨付凭证和善后清单。检讨仍在，后续处置也有了记录。"
+      }
+    ]
+  }
+}

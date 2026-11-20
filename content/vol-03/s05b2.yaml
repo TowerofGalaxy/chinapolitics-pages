@@ -9,7 +9,7 @@ next: v03-s06
 choices:
 - id: d1
   label: 单列试点特聘机制与效益挂钩，老同志待遇从专项结余单列统筹
-  hint: 试点首席特聘与效益挂钩，老艺术家待遇从结余单列保障。
+  hint: 试点机制与效益挂钩，老同志待遇从专项结余单列保障。
   outcome: s05b2-d1.md
   effects:
   - type: change

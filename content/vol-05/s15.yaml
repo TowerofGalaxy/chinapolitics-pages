@@ -39,7 +39,7 @@ choices:
     tag: 民意过半硬杠反弹
   hint: 票决过半就是铁律，绝不开行政干预的口子，哪怕引发地方震荡也在所不惜。
 - id: b
-  label: 签发“民意降噪 + 实绩加权”双轨修正案（不唯票取人）
+  label: 签发“民意校准 + 实绩加权”双轨修正案（不唯票取人）
   outcome: s15-b.md
   effects:
   - type: change

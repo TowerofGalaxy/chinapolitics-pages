@@ -36,10 +36,6 @@ choices:
     amount: -12
   - type: add-tag
     tag: 预备费见底
-  - type: add-tag
-    tag: 问责善后落实
-    when:
-      tag: 连带问责留档
   condition:
     stat: fiscal_stability
     op: gt

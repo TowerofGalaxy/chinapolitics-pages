@@ -283,7 +283,7 @@ function restart() {
 
     <main>
       <p v-if="notice" class="notice" role="status">{{ notice }}</p>
-      <p v-if="save.rules === 'full-1' || save.rules === 'full-2'" class="notice">当前存档沿用原版数值规则；重新开始后采用新的平衡设置。</p>
+      <p v-if="save.rules !== 'full-4'" class="notice">当前存档沿用原版数值规则；重新开始后采用新的平衡设置。</p>
 
       <!-- 历史回响（跨卷 Flag 高感知印章提示条） -->
       <aside v-if="echoes.length && state.phase !== 'result'" class="echo-banner" aria-label="历史回响">

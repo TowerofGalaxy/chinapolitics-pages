@@ -9,6 +9,7 @@ const runs = Number(process.argv[2] ?? 25_000)
 if (!Number.isInteger(runs) || runs < 1 || runs > 1_000_000) throw new Error('模拟次数必须是 1 至 1000000 的整数')
 const story = createStory(sceneSchema.array().parse(scenes))
 const legacy = storyForSave(story, { ...newSave(), rules: 'full-2' })
+const previous = storyForSave(story, { ...newSave(), rules: 'full-3' })
 
 function simulate(activeStory: Story, withDuels: boolean) {
   let seed = 0x5eeda123
@@ -57,7 +58,8 @@ function simulate(activeStory: Story, withDuels: boolean) {
 
 console.log(JSON.stringify({
   assumption: '均匀随机选择当前可用选项；结果不是实际玩家的结局概率',
-  publishedRulesWithoutDuels: simulate(legacy, false),
-  revisedRulesWithoutDuels: simulate(story, false),
-  revisedRulesWithDuels: simulate(story, true),
+  olderV2WithoutDuels: simulate(legacy, false),
+  previousV3WithoutDuels: simulate(previous, false),
+  currentV4WithoutDuels: simulate(story, false),
+  currentV4WithDuels: simulate(story, true),
 }, null, 2))

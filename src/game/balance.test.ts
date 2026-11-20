@@ -32,22 +32,22 @@ describe('数值与结局平衡', () => {
     expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe(result)
   })
 
-  it('承担责任后落实善后，档案保留且允许后续考察整改情况', () => {
+  it('承担责任后动用预备费垫付，保留档案并消耗财政', () => {
     const before = startGame(story, 'v04-s10')
     const tookResponsibility = applyAction(story, before, { type: 'choose', choices: ['a'] })
     const response = applyAction(story, tookResponsibility, { type: 'continue' })
     const paidCompensation = applyAction(story, response, { type: 'choose', choices: ['a'] })
     expect(paidCompensation.tags).toContain('连带问责留档')
-    expect(paidCompensation.tags).toContain('问责善后落实')
+    expect(paidCompensation.tags).toContain('预备费见底')
     expect(paidCompensation.result?.texts[0]).toContain('善后清单')
     expect(paidCompensation.result?.changes.fiscal_stability).toBe(-12)
 
     const noCompensation = applyAction(story, response, { type: 'choose', choices: ['b'] })
     expect(noCompensation.tags).toContain('连带问责留档')
-    expect(noCompensation.tags).not.toContain('问责善后落实')
+    expect(noCompensation.tags).not.toContain('预备费见底')
   })
 
-  it('A1 不覆盖协同度不足的 A3，整改只能解除对应责任记录的限制', () => {
+  it('A1 不覆盖协同度不足的 A3，连带问责留档硬阻断 A1 并稳妥导向 A2', () => {
     const state = startGame(story, 'v05-gate18')
     Object.assign(state.stats, { central_trust: 85, local_cohesion: 29, reform_drive: 75 })
     expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe('v06-ending-a3')
@@ -55,18 +55,16 @@ describe('数值与结局平衡', () => {
     expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe('v06-ending-a1')
     state.tags.push('连带问责留档')
     expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe('v06-s17a')
-    state.tags.push('问责善后落实')
-    expect(applyAction(story, state, { type: 'continue' }).sceneId).toBe('v06-ending-a1')
     state.tags.push('大秘隐雷')
     expect(applyAction(story, state, { type: 'continue' }).sceneId).not.toBe('v06-ending-a1')
   })
 
-  it('承担责任并落实善后后，仍有完整路线抵达 A1', () => {
+  it('主动担责写检讨后，正史路线稳妥进入第六卷（v06-s17a）展开 A2', () => {
     const save = newSave()
     const route = 'c a a a a a1 b1 b b a a c2 d2 c visit+audit criticism land a a a b a c c b a+c a c c b'
-    const state = playTo(story, save, 'v06-ending-a1', route)
+    const state = playTo(story, save, 'v06-s17a', route)
     expect(state.tags).toContain('连带问责留档')
-    expect(state.tags).toContain('问责善后落实')
+    expect(state.tags).toContain('预备费见底')
   })
 
   it('新旧存档分别使用对应的阶段转换和结局门槛', () => {

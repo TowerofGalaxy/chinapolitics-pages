@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { applyAction, available, currentScene, startGame, type GameAction, type GameState, type Story } from './engine'
 import { sceneSchema } from '../story/schema'
 import legacyRules from './legacy-full-2.json'
+import previousRules from './legacy-full-3.json'
 
 const actionSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('choose'), choices: z.array(z.string()).min(1) }).strict(),
@@ -11,7 +12,7 @@ const actionSchema = z.discriminatedUnion('type', [
 
 const saveSchema = z.object({
   format: z.literal(1),
-  rules: z.enum(['slice-1', 'full-1', 'full-2', 'full-3']),
+  rules: z.enum(['slice-1', 'full-1', 'full-2', 'full-3', 'full-4']),
   start: z.enum(['v04-s07', 'v01-s00a']),
   actions: z.array(actionSchema).max(1000),
   draft: z.array(z.string()).max(20),
@@ -21,12 +22,24 @@ export type Save = z.infer<typeof saveSchema>
 export const SAVE_KEY = 'langchao-yu-xingcheng.save'
 
 export function newSave(): Save {
-  return { format: 1, rules: 'full-3', start: 'v01-s00a', actions: [], draft: [] }
+  return { format: 1, rules: 'full-4', start: 'v01-s00a', actions: [], draft: [] }
 }
 
 export function storyForSave(story: Story, save: Save): Story {
-  if (save.rules === 'full-3') return story
+  if (save.rules === 'full-4') return story
   const replayStory = new Map(story)
+  if (save.rules === 'full-3') {
+    const response = replayStory.get('v04-s11')
+    if (response) {
+      const choices = response.choices.map((choice) => choice.id === 'a'
+        ? { ...choice, effects: previousRules['v04-s11'].choiceAEffects }
+        : choice)
+      replayStory.set(response.id, sceneSchema.parse({ ...response, choices }))
+    }
+    const gate = replayStory.get('v05-gate18')
+    if (gate) replayStory.set(gate.id, sceneSchema.parse({ ...gate, ...previousRules['v05-gate18'] }))
+    return replayStory
+  }
   // 旧存档继续沿用发布时的结局门槛和效果，避免回放后换线或失去进度。
   for (const [id, snapshot] of Object.entries(legacyRules)) {
     const scene = replayStory.get(id)

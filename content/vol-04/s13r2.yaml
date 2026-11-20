@@ -37,7 +37,7 @@ choices:
     tag: 改革保守退缩
   hint: 一口咬定完全依照《干部任用条例》，绝口不提体制创新，四平八稳。
 - id: c
-  label: 以组织考核的信息降噪做专业回应
+  label: 从组织考核的信息补充与程序优化切入专业回应
   outcome: s13r2-c.md
   effects:
   - type: change
@@ -59,4 +59,4 @@ choices:
   condition:
     tag: 制度精算样本
   unavailable: hidden
-  hint: 把所谓的政治试验，拆解成现代组织人事考核里的“信息降噪”技术。
+  hint: 把所谓的政治试验，拆解为现代组织考察中的增加信息与优化程序。

@@ -47,7 +47,7 @@ describe('卷六终章叙事回报四维分流', () => {
     const activeAdditions = scene19.additions.filter((a) => meetsCondition(state, a.when)).map((a) => a.body)
 
     // 验证包含双改革长篇回忆与达沃斯发言速记
-    expect(activeAdditions.some((body) => body.includes('四十年披荆斩棘的行程，便未算虚掷'))).toBe(true)
+    expect(activeAdditions.some((body) => body.includes('四十年跋涉便不算虚掷'))).toBe(true)
     expect(activeAdditions.some((body) => body.includes('达沃斯世界经济论坛'))).toBe(true)
     // 验证不包含双审慎回忆
     expect(activeAdditions.some((body) => body.includes('约翰内斯堡冷雨中九万人瞩目的体育场看台'))).toBe(false)
@@ -78,7 +78,7 @@ describe('卷六终章叙事回报四维分流', () => {
     expect(activeAdditions.some((body) => body.includes('把手洗得干干净净交还给体制'))).toBe(true)
     expect(activeAdditions.some((body) => body.includes('外事照会册'))).toBe(true)
     // 验证不包含双改革回忆
-    expect(activeAdditions.some((body) => body.includes('四十年披荆斩棘的行程，便未算虚掷'))).toBe(false)
+    expect(activeAdditions.some((body) => body.includes('四十年跋涉便不算虚掷'))).toBe(false)
   })
 
   it('混合路线 A (18-1A + 18-2A) 展开外事审慎与对内改革折冲回忆', () => {
