@@ -270,7 +270,7 @@ describe('前三卷与阶段转换', () => {
     if (withMatrix) state.tags.push('加权考核矩阵')
     const result = applyAction(story, state, { type: 'choose', choices: ['b'] })
     expect(result.result?.texts[0]).toContain('次日境外电讯发出报道')
-    expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权系数' : '过去两年')
+    expect(result.result?.texts[0]).toContain(withMatrix ? '双轨加权系数' : '规范民主推荐与组织考察衔接程序')
   })
 
   describe('多卷衔接与文本分支回归测试', () => {
@@ -329,6 +329,16 @@ describe('前三卷与阶段转换', () => {
       expect(text).toContain('“李援朝”三个字墨迹未干')
       expect(text).not.toContain('李源潮（时名李援朝）坐在')
       expect(text).not.toContain('李源潮三个字墨迹未干')
+    })
+
+    it.each([
+      { tag: undefined, expectedSender: '机要秘书老陈（陈卫东）提着一小包从江苏带来的新茶跨进门槛' },
+      { tag: '大义灭亲', expectedSender: '门卫转交来一盒没有落款的江苏雨前茶，茶盒下压着一张空白便签' },
+    ])('第六卷海淀旧院 s19 根据标记 $tag 呈现不同访客与新茶差分', ({ tag, expectedSender }) => {
+      const state = startGame(story, 'v06-s19')
+      if (tag) state.tags.push(tag)
+      const text = resolveBody(state)
+      expect(text).toContain(expectedSender)
     })
   })
 })

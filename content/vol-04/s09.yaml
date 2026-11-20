@@ -26,6 +26,7 @@ choices:
     tag: 彻底停工
   - type: add-tag
     tag: 省府裂痕
+  hint: 全面停工服从大局，直面地方震荡。
 - id: b
   label: 同意由省政府牵头起草换壳重组备忘录，切割违规责任
   outcome: s09-b.md
@@ -41,6 +42,7 @@ choices:
     amount: -10
   - type: add-tag
     tag: 地方重组意向
+  hint: 支持边建边补手续，偏向地方投资。
 - id: c
   label: 主体炼钢项目叫停，准许外贸集团设共管账户接管港口德国设备
   outcome: s09-c.md
@@ -61,7 +63,18 @@ choices:
     tag: 设备共管方案
   - type: add-tag
     tag: 折中敷衍疑虑
+  hint: 停建项目接管设备，在夹缝中减损。
 additions:
+- when:
+    choice:
+      scene: v04-brief
+      id: land
+  body: s09-land.md
+- when:
+    choice:
+      scene: v04-brief
+      id: credit
+  body: s09-credit.md
 - when:
     tag: 机关震荡反弹
   body: s09-note1.md

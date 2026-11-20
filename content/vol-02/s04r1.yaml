@@ -30,6 +30,7 @@ choices:
   - type: change
     stat: reform_acumen
     amount: -4
+  hint: 宣布纪律清场，避免现场失控。
 - id: b
   label: 先关紧铁门隔离外围人员，直接向编委会摊明后果
   outcome: s04r1-b.md
@@ -47,6 +48,7 @@ choices:
       any:
       - tag: 预审口径单
       - tag: 退稿油印刊物
+  hint: 召集编委摊牌，摆明利害争取。
 additions:
 - when:
     tag: 退稿油印刊物

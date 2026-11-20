@@ -32,6 +32,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 外宣僵化印象
+  hint: 照念通稿回避交锋，守住安全线。
 - id: b
   label: 停掉通稿，报出法院设庭、海关查扣与《专利法》修法三组实数反问
   outcome: s05-b.md
@@ -53,6 +54,7 @@ choices:
     tag: 外宣基本功
   - type: add-tag
     tag: 涉外政治风险
+  hint: 亮出执法实数，用专业数据反问。
 - id: c
   label: 直接宣布加快对接关贸总协定法规，邀外媒旁听涉外庭审
   outcome: s05-c.md
@@ -80,6 +82,7 @@ choices:
     value: 35
   unavailable: locked
   reason: 组织信任度需高于 35
+  hint: 宣布对接关贸规则，邀外媒旁听。
 additions:
 - when:
     tag: 中宣部挂号

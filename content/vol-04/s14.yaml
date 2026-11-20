@@ -23,6 +23,7 @@ choices:
     tag: 改革盟约
   - type: add-tag
     tag: 派系结盟猜忌
+  hint: 相约进京各守一摊，结下合作默契。
 - id: b
   label: “大院里没个人英雄。按现行条例卡死程序边界，换谁坐那个位子都能按规矩转。”
   outcome: s14-b.md
@@ -37,6 +38,7 @@ choices:
     tag: 无暇履历
   - type: add-tag
     tag: 程序本位掣肘
+  hint: 恪守制度程序边界，拒绝私人结盟。
 - id: c
   label: “账不能只算这五年。宏观上守住周期平衡，制度纠偏慢一点，稳住大局再图后效。”
   outcome: s14-c.md
@@ -51,3 +53,4 @@ choices:
     tag: 宏观定力
   - type: add-tag
     tag: 锋芒收敛过甚
+  hint: 算长远跨周期大账，放慢纠偏求稳。

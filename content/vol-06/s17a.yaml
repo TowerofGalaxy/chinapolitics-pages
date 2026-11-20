@@ -12,12 +12,14 @@ next: v06-s18r1
 choices:
 - id: a
   label: 细读工青妇联合递交的《社会组织与群团基层调研底表》
+  hint: 摸清群团脱节死角，为改革备抓手。
   outcome: s17a-a.md
   effects:
   - type: add-tag
     tag: 群团基层调研底表
 - id: b
   label: 审阅外交部与礼宾司汇总的《约翰内斯堡多边会见密电汇编》
+  hint: 摸清外事敏感点，备齐预设口径。
   outcome: s17a-b.md
   effects:
   - type: add-tag

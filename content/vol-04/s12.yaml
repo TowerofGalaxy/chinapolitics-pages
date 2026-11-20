@@ -22,6 +22,7 @@ enter:
 choices:
 - id: a
   label: 宣布在全省十三个地级市全面推开局长差额公推公选
+  hint: 全省扩面推直选，正面硬顶阻力。
   outcome: s12-a.md
   effects:
   - type: change
@@ -50,7 +51,7 @@ choices:
   reason: 中央信任度需高于 40
 - id: b
   label: 设计“两推一述”受控闭环——常委会事前把关，差额比例卡死20%
-  hint: 群众推荐、党组织推荐与竞职陈述相结合
+  hint: 限定差额党委把关，红线内留火种。
   outcome: s12-b.md
   effects:
   - type: change
@@ -82,6 +83,7 @@ choices:
     tag: 形式主义诟病
 - id: c
   label: 见好就收，缩小宿迁试点并报理论总结归档
+  hint: 停止试点见好就收，转理论总结。
   outcome: s12-c.md
   effects:
   - type: change

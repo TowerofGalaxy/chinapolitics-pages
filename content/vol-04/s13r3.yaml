@@ -19,6 +19,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 外宣僵化印象
+  hint: 拿西方雾都作比，被指推脱责任。
 - id: b
   label: 念完科学发展观标准环保口径
   outcome: s13r3-b.md
@@ -31,6 +32,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 守旧平庸标签
+  hint: 念完统发环保口径，被批空洞敷衍。
 - id: c
   label: 亮出太湖断面水质硬约束与财政转移支付挂钩考核方案
   outcome: s13r3-c.md
@@ -65,3 +67,4 @@ choices:
     stat: reform_drive
     amount: 2
     when: *id001
+  hint: 亮出水质硬约束，把治污挂钩财政。

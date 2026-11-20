@@ -28,6 +28,7 @@ choices:
     tag: 风骨编辑部
   - type: add-tag
     tag: 中宣部挂号
+  hint: 签字扛下批评，硬挺报道见报。
 - id: b
   label: 报纸版面暂停两期，原稿转写绝密内参直呈书记处
   outcome: s03-b.md
@@ -50,6 +51,7 @@ choices:
       tag: 考察保留
   - type: add-tag
     tag: 滑头风评
+  hint: 版面暂避风头，改写内参直报。
 - id: c
   label: 由全国青联出面办闭门学术会，用“劳动力要素配置”置换“雇工”
   outcome: s03-c.md
@@ -71,6 +73,7 @@ choices:
     tag: 商品经济探索先声
   - type: add-tag
     tag: 筹会透支
+  hint: 用学术概念包装，借换词解套。
 additions:
 - when:
     any:

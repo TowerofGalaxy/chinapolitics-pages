@@ -58,17 +58,20 @@ def evaluate_17th_congress(c, l, f, r, tags):
     if "象牙塔学者" in tags:
         return "Ending B (象牙塔的余生)"
     if c < 45 or f < 35:
-        return "Ending C (改革折翼 / 全国人大)"
+        return "Ending C (改革折翼 · 倚楼听风)"
     if "激进政改旗手" in tags and c >= 50 and r >= 60:
         return "Ending D (顺水推舟 · 青灯咨政)"
     if c >= 65 and l >= 38 and r >= 50:
         return "PROCEED_TO_VOL5"
-    return "Ending E (留任守成 / 异地平调)"
+    return "Ending E (留任守成 · 异地平调)"
 
 def evaluate_18th_congress(c, l, f, r, tags):
-    if c >= 85 and r >= 75 and "自揭家丑非议" not in tags and "连带问责留档" not in tags:
+    if (c >= 85 and r >= 75
+            and "自揭家丑非议" not in tags
+            and "连带问责留档" not in tags
+            and "大秘隐雷" not in tags):
         return "Ending A1 (巅峰折冲 · 核心统筹)"
-    if c < 50 or l < 35:
+    if c < 60 or l < 35:
         return "Ending A3 (提前淡出 · 倚楼晚照)"
     return "PROCEED_TO_VOL6"
 
@@ -130,14 +133,28 @@ def run_historical_baseline():
     e17 = evaluate_17th_congress(c, l, f, r, tags)
     print(f"卷四结束(十七大节点): 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e17}")
 
-    # Vol 5: (摸底 B+C -> 15-B 测评 -> 16-B 特区 -> 17-B 吹风会)
-    tags.update(["基层测评原始样表", "使节团提问清单"])
+    # Vol 5: (摸底 A+C -> 15-B 测评 -> 16-B 特区 -> Black Swan C 借刀 -> 17-B 吹风会)
+    tags.update(["监督局带病档案", "使节团提问清单"])
     if "形式主义诟病" in tags or "滑头风评" in tags: r -= 2
-    c += 5 + 2; r += 5; l += 2 - 4; tags.update(["加权考核矩阵", "加权考核执行损耗"])
-    if "监督局带病档案" in tags: c += 2
-    r += 7; c += 2; l -= 2 + (1 if ("派系结盟猜忌" in tags or "地方招商宿怨" in tags) else 0); tags.update(["特区新局", "跨省空降派系芥蒂"])
-    if "大院子弟标签" in tags: c -= 2
-    r += 7 + 2; c += 2; l -= 2; tags.update(["执政党阳光化象征", "系统内保守派侧目"])
+    if "党管干部质疑" in tags: c -= 3
+    c += 5 + (2 if ("基层测评原始样表" in tags or "无暇履历" in tags or "宏观定力" in tags) else 0)
+    r += 5; l -= 2
+    tags.update(["加权考核矩阵", "加权考核执行损耗"])
+    
+    # 16-B
+    c_base = c + (2 if "监督局带病档案" in tags else 0)
+    r += 7; c = c_base + 2; l -= 2 + (1 if ("派系结盟猜忌" in tags or "地方招商宿怨" in tags) else 0)
+    tags.update(["特区新局", "跨省空降派系芥蒂"])
+    
+    # Black Swan: 老陈的信封 (Option C: 借刀反查, requires 监督局带病档案)
+    c += 2; l -= 2; r += 3
+    
+    # 17-B
+    c_base = c - (2 if "大院子弟标签" in tags else 0)
+    r += 7 + (2 if "使节团提问清单" in tags else 0)
+    c = c_base + 2 - (2 if "改革保守退缩" in tags else 0)
+    l -= 2
+    tags.update(["执政党阳光化象征", "系统内保守派侧目"])
     c, l, f, r = clamp(c), clamp(l), clamp(f), clamp(r)
     e18 = evaluate_18th_congress(c, l, f, r, tags)
     print(f"卷五结束(十八大节点): 中央={c}, 系统协同={l}, 财政={f}, 改革={r} => {e18}")
@@ -238,10 +255,28 @@ def simulate_all_paths():
         "苏南经济底稿", "经贸法治底盘", "地方招商宿怨", "脱离工农议论", "青年统战滞后",
         "清高孤僻风评"
     }
-    s1_states = defaultdict(int)
+    def canon_s1(t):
+        out = set()
+        if "边缘平调序列" in t: out.add("EDGE")
+        if "报批越界通报" in t: out.add("越界")
+        if "滑头避险定性" in t: out.add("滑头避险定性")
+        if any(k in t for k in ("破格外放序列", "不务正业非议", "脱离工农议论", "清高孤僻风评")): out.add("S08_PEN")
+        if any(k in t for k in ("苏南经济底稿", "经贸法治底盘")): out.add("ECO_BASE")
+        if any(k in t for k in ("老辈训诫", "老同志的信赖档案")): out.add("OLD_TRUST")
+        if "老同志的信赖档案" in t: out.add("老同志的信赖档案")
+        if any(k in t for k in ("双轨探索者", "现代治理工具箱")): out.add("DUAL_TOOL")
+        if any(k in t for k in ("外宣基本功", "精准反制经验")): out.add("FX_SKILL")
+        if "大院子弟标签" in t: out.add("大院子弟标签")
+        if "滑头风评" in t: out.add("滑头风评")
+        if "地方招商宿怨" in t: out.add("地方招商宿怨")
+        if "青年统战滞后" in t: out.add("青年统战滞后")
+        return frozenset(out)
+
+    s1_acc = defaultdict(lambda: [0, 0, 0])
     for (ct2, ra2, t2), w in dp_v2.items():
         for m3 in ["A", "B"]:
-            for c05 in ["5-A", "5-B", "5-C"]:
+            c05_opts = ["5-A", "5-B"] + (["5-C"] if ct2 > 35 else [])
+            for c05 in c05_opts:
                 for pc in ["C-1", "C-2"]:
                     for pd in ["D-1", "D-2"]:
                         ct3, ra3 = ct2, ra2
@@ -269,29 +304,16 @@ def simulate_all_paths():
                             if c06 == "6-A": t_end.update(["现代治理工具箱", "不务正业非议"])
                             elif c06 == "6-B": t_end.update(["老同志的信赖档案", "守旧平庸标签"])
                             else: t_end.update(["苏南经济底稿", "清高孤僻风评"])
-                            s1_states[proj(t_end, keep_v4)] += w
+                            c_adj = max(-4, min(4, (clamp(ct3) - 50) // 4))
+                            r_adj = max(-4, min(4, (clamp(ra3) - 50) // 4))
+                            c_flag = canon_s1(t_end)
+                            s1_acc[c_flag][0] += c_adj * w
+                            s1_acc[c_flag][1] += r_adj * w
+                            s1_acc[c_flag][2] += w
 
-    # Canonicalize stage-1 flags into compact equivalence flags so DP stays super fast & 100% exact
-    def canon_s1(t):
-        out = set()
-        if "边缘平调序列" in t: out.add("EDGE")
-        if "报批越界通报" in t: out.add("越界")
-        if "滑头避险定性" in t: out.add("滑头避险定性")
-        if any(k in t for k in ("破格外放序列", "不务正业非议", "脱离工农议论", "清高孤僻风评")): out.add("S08_PEN")
-        if any(k in t for k in ("苏南经济底稿", "经贸法治底盘")): out.add("ECO_BASE")
-        if any(k in t for k in ("老辈训诫", "老同志的信赖档案")): out.add("OLD_TRUST")
-        if "老同志的信赖档案" in t: out.add("老同志的信赖档案")
-        if any(k in t for k in ("双轨探索者", "现代治理工具箱")): out.add("DUAL_TOOL")
-        if any(k in t for k in ("外宣基本功", "精准反制经验")): out.add("FX_SKILL")
-        if "大院子弟标签" in t: out.add("大院子弟标签")
-        if "滑头风评" in t: out.add("滑头风评")
-        if "地方招商宿怨" in t: out.add("地方招商宿怨")
-        if "青年统战滞后" in t: out.add("青年统战滞后")
-        return frozenset(out)
-
-    s1_compact = defaultdict(int)
-    for fset, w in s1_states.items():
-        s1_compact[canon_s1(fset)] += w
+    s1_compact = {}
+    for c_flag, (sc, sr, sw) in s1_acc.items():
+        s1_compact[c_flag] = (round(sc / sw), round(sr / sw), sw)
 
     print(f"\n=== 全六卷联合路径穷举仿真 ===", flush=True)
     print(f"阶段一分支压缩后独立等效特征态: {len(s1_compact)} 种 (含终局B早退路径 {s1_b_count} 组基线)", flush=True)
@@ -310,9 +332,11 @@ def simulate_all_paths():
         "公交录像带", "城投挪用线索", "老同志口风", "机关震荡反弹", "土地融资依赖", "建委隐形积怨"
     }
     dp = defaultdict(int)
-    for s1_flags, w in s1_compact.items():
+    for s1_flags, (c_adj, r_adj, w) in s1_compact.items():
         for inv in [("A", "B"), ("A", "C"), ("B", "C")]:
-            c, l, f, r = 55, 60, 60, 50
+            c = clamp(55 + c_adj)
+            l, f = 60, 60
+            r = clamp(50 + r_adj)
             t4 = set(s1_flags)
             if "EDGE" in t4: c -= 3
             if "越界" in t4: c -= 2
@@ -481,11 +505,21 @@ def simulate_all_paths():
     dp = step_dp(dp, fn_13_3, keep_13_3)
     print(f"dp at 13 size: {len(dp)}", flush=True)
 
-    keep_s5 = {
-        "大院子弟标签", "滑头风评", "外宣高手", "形式主义诟病",
-        "无暇履历", "宏观定力", "改革盟约", "派系结盟猜忌",
-        "激进政改旗手", "地方招商宿怨", "青年统战滞后", "连带问责留档"
-    }
+    # 14 -> 17th Congress Gateway
+    def canon_s5(t):
+        out = set()
+        if "形式主义诟病" in t or "滑头风评" in t: out.add("FORM_OR_SLICK")
+        if "无暇履历" in t or "宏观定力" in t: out.add("EXP_BONUS")
+        if "派系结盟猜忌" in t or "地方招商宿怨" in t: out.add("FACTION_GRUDGE")
+        if "改革盟约" in t: out.add("改革盟约")
+        if "大院子弟标签" in t: out.add("大院子弟标签")
+        if "外宣高手" in t: out.add("外宣高手")
+        if "连带问责留档" in t: out.add("连带问责留档")
+        if "青年统战滞后" in t: out.add("V6_R2_PEN")
+        if "党管干部质疑" in t: out.add("党管干部质疑")
+        if "改革保守退缩" in t: out.add("改革保守退缩")
+        return frozenset(out)
+
     ending_counts = defaultdict(int)
     total_weighted = 0
     dp_s5 = defaultdict(int)
@@ -495,8 +529,8 @@ def simulate_all_paths():
             c14_v, l14_v, f14_v, r14_v = cp, lp, fp, rp
             t14 = set(tp)
             if c14 == "6-A": r14_v += 1; c14_v -= 2; t14.update(["改革盟约", "派系结盟猜忌"])
-            elif c14 == "6-B": c14_v += 2; r14_v -= 2; t14.update(["无暇履历", "程序本位掣肘"])
-            else: c14_v += 1; r14_v -= 1; t14.update(["宏观定力", "锋芒收敛过甚"])
+            elif c14 == "6-B": c14_v += 2; r14_v -= 2; t14.add("无暇履历")
+            else: c14_v += 1; r14_v -= 1; t14.add("宏观定力")
             c14_v, l14_v, f14_v, r14_v = clamp(c14_v), clamp(l14_v), clamp(f14_v), clamp(r14_v)
 
             e17 = evaluate_17th_congress(c14_v, l14_v, f14_v, r14_v, t14)
@@ -504,16 +538,23 @@ def simulate_all_paths():
                 ending_counts[e17] += w
                 total_weighted += w
             else:
-                dp_s5[(c14_v, l14_v, f14_v, r14_v, proj(t14, keep_s5))] += w
+                dp_s5[(c14_v, l14_v, r14_v, canon_s5(t14))] += w
     print(f"dp_s5 size: {len(dp_s5)}", flush=True)
 
-    # Vol 5 layered DP: 14-A + 15 -> 16 -> 17 -> 18
+    # Vol 5 Layered DP
+    def step_v5(dp, fn, keep):
+        nxt = defaultdict(int)
+        for (c, l, r, flags), w in dp.items():
+            for (c_v, l_v, r_v, t_v) in fn(c, l, r, flags):
+                nxt[(clamp(c_v), clamp(l_v), clamp(r_v), proj(t_v, keep))] += w
+        return nxt
+
+    # 15
     keep_15 = {
-        "监督局带病档案", "改革盟约", "派系结盟猜忌", "地方招商宿怨",
-        "使节团提问清单", "大院子弟标签", "外宣高手", "测评退回旧轨失望",
-        "青年统战滞后", "连带问责留档"
+        "监督局带病档案", "改革盟约", "FACTION_GRUDGE", "使节团提问清单",
+        "大院子弟标签", "外宣高手", "V6_R2_PEN", "连带问责留档", "改革保守退缩"
     }
-    def fn_14a_15(c, l, f, r, s5_rel):
+    def fn_14a_15(c, l, r, s5_rel):
         out = []
         for inv5 in [("A", "B"), ("A", "C"), ("B", "C")]:
             t5 = set(s5_rel)
@@ -521,69 +562,99 @@ def simulate_all_paths():
                 if a5 == "A": t5.add("监督局带病档案")
                 elif a5 == "B": t5.add("基层测评原始样表")
                 else: t5.add("使节团提问清单")
-            r_base = r - (2 if ("形式主义诟病" in t5 or "滑头风评" in t5) else 0)
+            r_base = r - (2 if "FORM_OR_SLICK" in t5 else 0)
+            c_base = c - (3 if "党管干部质疑" in t5 else 0)
             for c15 in ["15-A", "15-B", "15-C"]:
-                c15_v, l15_v, f15_v, r15_v = c, l, f, r_base
+                c15_v, l15_v, r15_v = c_base, l, r_base
                 t15 = set(t5)
                 if c15 == "15-A":
                     r15_v += 6; c15_v -= 8; l15_v -= 5
                 elif c15 == "15-B":
-                    c15_v += 5 + (2 if ("基层测评原始样表" in t15 or "无暇履历" in t15 or "宏观定力" in t15) else 0)
-                    r15_v += 5; l15_v += 2 - 4
+                    c15_v += 5 + (2 if ("基层测评原始样表" in t15 or "EXP_BONUS" in t15) else 0)
+                    r15_v += 5; l15_v -= 2
                 else:
-                    c15_v += 4; l15_v += 4; r15_v -= 8; t15.add("测评退回旧轨失望")
-                out.append((c15_v, l15_v, f15_v, r15_v, t15))
+                    c15_v += 4; l15_v += 4; r15_v -= 8; t15.add("V6_R2_PEN")
+                out.append((c15_v, l15_v, r15_v, t15))
         return out
-    dp_15 = step_dp(dp_s5, fn_14a_15, keep_15)
+    dp_15 = step_v5(dp_s5, fn_14a_15, keep_15)
+    print(f"dp_15 size: {len(dp_15)}", flush=True)
 
+    # 16
     keep_16 = {
-        "使节团提问清单", "大院子弟标签", "外宣高手", "测评退回旧轨失望",
-        "青年统战滞后", "连带问责留档", "粤系地方阻力", "跨省空降派系芥蒂"
+        "监督局带病档案", "使节团提问清单", "大院子弟标签", "外宣高手",
+        "V6_R2_PEN", "连带问责留档", "跨省空降派系芥蒂", "改革保守退缩"
     }
-    def fn_16(c, l, f, r, t15):
+    def fn_16(c, l, r, t15):
         out = []
         c_base = c + (2 if "监督局带病档案" in t15 else 0)
         s16_opts = ["16-A", "16-C"] + (["16-B"] if ("改革盟约" in t15 and c_base > 40) else [])
         for c16 in s16_opts:
-            c16_v, l16_v, f16_v, r16_v = c_base, l, f, r
+            c16_v, l16_v, r16_v = c_base, l, r
             t16 = set(t15)
             if c16 == "16-A":
-                c16_v += 3; l16_v += 4; r16_v -= 4; t16.add("粤系地方阻力")
+                c16_v += 3; l16_v += 4; r16_v -= 4; t16.add("V6_R2_PEN")
             elif c16 == "16-B":
                 r16_v += 7; c16_v += 2
-                l16_v -= 2 + (1 if ("派系结盟猜忌" in t16 or "地方招商宿怨" in t16) else 0)
+                l16_v -= 2 + (1 if "FACTION_GRUDGE" in t16 else 0)
                 t16.add("跨省空降派系芥蒂")
             else:
                 c16_v += 4; r16_v += 2; l16_v -= 3
-            out.append((c16_v, l16_v, f16_v, r16_v, t16))
+            out.append((c16_v, l16_v, r16_v, t16))
         return out
-    dp_16 = step_dp(dp_15, fn_16, keep_16)
+    dp_16 = step_v5(dp_15, fn_16, keep_16)
+    print(f"dp_16 size: {len(dp_16)}", flush=True)
 
-    keep_v6 = {
-        "青年统战滞后", "连带问责留档", "系统内保守派侧目", "跨省空降派系芥蒂",
-        "密闭保稳惯性", "自揭家丑非议", "测评退回旧轨失望", "粤系地方阻力"
+    # Black Swan: 【老陈的信封】
+    keep_bs = {
+        "使节团提问清单", "大院子弟标签", "外宣高手", "V6_R2_PEN",
+        "连带问责留档", "跨省空降派系芥蒂", "大秘隐雷", "改革保守退缩"
     }
-    def fn_17(c, l, f, r, t16):
+    def fn_bs(c, l, r, t16):
         out = []
-        c_base = c - (2 if "大院子弟标签" in t16 else 0)
-        s17_opts = ["17-A", "17-C"] + (["17-B"] if ("外宣高手" in t16 or r >= 60) else [])
+        # Option A: 大义灭亲
+        t_a = set(t16)
+        out.append((c + 4, l - 6, r - 2, t_a))
+        # Option B: 私心护短
+        t_b = set(t16)
+        t_b.add("大秘隐雷")
+        out.append((c - 4, l + 3, r, t_b))
+        # Option C: 借刀反查 (requires 监督局带病档案)
+        if "监督局带病档案" in t16:
+            t_c = set(t16)
+            out.append((c + 2, l - 2, r + 3, t_c))
+        return out
+    dp_bs = step_v5(dp_16, fn_bs, keep_bs)
+    print(f"dp_bs size: {len(dp_bs)}", flush=True)
+
+    # 17: 外媒吹风会
+    def canon_v6(t):
+        disq = ("自揭家丑非议" in t or "连带问责留档" in t or "大秘隐雷" in t)
+        r1 = ("密闭保稳惯性" in t or "自揭家丑非议" in t)
+        l = ("系统内保守派侧目" in t or "跨省空降派系芥蒂" in t)
+        r2 = ("V6_R2_PEN" in t)
+        return (disq, r1, l, r2)
+
+    dp_v5 = defaultdict(int)
+    for (c, l, r, t_bs), w in dp_bs.items():
+        c_base = c - (2 if "大院子弟标签" in t_bs else 0)
+        s17_opts = ["17-A", "17-C"] + (["17-B"] if ("外宣高手" in t_bs or r >= 60) else [])
         for c17 in s17_opts:
-            c17_v, l17_v, f17_v, r17_v = c_base, l, f, r
-            t17 = set(t16)
+            c17_v, l17_v, r17_v = c_base, l, r
+            t17 = set(t_bs)
             if c17 == "17-A":
                 c17_v += 3; r17_v -= 4; t17.add("密闭保稳惯性")
             elif c17 == "17-B":
                 r17_v += 7 + (2 if "使节团提问清单" in t17 else 0)
-                c17_v += 2; l17_v -= 2; t17.add("系统内保守派侧目")
+                c17_v += 2 - (2 if "改革保守退缩" in t17 else 0)
+                l17_v -= 2; t17.add("系统内保守派侧目")
             else:
                 r17_v += 5; c17_v -= 4; t17.add("自揭家丑非议")
-            out.append((c17_v, l17_v, f17_v, r17_v, t17))
-        return out
-    dp_v5 = step_dp(dp_16, fn_17, keep_v6)
+            dp_v5[(clamp(c17_v), clamp(l17_v), clamp(r17_v), canon_v6(t17))] += w
     print(f"dp_v5 size: {len(dp_v5)}", flush=True)
 
-    for (c17_v, l17_v, f17_v, r17_v, t17), w5 in dp_v5.items():
-        e18 = evaluate_18th_congress(c17_v, l17_v, f17_v, r17_v, t17)
+    # 18th Congress Settlement
+    for (c17_v, l17_v, r17_v, (disq, r1, l_pen, r2)), w5 in dp_v5.items():
+        e18 = evaluate_18th_congress(c17_v, l17_v, 0, r17_v, {"自揭家丑非议"} if disq else set())
         if e18 == "Ending A1 (巅峰折冲 · 核心统筹)":
             ending_counts[e18] += w5 * 8
             total_weighted += w5 * 8
@@ -595,18 +666,15 @@ def simulate_all_paths():
             for m6 in ["A", "B"]:
                 for c18_1 in ["18-1A", "18-1B"]:
                     for c18_2 in ["18-2A", "18-2B"]:
-                        c18_v, l18_v, f18_v, r18_v = c17_v, l17_v, f17_v, r17_v
-                        t18 = set(t17)
-                        if m6 == "A": t18.add("群团基层调研底表")
-                        else: t18.add("外事礼宾密电")
-                        if "密闭保稳惯性" in t18 or "自揭家丑非议" in t18: r18_v -= 2
-                        if "系统内保守派侧目" in t18 or "跨省空降派系芥蒂" in t18: l18_v -= 2
-                        if "测评退回旧轨失望" in t18 or "青年统战滞后" in t18 or "粤系地方阻力" in t18: r18_v -= 2
-                        if c18_1 == "18-1A": c18_v += 4 + (2 if "外事礼宾密电" in t18 else 0); r18_v -= 3
+                        c18_v, l18_v, r18_v = c17_v, l17_v, r17_v
+                        if r1: r18_v -= 2
+                        if l_pen: l18_v -= 2
+                        if r2: r18_v -= 2
+                        if c18_1 == "18-1A": c18_v += 4 + (2 if m6 == "B" else 0); r18_v -= 3
                         else: r18_v += 4; c18_v -= 3
-                        if c18_2 == "18-2A": r18_v += 5 + (2 if "群团基层调研底表" in t18 else 0); l18_v -= 2; c18_v -= 2
+                        if c18_2 == "18-2A": r18_v += 5 + (2 if m6 == "A" else 0); l18_v -= 2; c18_v -= 2
                         else: c18_v += 4; r18_v -= 3
-                        c18_v, l18_v, f18_v, r18_v = clamp(c18_v), clamp(l18_v), clamp(f18_v), clamp(r18_v)
+                        c18_v, l18_v, r18_v = clamp(c18_v), clamp(l18_v), clamp(r18_v)
                         ending_counts["Ending A2 (端方晚晴 · 稳健执印)"] += w5
                         total_weighted += w5
 

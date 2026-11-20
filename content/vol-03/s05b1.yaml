@@ -9,6 +9,7 @@ next: v03-s05b2
 choices:
 - id: c1
   label: 联合央行设定分类技术合规标准，有限放行终端
+  hint: 设合规标准放行，兼顾招商安全。
   outcome: s05b1-c1.md
   effects:
   - type: change
@@ -21,6 +22,7 @@ choices:
     tag: 涉外口径微瑕
 - id: c2
   label: 遵照传统保密规程暂缓批准，继续安全评估
+  hint: 依保密规程暂缓，守住安全底线。
   outcome: s05b1-c2.md
   effects:
   - type: change

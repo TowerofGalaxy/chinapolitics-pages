@@ -19,6 +19,7 @@ choices:
     amount: -8
   - type: add-tag
     tag: 党管干部质疑
+  hint: 大谈群众选票，讨好外媒遭猜忌。
 - id: b
   label: 全盘否定改革突破，强调纯粹按现行条例执行
   outcome: s13r2-b.md
@@ -34,6 +35,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 改革保守退缩
+  hint: 拿现行条例当掩护，坚决撇清越轨。
 - id: c
   label: 以组织考核的信息降噪做专业回应
   outcome: s13r2-c.md
@@ -57,3 +59,4 @@ choices:
   condition:
     tag: 制度精算样本
   unavailable: hidden
+  hint: 用考评降噪作答，把争议引向模型。

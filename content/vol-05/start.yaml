@@ -13,18 +13,21 @@ next: v05-s15
 choices:
 - id: a
   label: 调阅干部监督局封存的《省管干部“带病提拔”倒查抽检档案》
+  hint: 核查带病提拔卷宗，查清监督漏洞。
   outcome: start-a.md
   effects:
   - type: add-tag
     tag: 监督局带病档案
 - id: b
   label: 调取十七个工业大市处级干部民主测评原始交叉统计样表
+  hint: 调阅测评样表，查清老好人病灶。
   outcome: start-b.md
   effects:
   - type: add-tag
     tag: 基层测评原始样表
 - id: c
   label: 核对国新办与外交部转来的《驻京使节团与外媒拟提问清单》
+  hint: 梳理使节提问清单，摸清境外焦点。
   outcome: start-c.md
   effects:
   - type: add-tag

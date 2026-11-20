@@ -22,6 +22,9 @@ choices:
   - type: change
     stat: reform_drive
     amount: -2
+  - type: add-tag
+    tag: 大义灭亲
+  hint: 移交纪检依纪严办，与旧部切割。
 - id: b
   label: 限期退款补税，平调二线脱敏
   outcome: s16end-b.md
@@ -34,6 +37,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 大秘隐雷
+  hint: 限期退款平调二线，私心护短留患。
 - id: c
   label: 核查账目虚实，借刀反向清障
   outcome: s16end-c.md
@@ -43,10 +47,11 @@ choices:
     amount: 2
   - type: change
     stat: reform_drive
-    amount: 3
+    amount: -3
   - type: change
     stat: local_cohesion
-    amount: -2
+    amount: -3
   condition:
     tag: 监督局带病档案
   unavailable: hidden
+  hint: 核查账目借刀反查，借力清除暗桩。

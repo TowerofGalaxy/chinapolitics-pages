@@ -38,6 +38,7 @@ choices:
   - when:
       tag: 法治骨气
     body: s10-a-law.md
+  hint: 承担监管首责写检讨，换从轻发落。
 - id: b
   label: 摆出地方金融压力测试表，争取二十天债务置换窗口
   outcome: s10-b.md
@@ -73,6 +74,7 @@ choices:
       value: 60
   unavailable: locked
   reason: 需掌握城投挪用真实账目或具备充足财政抗风险底盘
+  hint: 出示金融坏账底牌，争取置换窗口。
 - id: c
   label: 出示外贸设备共管单，请求沙钢南钢竞价收购以保全银行贷款
   outcome: s10-c.md
@@ -100,6 +102,7 @@ choices:
   condition:
     tag: 设备共管方案
   unavailable: hidden
+  hint: 凭设备共管单竞标，保全银行贷款。
 additions:
 - when:
     tag: 土地融资依赖

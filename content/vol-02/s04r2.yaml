@@ -8,7 +8,8 @@ prompt: 我该如何处置？
 next: v02-close
 choices:
 - id: a
-  label: 当场用红蓝铅笔划叉拆版，连夜封停车间（经贸部委分支）
+  label: 当场用红蓝铅笔划叉拆版，连夜封停车间
+  hint: 严格纪律撤版，与青年骨干决裂。
   outcome: s04r2-a.md
   effects:
   - type: change
@@ -26,7 +27,8 @@ choices:
   - type: add-tag
     tag: 经贸法治底盘
 - id: b
-  label: 揽下延误出报检讨，按出差程序疏散骨干去外地（正史核心主线）
+  label: 揽下延误出报检讨，按出差程序疏散骨干去外地
+  hint: 担责出差保人，准备承受审查。
   outcome: s04r2-b.md
   effects:
   - type: change
@@ -40,7 +42,8 @@ choices:
   - type: add-tag
     tag: 十年冷板凳
 - id: c
-  label: 以“铸字机主电机短路”拉闸，造成技术性脱期一天（边缘分支）
+  label: 以“铸字机主电机短路”拉闸，造成技术性脱期一天
+  hint: 借设备故障拖延，在两难中避险。
   outcome: s04r2-c.md
   effects:
   - type: change

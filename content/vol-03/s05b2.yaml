@@ -9,6 +9,7 @@ next: v03-s06
 choices:
 - id: d1
   label: 单列试点特聘机制与效益挂钩，老同志待遇从专项结余单列统筹
+  hint: 试行特聘效益激励，结余安抚老干。
   outcome: s05b2-d1.md
   effects:
   - type: change
@@ -21,6 +22,7 @@ choices:
     tag: 不务正业非议
 - id: d2
   label: 维持全额拨款保障，仅对重大涉外/一线任务发放专项津贴
+  hint: 维持全额拨款保障，发津贴维稳。
   outcome: s05b2-d2.md
   effects:
   - type: change

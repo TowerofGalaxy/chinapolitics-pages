@@ -33,6 +33,7 @@ choices:
   - when:
       tag: 第三梯队座谈纪要
     body: s02-a-notes.md
+  hint: 服从大局撤考研，进机关走台阶。
 - id: b
   label: 直接点出运动教训与程序缺失的隐患
   outcome: s02-b.md
@@ -45,6 +46,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 法治骨气
+  hint: 直陈体制旧疾，不愿盲从跟风。
 - id: c
   label: 向父亲打听机关底线与老同事联络方式
   outcome: s02-c.md
@@ -57,3 +59,4 @@ choices:
     amount: -5
   - type: add-tag
     tag: 老辈训诫
+  hint: 借重父辈人脉，探听高层选拔。

@@ -41,6 +41,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 端方国士
+  hint: 严守外事礼宾口径，克制审慎求稳。
 - id: b
   label: 在达沃斯与双边简报中主动阐释中国市场准入与环保硬考核
   outcome: s18r1-b.md
@@ -51,6 +52,7 @@ choices:
   - type: change
     stat: central_trust
     amount: -3
+  hint: 阐释准入与环保考核，以透明解疑。
 additions:
 - when:
     any:

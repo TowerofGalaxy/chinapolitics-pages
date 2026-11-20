@@ -38,6 +38,7 @@ choices:
     value: 40
   unavailable: locked
   reason: 省级财政预备金不足以兜底大额应急支出
+  hint: 财政垫付欠薪，花钱买平安息事。
 - id: b
   label: 严守预算法红线，省财政不垫一分钱，责令常州拍卖资产自筹
   outcome: s11-b.md
@@ -53,6 +54,7 @@ choices:
     amount: -15
   - type: add-tag
     tag: 雨中聚众影像
+  hint: 严守财政纪律不掏钱，逼地方自筹。
 - id: c
   label: 省纪委进驻督导，涉案审批官员全员包干质押清场
   outcome: s11-c.md
@@ -68,6 +70,7 @@ choices:
     amount: -5
   - type: add-tag
     tag: 官场寒蝉效应
+  hint: 纪委进驻一线，责令涉案干部清欠。
 bodyVariants:
 - when:
     tag: 彻底停工

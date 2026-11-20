@@ -3,5 +3,13 @@ volume: 4
 source: 两份卷宗
 title: 两份卷宗
 body: brief.md
-type: passage
+type: choice
+prompt: 常委会开场前，我先从哪条线索入手？
 next: v04-s09
+choices:
+- id: land
+  label: 先咬死 6541 亩土地红线
+  outcome: brief-land.md
+- id: credit
+  label: 先咬死 43 亿银行坏账穿透
+  outcome: brief-credit.md

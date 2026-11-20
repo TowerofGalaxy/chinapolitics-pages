@@ -40,6 +40,7 @@ choices:
     value: 35
   unavailable: locked
   reason: 组织信任度需高于 35
+  hint: 起草干部考评，为日后执政备工具。
 - id: b
   label: 借主管离退休文化老干部方便，登门解决元老就医住房难事
   outcome: s06-b.md
@@ -54,6 +55,7 @@ choices:
     tag: 老同志的信赖档案
   - type: add-tag
     tag: 守旧平庸标签
+  hint: 解决元老难事，积累老同志口碑。
 - id: c
   label: 系统梳理苏南乡镇企业改制、分税制税收与土地出让金台账
   outcome: s06-c.md
@@ -68,6 +70,7 @@ choices:
     tag: 苏南经济底稿
   - type: add-tag
     tag: 清高孤僻风评
+  hint: 梳理苏南土地财税，为主政打底。
 bodyVariants:
 - when:
     tag: 铁腕履历

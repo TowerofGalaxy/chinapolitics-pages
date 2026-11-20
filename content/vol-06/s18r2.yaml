@@ -38,6 +38,7 @@ choices:
     amount: -2
   - type: add-tag
     tag: 未竞的改革之弦
+  hint: 引入社会评估买单，破除机关化。
 - id: b
   label: 划死个人权力退场边界，谢绝制度外过问与人事推荐
   outcome: s18r2-b.md
@@ -50,6 +51,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 云淡风轻
+  hint: 划死权力退场边界，谢绝人事请托。
 additions:
 - when:
     tag: 加权考核执行损耗

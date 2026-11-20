@@ -3,6 +3,10 @@ volume: 6
 source: 海淀旧院
 title: 海淀旧院
 body: s19.md
+bodyVariants:
+- when:
+    tag: 大义灭亲
+  body: s19-righteous.md
 type: passage
 time: 2018 年深秋，黄昏
 location: 北京 · 海淀区
