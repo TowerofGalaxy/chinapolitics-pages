@@ -9,7 +9,7 @@ next: v02-s04r1
 choices:
 - id: b1
   label: 退回重拟，规定海归学者与青年律师代表不低于两成
-  hint: 名额向知识界倾斜，触动工农。
+  hint: 提高知识界与海归名额，压缩传统比例。
   outcome: s03b2-b1.md
   effects:
   - type: change

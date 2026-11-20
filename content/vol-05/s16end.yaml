@@ -37,7 +37,7 @@ choices:
     amount: -4
   - type: add-tag
     tag: 大秘隐雷
-  hint: 限期退款平调二线，私心护短留患。
+  hint: 责令退赃补税并调离要害，内部消化风波。
 - id: c
   label: 核查账目虚实，借刀反向清障
   outcome: s16end-c.md

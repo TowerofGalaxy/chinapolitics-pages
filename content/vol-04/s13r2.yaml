@@ -19,7 +19,7 @@ choices:
     amount: -8
   - type: add-tag
     tag: 党管干部质疑
-  hint: 大谈群众选票，讨好外媒遭猜忌。
+  hint: 顺势亮明民主趋势，向外界展示改革决心。
 - id: b
   label: 全盘否定改革突破，强调纯粹按现行条例执行
   outcome: s13r2-b.md

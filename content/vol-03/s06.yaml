@@ -42,7 +42,7 @@ choices:
   reason: 组织信任度需高于 35
   hint: 起草干部考评，为日后执政备工具。
 - id: b
-  label: 借主管离退休文化老干部方便，登门解决元老就医住房难事
+  label: 借联系本系统离退休老同志方便，登门解决元老就医住房难事
   outcome: s06-b.md
   effects:
   - type: change

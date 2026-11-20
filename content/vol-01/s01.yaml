@@ -52,7 +52,7 @@ choices:
     amount: -3
   - type: add-tag
     tag: 双轨探索者
-  hint: 提议双轨兼任，仕途学界两头注。
+  hint: 提议兼任团委并在职读研，两边兼顾。
 - id: d
   label: 当场在报考研究生登记表签名落款
   outcome: s01-d.md

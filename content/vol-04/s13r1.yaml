@@ -27,7 +27,7 @@ choices:
     amount: -6
   - type: add-tag
     tag: 涉外口径微瑕
-  hint: 坦承执行偏差鸣冤，惹部委不快。
+  hint: 坦承执行节奏偏急，替民企说句公道话。
 - id: b
   label: 按统发口径重申个别企业违法，切下一题
   outcome: s13r1-b.md

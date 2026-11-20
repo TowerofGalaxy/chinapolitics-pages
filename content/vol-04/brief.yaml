@@ -9,7 +9,9 @@ next: v04-s09
 choices:
 - id: land
   label: 先咬死 6541 亩土地红线
+  hint: 咬死违规占用农田事实，定死纪律红线。
   outcome: brief-land.md
 - id: credit
   label: 先咬死 43 亿银行坏账穿透
+  hint: 穿透巨额信贷坏账底牌，切断重组退路。
   outcome: brief-credit.md

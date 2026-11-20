@@ -12,7 +12,7 @@ const routes: Record<string, string> = {
   'v06-ending-a3': 'a c b a b a2 b2 a a b b c1 d2 a visit+bus screening land b a b b b a b b b+c a a b c',
   'v06-ending-c': 'c c a a c a2 b1 a c a b c2 d1 b bus+audit screening land a a a c c a a b',
   'v06-ending-d': 'a b b b c a1 b1 a a a c c2 d1 b visit+bus screening land a a a a a a b b',
-  'v06-ending-e': 'c a b b b a1 b2 b b b a c1 d1 b audit+visit private land c a a c c a a b',
+  'v06-ending-e': 'c a b b b a1 b2 b b b a c1 d1 b audit+visit private credit c a a c c a a b',
 }
 
 describe('结局可达性', () => {

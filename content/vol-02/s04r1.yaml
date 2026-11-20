@@ -48,7 +48,7 @@ choices:
       any:
       - tag: 预审口径单
       - tag: 退稿油印刊物
-  hint: 召集编委摊牌，摆明利害争取。
+  hint: 隔离外围召集编委，摆明利害稳住骨干。
 additions:
 - when:
     tag: 退稿油印刊物
