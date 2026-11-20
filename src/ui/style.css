@@ -38,13 +38,14 @@ h1 { margin-block: 4px 15px; font: 700 clamp(24px, 4vw, 31px)/1.4 var(--serif); 
 .prose blockquote { margin-inline: 1em 0; padding-inline-start: 1em; border-inline-start: 2px solid var(--rule); }
 .prose h2, .prose h3 { margin-block: 1.5em .5em; font-size: 1.05em; font-weight: 600; }
 .decision { border-top: 1px solid var(--rule); padding-top: 12px; }
-.decision-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; margin-bottom: 5px; }
+.decision-head { display: flex; gap: 12px; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
 h2 { font-size: 15px; font-weight: 600; }
 .decision-head span { color: var(--secondary); white-space: nowrap; font-size: 13px; }
-.choice { display: flex; width: fit-content; align-items: baseline; gap: 10px; min-height: 44px; padding: 9px 9px 8px 0; font-size: 15px; }
-.choice input { flex: none; width: 16px; height: 16px; margin: 4px 0 0; align-self: flex-start; accent-color: var(--action); }
-.choice:has(input:checked) { color: var(--action); font-weight: 600; }
-.choice:has(input:disabled) { color: var(--secondary); }
+.choice { display: flex; width: 100%; align-items: flex-start; gap: 12px; min-height: 52px; margin-top: 8px; padding: 12px 14px; border: 1px solid var(--rule); font-size: 15px; cursor: pointer; }
+.choice input { flex: none; width: 18px; height: 18px; margin: 3px 0 0; accent-color: var(--action); }
+.choice:has(input:checked) { border-color: var(--action); background: var(--status); color: var(--action); font-weight: 600; }
+.choice:has(input:focus-visible) { outline: 2px solid var(--action); outline-offset: 2px; }
+.choice:has(input:disabled) { color: var(--secondary); cursor: not-allowed; }
 .choice-content { display: flex; flex-direction: column; gap: 2px; }
 .choice small { display: block; color: var(--secondary); font: 400 13px/1.6 var(--sans); }
 .choice-hint { color: var(--secondary); opacity: 0.9; font-size: 13px; line-height: 1.5; }
